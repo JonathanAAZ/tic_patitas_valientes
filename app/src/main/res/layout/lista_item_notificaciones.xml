@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rLContenedorNotificacion"
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="5dp"
+        android:gravity="center"
+        android:backgroundTint="@color/gray"
+        android:contextClickable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/borde_cuadrado">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/lila"
+            android:id="@+id/cIVLogoNotificacion"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloNotificacion"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_toEndOf="@+id/cIVLogoNotificacion"
+            android:hint="Título"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVCuerpoNotificacion"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:maxLines="4"
+            android:textSize="14sp"
+            android:layout_below="@+id/tVTituloNotificacion"
+            android:layout_toEndOf="@+id/cIVLogoNotificacion"
+            android:hint="Cuerpo"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tVCuerpoNotificacion"
+            android:layout_toEndOf="@+id/cIVLogoNotificacion"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVFechaNotificacion"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:text=""/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVHoraNotificacion"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:textSize="14sp"
+                android:text=""/>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</LinearLayout>

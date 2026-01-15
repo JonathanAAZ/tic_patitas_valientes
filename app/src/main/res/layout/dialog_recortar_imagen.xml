@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/yellow"
+        android:background="@drawable/border"
+        android:padding="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVEncImagenAmpliada"
+            android:textAlignment="center"
+            android:textColor="@color/lila"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:text="Suba una foto de su firma y ajústela para que se muestre correctamente."/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lLRecortarImagen"
+            android:layout_alignParentEnd="true"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            android:focusable="true"
+            android:clickable="true"
+            android:backgroundTint="@color/blue_2"
+            android:backgroundTintMode="multiply"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/border"
+            android:layout_below="@+id/tVEncImagenAmpliada">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_cortar"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Recortar"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <com.canhub.cropper.CropImageView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:id="@+id/iVRecortarImagen"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:layout_below="@+id/lLRecortarImagen"
+            android:backgroundTint="@color/gray"
+            android:background="@drawable/border"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/yellow"
+            android:padding="10dp"
+            android:layout_below="@+id/iVRecortarImagen"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/lLTomarFotoRecortar"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:backgroundTint="@color/celeste"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/borde_cuadrado">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_camara"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Tomar una foto"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/lLSubirFotoRecortar"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:backgroundTint="@color/celeste"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/borde_cuadrado">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_galeria"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Subir una foto"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

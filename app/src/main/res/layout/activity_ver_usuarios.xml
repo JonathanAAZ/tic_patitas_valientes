@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow"
+    tools:context=".Vista.VerUsuariosActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorGestionarUsuarios"
+        android:background="@color/yellow"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarVerUsuarios"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_retroceder"
+            android:backgroundTint="@color/lila"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloVerUsuarios"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:text="Gestionar usuarios"/>
+
+        <View
+            android:id="@+id/viewTituloGestionarUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloVerUsuarios"
+            android:background="@color/yellow" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lYSuperiorGestionarUsuarios"
+        android:background="@drawable/bordes_fragment"
+        android:padding="15dp">
+
+<!--        <Button-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btnRefrescarVerUsuarios"-->
+<!--            android:text="Refrescar pantalla"/>-->
+
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/btnAgregarVoluntario"-->
+<!--            android:text="AGREGAR VOLUNTARIO"-->
+<!--            android:layout_marginBottom="15dp"-->
+<!--            android:layout_centerHorizontal="true"/>-->
+
+        <SearchView
+            android:id="@+id/searchViewVerUsuarios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="Buscar por nombre o cédula"
+            android:iconifiedByDefault="false"
+            android:focusable="false"
+            android:background="@drawable/border" />
+
+<!--        <Spinner-->
+<!--            android:layout_width="100dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/spinnerFiltrosUsuarios"-->
+<!--            android:layout_toEndOf="@id/searchViewVerUsuarios"-->
+<!--            android:layout_below="@id/btnAgregarVoluntario"/>-->
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lYBtnAgregarVoluntario"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/light_green"
+            android:backgroundTintMode="multiply"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/border"
+            android:layout_below="@+id/searchViewVerUsuarios">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:backgroundTint="@color/white"
+                android:background="@drawable/ic_agregar_usuario"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Agregar voluntario"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVNoHayResultadosListaUsuarios"
+            android:layout_below="@+id/lYBtnAgregarVoluntario"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:hint="---- No se encontraron resultados ----"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tVNoHayResultadosListaUsuarios"
+            android:layout_marginTop="10dp"
+            android:padding="2dp"
+            android:background="@color/white"
+            android:id="@+id/recyViewListaUsuarios"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

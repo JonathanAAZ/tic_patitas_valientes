@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    tools:context=".Vista.Fragments.ListaMascotasAdopcionFragment">
+
+    <LinearLayout
+        android:id="@+id/lYFiltroBusquedaMascotasAdopcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <SearchView
+            android:id="@+id/searchViewMascotasAdopcion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:queryHint="Buscar por nombre"
+            android:iconifiedByDefault="false"
+            android:focusable="false"
+            android:background="@drawable/border" />
+
+        <ImageView
+            android:id="@+id/ivFiltro"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="8dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_filtro"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/blue_2"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Ícono de filtro" />
+    </LinearLayout>
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/lYMostrarFiltrosMascotasAdopcion"-->
+<!--        android:padding="10dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:layout_below="@+id/lYFiltroBusquedaMascotasAdopcion">-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Buscar por:"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/border"-->
+<!--            android:text="Nombre"/>-->
+
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:background="@drawable/border"-->
+<!--            android:text="Nombre"/>-->
+
+<!--    </LinearLayout>-->
+
+    <GridLayout
+        android:id="@+id/lYMostrarFiltrosMascotasAdopcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lYFiltroBusquedaMascotasAdopcion"
+        android:background="@drawable/frame_redondeado"
+        android:columnCount="2"
+        android:padding="10dp"
+        android:visibility="gone"
+        android:rowCount="4">
+
+        <!-- Etiqueta principal -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="5dp"
+            android:text="Buscar:"
+            android:textColor="@color/blue_2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVQuitarFiltros"
+            android:layout_marginEnd="1dp"
+            android:layout_gravity="end"
+            android:textSize="12sp"
+            android:padding="2dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:text="Quitar filtros seleccionados"
+            android:background="@drawable/borde_rojo"
+            android:textColor="@color/red"
+            android:textStyle="bold" />
+
+
+        <!-- Filtros -->
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVActivos"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Activos"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVInactivos"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Inactivos"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVVacunados"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Vacunados"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVNoVacunados"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="No vacunados"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVEsterilizados"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Esterilizados"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVNoEsterilizados"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="No esterilizados"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVDesparasitados"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="Desparasitados"
+            android:textColor="@color/blue_2" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVNoDesparasitados"
+            android:layout_columnWeight="1"
+            android:layout_margin="2dp"
+            android:background="@drawable/border"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="No desparasitados"
+            android:textColor="@color/blue_2" />
+
+    </GridLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYBtnAgregarMascota"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/lYMostrarFiltrosMascotasAdopcion"
+        android:backgroundTint="@color/light_green"
+        android:backgroundTintMode="multiply"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/border">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_huella_mascota"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar mascota"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/viewSepararListaAdopcion"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/lYBtnAgregarMascota"
+        android:background="@color/black" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVNoHayResultadosListaMascotas"
+        android:layout_below="@+id/viewSepararListaAdopcion"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:hint="---- No se encontraron resultados ----"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyViewListaMascotasAdopcion"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:padding="2dp"
+        android:background="@color/white"
+        android:layout_below="@+id/tVNoHayResultadosListaMascotas"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"/>
+
+</RelativeLayout>

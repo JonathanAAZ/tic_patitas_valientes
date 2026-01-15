@@ -1,0 +1,365 @@
+<resources>
+    <string name="app_name">Hogar Patitas Valientes</string>
+
+    <!--    DATOS PARA INFORMACIÓN DE DOMICILIO-->
+    <string-array name="array_provincias_ecuador">
+        <item>--- Selecciona tu provincia ---</item>
+        <item>Azuay</item>
+        <item>Bolívar</item>
+        <item>Cañar</item>
+        <item>Carchi</item>
+        <item>Chimborazo</item>
+        <item>Cotopaxi</item>
+        <item>El Oro</item>
+        <item>Esmeraldas</item>
+        <item>Galápagos</item>
+        <item>Guayas</item>
+        <item>Imbabura</item>
+        <item>Loja</item>
+        <item>Los Ríos</item>
+        <item>Manabí</item>
+        <item>Morona Santiago</item>
+        <item>Napo</item>
+        <item>Orellana</item>
+        <item>Pastaza</item>
+        <item>Pichincha</item>
+        <item>Santa Elena</item>
+        <item>Santo Domingo de los Tsáchilas</item>
+        <item>Sucumbíos</item>
+        <item>Tungurahua</item>
+        <item>Zamora Chinchipe</item>
+    </string-array>
+
+    <string-array name="array_provincias_defecto">
+        <item>--- Selecciona tu cantón ---</item>
+    </string-array>
+
+    <string-array name="array_azuay_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Cuenca</item>
+        <item>Gualaceo</item>
+        <item>Nabón</item>
+        <item>Paute</item>
+        <item>Pucará</item>
+        <item>San Fernando</item>
+        <item>Santa Isabel</item>
+        <item>Sevilla de Oro</item>
+        <item>Sígsig</item>
+        <item>Oña</item>
+        <item>Chordeleg</item>
+        <item>El Pan</item>
+        <item>Girón</item>
+    </string-array>
+
+    <string-array name="array_bolivar_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Guaranda</item>
+        <item>Chillanes</item>
+        <item>Chimbo</item>
+        <item>Echeandía</item>
+        <item>San Miguel</item>
+        <item>Caluma</item>
+        <item>Las Naves</item>
+    </string-array>
+
+    <string-array name="array_canar_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Azogues</item>
+        <item>Biblian</item>
+        <item>Cañar</item>
+        <item>Déleg</item>
+        <item>La Troncal</item>
+        <item>El Tambo</item>
+        <item>Suscal</item>
+    </string-array>
+
+    <string-array name="array_carchi_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Tulcán</item>
+        <item>Bolívar</item>
+        <item>Espejo</item>
+        <item>Mira</item>
+        <item>Montúfar</item>
+        <item>San Pedro de Huaca</item>
+    </string-array>
+
+    <string-array name="array_chimborazo_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Riobamba</item>
+        <item>Alausí</item>
+        <item>Chambo</item>
+        <item>Chunchi</item>
+        <item>Colta</item>
+        <item>Cumandá</item>
+        <item>Guamote</item>
+        <item>Guano</item>
+        <item>Penipe</item>
+        <item>Pallatanga</item>
+    </string-array>
+
+    <string-array name="array_cotopaxi_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Latacunga</item>
+        <item>La Maná</item>
+        <item>Pangua</item>
+        <item>Pujilí</item>
+        <item>Salcedo</item>
+        <item>Saquisilí</item>
+        <item>Sigchos</item>
+    </string-array>
+
+    <string-array name="array_el_oro_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Machala</item>
+        <item>Arenillas</item>
+        <item>Atahualpa</item>
+        <item>Balsas</item>
+        <item>Chilla</item>
+        <item>El Guabo</item>
+        <item>Huaquillas</item>
+        <item>Marcabelí</item>
+        <item>Pasaje</item>
+        <item>Piñas</item>
+        <item>Portovelo</item>
+        <item>Santa Rosa</item>
+        <item>Zaruma</item>
+        <item>Las Lajas</item>
+    </string-array>
+
+    <string-array name="array_esmeraldas_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Esmeraldas</item>
+        <item>Eloy Alfaro</item>
+        <item>Muisne</item>
+        <item>Quinindé</item>
+        <item>San Lorenzo</item>
+        <item>Atacames</item>
+        <item>Rioverde</item>
+        <item>La Concordia</item>
+    </string-array>
+
+    <string-array name="array_galapagos_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>San Cristóbal</item>
+        <item>Isabela</item>
+        <item>Santa Cruz</item>
+    </string-array>
+
+    <string-array name="array_guayas_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Guayaquil</item>
+        <item>Balao</item>
+        <item>Balzar</item>
+        <item>Colimes</item>
+        <item>Daule</item>
+        <item>Durán</item>
+        <item>El Empalme</item>
+        <item>El Triunfo</item>
+        <item>Milagro</item>
+        <item>Naranjal</item>
+        <item>Naranjito</item>
+        <item>Playas</item>
+        <item>Samborondón</item>
+        <item>Santa Lucía</item>
+        <item>Salitre</item>
+        <item>Simón Bolívar</item>
+        <item>Yaguachi</item>
+        <item>Marcelino Maridueña</item>
+        <item>Nobol</item>
+        <item>Pedro Carbo</item>
+        <item>Isidro Ayora</item>
+    </string-array>
+
+    <string-array name="array_imbabura_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Ibarra</item>
+        <item>Antonio Ante</item>
+        <item>Cotacachi</item>
+        <item>Otavalo</item>
+        <item>Pimampiro</item>
+        <item>San Miguel de Urcuquí</item>
+    </string-array>
+
+    <string-array name="array_loja_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Loja</item>
+        <item>Calvas</item>
+        <item>Catamayo</item>
+        <item>Celica</item>
+        <item>Chaguarpamba</item>
+        <item>Espíndola</item>
+        <item>Gonzanamá</item>
+        <item>Macará</item>
+        <item>Olmedo</item>
+        <item>Paltas</item>
+        <item>Pindal</item>
+        <item>Puyango</item>
+        <item>Saraguro</item>
+        <item>Sozoranga</item>
+        <item>Zapotillo</item>
+    </string-array>
+
+    <string-array name="array_los_rios_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Babahoyo</item>
+        <item>Baba</item>
+        <item>Buena Fe</item>
+        <item>Montalvo</item>
+        <item>Palenque</item>
+        <item>Puebloviejo</item>
+        <item>Quevedo</item>
+        <item>Urdaneta</item>
+        <item>Ventanas</item>
+        <item>Vinces</item>
+        <item>Quinsaloma</item>
+        <item>Valencia</item>
+    </string-array>
+
+    <string-array name="array_manabi_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Portoviejo</item>
+        <item>Bolívar</item>
+        <item>Chone</item>
+        <item>El Carmen</item>
+        <item>Flavio Alfaro</item>
+        <item>Jipijapa</item>
+        <item>Jama</item>
+        <item>Junín</item>
+        <item>Manta</item>
+        <item>Montecristi</item>
+        <item>Olmedo</item>
+        <item>Pedernales</item>
+        <item>Puerto López</item>
+        <item>Rocafuerte</item>
+        <item>Santa Ana</item>
+        <item>Sucre</item>
+        <item>Tosagua</item>
+        <item>Pichincha</item>
+        <item>San Vicente</item>
+    </string-array>
+
+    <string-array name="array_morona_santiago_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Macas</item>
+        <item>Gualaquiza</item>
+        <item>Huamboya</item>
+        <item>Limón Indanza</item>
+        <item>Logroño</item>
+        <item>Morona</item>
+        <item>Pablo Sexto</item>
+        <item>Palora</item>
+        <item>San Juan Bosco</item>
+        <item>Sucúa</item>
+        <item>Taisha</item>
+        <item>Tiwinza</item>
+    </string-array>
+
+    <string-array name="array_napo_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Tena</item>
+        <item>Archidona</item>
+        <item>El Chaco</item>
+        <item>Quijos</item>
+        <item>Carlos Julio Arosemena Tola</item>
+    </string-array>
+
+    <string-array name="array_orellana_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Orellana</item>
+        <item>Aguarico</item>
+        <item>La Joya de los Sachas</item>
+        <item>Loreto</item>
+    </string-array>
+
+    <string-array name="array_pastaza_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Puyo</item>
+        <item>Arajuno</item>
+        <item>Mera</item>
+        <item>Santa Clara</item>
+    </string-array>
+
+    <string-array name="array_pichincha_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Quito</item>
+        <item>Cayambe</item>
+        <item>Mejía</item>
+        <item>Pedro Moncayo</item>
+        <item>Rumiñahui</item>
+        <item>San Miguel de los Bancos</item>
+        <item>Pedro Vicente Maldonado</item>
+        <item>Puerto Quito</item>
+    </string-array>
+
+    <string-array name="array_santa_elena_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Santa Elena</item>
+        <item>La Libertad</item>
+        <item>Salinas</item>
+    </string-array>
+
+    <string-array name="array_santo_domingo_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Santo Domingo</item>
+        <item>La Concordia</item>
+    </string-array>
+
+    <string-array name="array_sucumbios_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Lago Agrio</item>
+        <item>Cascales</item>
+        <item>Cuyabeno</item>
+        <item>Gonzalo Pizarro</item>
+        <item>Putumayo</item>
+        <item>Shushufindi</item>
+        <item>Sucumbíos</item>
+    </string-array>
+
+    <string-array name="array_tungurahua_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Ambato</item>
+        <item>Baños de Agua Santa</item>
+        <item>Cevallos</item>
+        <item>Mocha</item>
+        <item>Patate</item>
+        <item>Quero</item>
+        <item>Tisaleo</item>
+    </string-array>
+
+    <string-array name="array_zamora_chinchipe_cantones">
+        <item>--- Selecciona tu cantón ---</item>
+        <item>Zamora</item>
+        <item>Chinchipe</item>
+        <item>Nangaritza</item>
+        <item>Yacuambi</item>
+        <item>Yantzaza</item>
+        <item>El Pangui</item>
+        <item>Centinela del Cóndor</item>
+        <item>Palanda</item>
+    </string-array>
+
+    <!--    DATOS PARA INFORMACIÓN DE MASCOTAS-->
+
+    <string-array name="array_edad_mascota">
+        <item>--- Seleccione la edad ---</item>
+        <item>Cachorro</item>
+        <item>Adulto</item>
+    </string-array>
+
+    <string-array name="array_genero_mascota">
+        <item>--- Seleccione el sexo ---</item>
+        <item>Macho</item>
+        <item>Hembra</item>
+    </string-array>
+
+    <string-array name="array_especie_mascota">
+        <item>--- Seleccione la especie ---</item>
+        <item>Felino</item>
+        <item>Canino</item>
+    </string-array>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
+

@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="400dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="5dp"
+    android:backgroundTint="@color/yellow"
+    android:background="@drawable/frame_redondeado"
+    android:layout_gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rLEncabezadoRequisitos">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVSalirRequisitosAdopcion"
+            android:backgroundTint="@color/red"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_margin="5dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_cerrar"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloRequisitosAdopcion"
+            android:textAlignment="center"
+            android:layout_below="@+id/iVSalirRequisitosAdopcion"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            style="@style/TextAppearance.AppCompat.Large"
+            android:text="Requisitos para adoptar una mascota"/>
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:layout_below="@+id/rLEncabezadoRequisitos">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVRequisitoCedula"
+                android:backgroundTint="@color/celeste"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/cedula_usuario"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="1. Fotos de la cédula de identidad (Frontal y Posterior)"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVPlanillaServicios"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVRequisitoCedula"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_servicios_basicos"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="2. Foto de una planilla de servicios básicos"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVVideoHogarMascota"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVPlanillaServicios"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_video"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="3. Vídeo mostrando el lugar donde vivirá la mascota"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVConfirmarCerramiento"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVVideoHogarMascota"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_cerramiento"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="4. Hogar con cerramiento adecuado"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVTipoDomicilio"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVConfirmarCerramiento"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_domicilio"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="5. Confirmar el tipo de domicilio (propio o arrendado)"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVFirmaContrato"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVTipoDomicilio"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_contrato"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="6. Aceptar y firmar el contrato de adopción"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVVideoCompromiso"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVFirmaContrato"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_video_compromiso"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="7. Vídeo de compromiso como parte del proceso de adopción"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/cVResponderSeguimientos"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/cVVideoCompromiso"
+                app:cardCornerRadius="10dp"
+                app:cardUseCompatPadding="true"
+                app:cardElevation="3dp"
+                android:layout_marginBottom="10dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="70dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_margin="4dp"
+                        android:padding="2dp"
+                        android:gravity="center"
+                        android:backgroundTint="@color/lavender"
+                        android:background="@drawable/border">
+                        <ImageView
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:backgroundTint="@color/white"
+                            android:background="@drawable/ic_seguimiento"/>
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:layout_marginStart="5dp"
+                        android:padding="2dp"
+                        android:text="8. Responder a los seguimientos requeridos después de completar la adopción"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</RelativeLayout>

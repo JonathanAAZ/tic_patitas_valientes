@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    android:layout_gravity="center"
+    tools:context=".Vista.IniciarSesionActivity"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        android:background="@drawable/dos_bordes_redondeados">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelEncabezadoIniciarSes"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:text="INICIAR SESIÓN"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+        
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:id="@+id/iVInicioSesionLogo"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_below="@+id/labelEncabezadoIniciarSes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelCorreoIS"
+            android:textStyle="bold"
+            android:padding="6dp"
+            android:layout_below="@id/iVInicioSesionLogo"
+            android:text="Correo electrónico:"
+            android:textColor="@color/lila"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/correoIS"
+            android:layout_below="@+id/labelCorreoIS"
+            android:inputType="textEmailAddress"
+            android:hint="Ingrese su correo electrónico"
+            android:text="juan@gmail.com"
+            android:padding="6dp"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:background="@drawable/border"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/labelClaveIS"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:textStyle="bold"
+            android:layout_below="@id/correoIS"
+            android:text="Contraseña:"
+            android:textColor="@color/lila"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/claveIS"
+            android:layout_below="@+id/labelClaveIS"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@id/iVVerClaveIS"
+            android:inputType="textPassword"
+            android:hint="Ingrese su contraseña"
+            android:text="Juan@123"
+            android:layout_toEndOf="@+id/iVVerClaveIS"
+            android:padding="6dp"
+            android:textSize="16sp"
+            android:maxLength="15"
+            android:textColor="@color/black"
+            android:background="@drawable/border"/>
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="@color/lila"
+            android:layout_below="@+id/labelClaveIS"
+            android:id="@+id/iVVerClaveIS"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/claveIS"
+            android:id="@+id/tvRegistrarse"
+            android:layout_marginTop="10dp"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:text="¿Eres nuevo? Crea tu cuenta"
+            android:textSize="14sp"
+            android:textColor="@color/blue_2"
+            android:textStyle="italic" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ACEPTAR"
+            android:id="@+id/btnIniciarSesion"
+            android:layout_below="@+id/claveIS"
+            android:backgroundTint="@color/yellow"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/lLBarraProgresoIS"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:visibility="gone"
+            android:background="@color/white"
+            android:layout_gravity="center">
+
+            <ProgressBar
+                android:id="@+id/barraProgresoIS"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/lila"
+                style="?android:attr/progressBarStyleLarge"
+                android:elevation="10dp"
+                android:visibility="visible"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textColor="@color/lila"
+                android:text="Cargando, por favor espere..."/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</ScrollView>

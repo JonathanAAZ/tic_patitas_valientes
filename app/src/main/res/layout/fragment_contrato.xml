@@ -1,0 +1,752 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.Fragments.ContratoFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tVTituloContratoAdopcionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:text="CONTRATO DE ADOPCIÓN / MASCOTAS"
+                android:textAlignment="center"
+                android:textColor="@color/lila"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iVFotoMascotaContratoF"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_below="@+id/tVTituloContratoAdopcionF"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="10dp"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/celeste"
+                android:padding="3dp" />
+
+            <TextView
+                android:id="@+id/tVPrimeraClausulaF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iVFotoMascotaContratoF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncSeccionAdoptanteF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVPrimeraClausulaF"
+                android:layout_marginBottom="10dp"
+                android:text="EN CALIDAD DE ADOPTANTE:"
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEncNombreAdoptanteContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncSeccionAdoptanteF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	NOMBRES Y APELLIDOS: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreAdopcionContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncSeccionAdoptanteF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncNombreAdoptanteContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncNumeroCedulaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNombreAdopcionContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	NÚMERO DE CÉDULA: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNumeroCedulaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNombreAdopcionContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncNumeroCedulaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncEdadAdoptanteContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNumeroCedulaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	EDAD: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEdadAdoptanteContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNumeroCedulaContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncEdadAdoptanteContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncFechaNacimientoContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEdadAdoptanteContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	FECHA DE NACIMIENTO: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVFechaNacimientoContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEdadAdoptanteContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncFechaNacimientoContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncEstadoCivilContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVFechaNacimientoContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	ESTADO CIVIL: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEstadoCivilContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVFechaNacimientoContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncEstadoCivilContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncOcupacionContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEstadoCivilContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	PROFESIÓN/OCUPACIÓN: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVOcupacionContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEstadoCivilContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncOcupacionContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncDomicilioContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVOcupacionContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	DOMICILIO: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVDomicilioContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncDomicilioContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncEdadAdoptanteContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncCorreoContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVDomicilioContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	CORREO ELECTRÓNICO: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVCorreoContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVDomicilioContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncCorreoContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncInstaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCorreoContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	INSTAGRAM: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVInstaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCorreoContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncInstaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncFBContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVInstaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	FACEBOOK: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVFBContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVInstaContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncFBContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncTelefonoContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVFBContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	TELÉFONO CELULAR: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVTelefonoContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVFBContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncTelefonoContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncSeccionAdminContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVTelefonoContratoF"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="EN CALIDAD DE REPRESENTANTE DEL GRUPO DE RESCATISTAS PATITAS VALIENTES"
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEncNombreAdminContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncSeccionAdminContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	NOMBRES\nY APELLIDOS: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreAdminContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncSeccionAdminContratoF"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncNombreAdminContratoF"
+                android:text="Fanny del Cisne Rodríguez Montoya"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncCedulaAdminContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncNombreAdminContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	NÚMERO DE CÉDULA: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVCedulaAdminContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncNombreAdminContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncCedulaAdminContratoF"
+                android:text="1103910764"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncCorreoAdminContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCedulaAdminContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	CORREO ELECTRÓNICO: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVCorreoAdminContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCedulaAdminContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncCorreoAdminContratoF"
+                android:text="f_rvallejo@hotmail.com"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncTelefonoAdminContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCorreoAdminContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	TELÉFONO CELULAR: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVTelefonoAdminContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCorreoAdminContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncTelefonoAdminContratoF"
+                android:text="0958876757"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVPrimeraClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVTelefonoAdminContratoF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVSegundaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVPrimeraClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncEspecieMascotaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVSegundaClausulaContinuacionF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	ESPECIE: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEspecieMascotaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVSegundaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncEspecieMascotaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncNombreMascotaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEspecieMascotaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	NOMBRE DE\nLA MASCOTA: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreMascotaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEspecieMascotaContratoF"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncNombreMascotaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncRazaMascotaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncNombreMascotaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	RAZA: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVRazaMascotaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncNombreMascotaContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncRazaMascotaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncSexoMascotaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVRazaMascotaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	SEXO: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVSexoMascotaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVRazaMascotaContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncSexoMascotaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncFechaEsteriMascotaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVSexoMascotaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	FECHA DE ESTERILIZACIÓN\nO CASTRACIÓN: "
+                android:textColor="@color/blue_word"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVFechaEsteriMascotaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVSexoMascotaContratoF"
+                android:layout_marginStart="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncFechaEsteriMascotaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncOtrasMascotaContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncFechaEsteriMascotaContratoF"
+                android:layout_marginStart="20dp"
+                android:layout_marginBottom="10dp"
+                android:text="•	OTRAS SEÑALES: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVOtrasMascotaContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncFechaEsteriMascotaContratoF"
+                android:layout_marginBottom="10dp"
+                android:layout_toEndOf="@+id/tVEncOtrasMascotaContratoF"
+                android:hint="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVTerceraClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVOtrasMascotaContratoF"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVCuartaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVTerceraClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVQuintaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVCuartaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVSextaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVQuintaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVSeptimaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVSextaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVOctavaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVSeptimaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVNovenaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVOctavaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVDecimaClausulaContinuacionF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNovenaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textColor="@color/blue_word"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncFechaEmisionContratoF"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVDecimaClausulaContinuacionF"
+                android:layout_marginBottom="10dp"
+                android:text="Emitir en la ciudad de Loja, con fecha: "
+                android:textColor="@color/blue_word"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVFechaEmisionContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVEncFechaEmisionContratoF"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:hint="Cargando..."
+                android:textAlignment="textEnd"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/lLFirmasContratoF"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVFechaEmisionContratoF"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iVFirmaAdminF"
+                        android:layout_width="150dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true"
+                        android:scaleType="fitCenter" />
+
+                    <TextView
+                        android:id="@+id/tVNombreFirmaAdminF"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:text="Fanny del Cisne Rodríguez Montoya"
+                        android:textColor="@color/blue_word"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:id="@+id/iVFirmaAdoptanteF"
+                        android:layout_width="150dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:adjustViewBounds="true" />
+
+                    <TextView
+                        android:id="@+id/tVNombreFirmaAdoptanteF"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center"
+                        android:hint="Cargando..."
+                        android:textColor="@color/blue_word"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+
+    </ScrollView>
+
+
+
+
+</FrameLayout>

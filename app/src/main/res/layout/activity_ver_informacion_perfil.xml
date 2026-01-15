@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.VerInformacionPerfilActivity"
+    android:background="@color/gray">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorVerInformacion"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarVerInformacion"
+            android:layout_centerVertical="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/ic_retroceder"
+            android:clickable="true"
+            android:backgroundTint="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloVerInformacion"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Ver información de usuario"/>
+
+        <View
+            android:id="@+id/viewTituloVerInformacion"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloVerInformacion"
+            android:background="@color/black" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lYSuperiorVerInformacion">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/frame_redondeado">
+
+                    <TextView
+                        android:id="@+id/tvBienvenidaVP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:padding="5dp"
+                        android:hint="Cargando..."
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <ImageView
+                        android:id="@+id/ivVerFotoPerfil"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:layout_below="@+id/tvBienvenidaVP"
+                        android:padding="3dp"
+                        android:layout_marginBottom="15dp"
+                        android:layout_centerInParent="true"
+                        android:backgroundTint="@color/celeste"
+                        android:background="@drawable/border" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/frame_redondeado"
+                    android:gravity="center_horizontal"
+                    android:padding="20dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Editar información"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="3dp"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:id="@+id/tVEditarInformacionUsuario"
+                        android:layout_alignParentEnd="true"
+                        android:textColor="@color/blue_2"/>
+
+                    <View
+                        android:id="@+id/divEditarInformacionUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tVEditarInformacionUsuario"
+                        android:layout_marginTop="5dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoNombre"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/divEditarInformacionUsuario"
+                        android:background="@drawable/nombreusuario_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerNombreUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:layout_below="@+id/divEditarInformacionUsuario"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divNombreVI"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerNombreUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoRol"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divNombreVI"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/ic_rol_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerRolUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divNombreVI"
+                        android:layout_alignStart="@+id/ivIconoRol"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divRolVI"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerRolUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoCorreo"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divRolVI"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/correo_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerCorreoUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divRolVI"
+                        android:layout_alignStart="@+id/ivIconoCorreo"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divCorreoVI"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerCorreoUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoCedula"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divCorreoVI"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/cedula_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerCedulaUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divCorreoVI"
+                        android:layout_alignStart="@+id/ivIconoCedula"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divCedulaVI"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerCedulaUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoFechaNac"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divCedulaVI"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/fecha_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerFechaNacUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divCedulaVI"
+                        android:layout_alignStart="@+id/ivIconoFechaNac"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divFechaNac"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerFechaNacUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoEdad"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divFechaNac"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/nombreusuario_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerEdadUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divFechaNac"
+                        android:layout_alignStart="@+id/ivIconoEdad"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divEdad"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerEdadUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoEstadoCiv"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divEdad"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/estadocivil_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerEstadoCivUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divEdad"
+                        android:layout_alignStart="@+id/ivIconoEstadoCiv"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divEstadoCiv"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerEstadoCivUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoOcupacion"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divEstadoCiv"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/ocupacion_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerOcupacionUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divEstadoCiv"
+                        android:layout_alignStart="@+id/ivIconoOcupacion"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divOcupacion"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerOcupacionUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoTelefono"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divOcupacion"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/telefono_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerTelefonoUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divOcupacion"
+                        android:layout_alignStart="@+id/ivIconoTelefono"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divTelefono"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerTelefonoUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoInstagram"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divTelefono"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/instagram_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerIgUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divTelefono"
+                        android:layout_alignStart="@+id/ivIconoTelefono"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divIg"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerIgUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ImageView
+                        android:id="@+id/ivIconoFacebook"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:layout_below="@id/divIg"
+                        android:layout_marginTop="15dp"
+                        android:background="@drawable/facebook_usuario" />
+
+                    <TextView
+                        android:id="@+id/tvVerFbUsuario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/divIg"
+                        android:layout_alignStart="@+id/ivIconoFacebook"
+                        android:layout_marginStart="40dp"
+                        android:layout_marginTop="15dp"
+                        android:hint="Cargando..."
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <View
+                        android:id="@+id/divFb"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerFbUsuario"
+                        android:layout_marginTop="20dp"
+                        android:background="#666666" />
+
+                    <ProgressBar
+                        android:id="@+id/barraProgresoVI"
+                        style="?android:attr/progressBarStyleLarge"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:elevation="10dp"
+                        android:visibility="gone" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:background="@drawable/frame_redondeado">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvEncabezadoDomiciVP"
+                        android:text="Información del Domicilio"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvLabelPais"
+                        android:textStyle="bold"
+                        android:text="País: "
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/tvEncabezadoDomiciVP"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvVerPais"
+                        android:layout_alignStart="@+id/tvLabelPais"
+                        android:hint="Cargando..."
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/tvEncabezadoDomiciVP"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerPais"
+                        android:layout_marginTop="10dp"
+                        android:background="#666666"
+                        android:id="@+id/divPais"/>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvLabelProvincia"
+                        android:textStyle="bold"
+                        android:text="Provincia: "
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/divPais"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvVerProvincia"
+                        android:layout_alignStart="@+id/tvLabelPais"
+                        android:hint="Cargando..."
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/divPais"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerProvincia"
+                        android:layout_marginTop="10dp"
+                        android:background="#666666"
+                        android:id="@+id/divProvincia"/>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvLabelCanton"
+                        android:textStyle="bold"
+                        android:text="Cantón: "
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/divProvincia"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvVerCanton"
+                        android:layout_alignStart="@+id/tvLabelCanton"
+                        android:hint="Cargando..."
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/divProvincia"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerCanton"
+                        android:layout_marginTop="10dp"
+                        android:background="#666666"
+                        android:id="@+id/divCanton"/>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvLabelParroquia"
+                        android:textStyle="bold"
+                        android:text="Parroquia: "
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/divCanton"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvVerParroquia"
+                        android:layout_alignStart="@+id/tvLabelParroquia"
+                        android:hint="Cargando..."
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/divCanton"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerParroquia"
+                        android:layout_marginTop="10dp"
+                        android:background="#666666"
+                        android:id="@+id/divParroquia"/>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvLabelBarrio"
+                        android:textStyle="bold"
+                        android:text="Barrio: "
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/divParroquia"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvVerBarrio"
+                        android:layout_alignStart="@+id/tvLabelBarrio"
+                        android:hint="Cargando..."
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/divParroquia"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerBarrio"
+                        android:layout_marginTop="10dp"
+                        android:background="#666666"
+                        android:id="@+id/divBarrio"/>
+
+                    <TextView
+                        android:layout_width="90dp"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvLabelCalles"
+                        android:textStyle="bold"
+                        android:text="Calles: "
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@id/divBarrio"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvVerCalles"
+                        android:layout_alignStart="@+id/tvLabelCalles"
+                        android:hint="Cargando..."
+                        android:layout_marginStart="100dp"
+                        android:layout_marginTop="20dp"
+                        android:textSize="16sp"
+                        android:textColor="@color/black"
+                        android:layout_below="@+id/divBarrio"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/tvVerCalles"
+                        android:layout_marginTop="10dp"
+                        android:background="#666666"
+                        android:id="@+id/divCalles"/>
+                </RelativeLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+</RelativeLayout>

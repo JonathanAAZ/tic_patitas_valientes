@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:backgroundTint="@color/yellow"
+        android:padding="2dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVSalirAsignarOtroVolun"
+            android:backgroundTint="@color/red"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_margin="5dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/ic_cerrar"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVEncAsignarOtroVoluntario"
+            android:layout_below="@+id/iVSalirAsignarOtroVolun"
+            android:textAlignment="center"
+            android:textColor="@color/lila"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:text=""/>
+
+        <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/spVoluntarioReasignar"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/border"
+            android:contextClickable="false"
+            android:layout_marginStart="30dp"
+            android:layout_below="@id/tVEncAsignarOtroVoluntario"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lLAsignarOtroVoluntario"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_centerHorizontal="true"
+            android:focusable="true"
+            android:clickable="true"
+            android:layout_margin="5dp"
+            android:layout_below="@+id/spVoluntarioReasignar"
+            android:backgroundTint="@color/blue_2"
+            android:backgroundTintMode="multiply"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/border">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="Reasignar"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

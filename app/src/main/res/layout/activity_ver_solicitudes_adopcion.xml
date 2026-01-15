@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:fillViewport = "true"
+    android:focusableInTouchMode="true"
+    android:background="@color/yellow"
+    tools:context=".Vista.VerSolicitudesAdopcionActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rLSuperiorVerSolicitudesAdopcion"
+        android:background="@color/yellow"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarVerSolicitudesAdopcion"
+            android:layout_centerVertical="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/ic_retroceder"
+            android:clickable="true"
+            android:backgroundTint="@color/lila"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloVerSolicitudesAdopcion"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:text="Solicitudes de adopción enviadas"/>
+
+        <View
+            android:id="@+id/viewTituloProcesoAdopcion"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloVerSolicitudesAdopcion"
+            android:background="@color/yellow" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/fLSolicitudesAdopcionEnviadas"
+        android:background="@drawable/bordes_fragment"
+        android:layout_below="@+id/rLSuperiorVerSolicitudesAdopcion">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <com.codesgood.views.JustifiedTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVSolicitudesAdopcionEnviadas"
+                android:textColor="@color/blue_2"
+                android:textSize="16sp"
+                android:textStyle="italic"
+                android:paddingTop="15dp"
+                android:text="A continuación, se presenta el estado de las solicitudes de adopción enviadas. Si alguna ha sido ACEPTADA, puede completar el proceso."/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVNoHayResultadosSolcitudesEnviadas"
+                android:layout_below="@+id/tVSolicitudesAdopcionEnviadas"
+                android:textSize="16sp"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:hint="---- No se han enviado solicitudes de adopción ----"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/tVNoHayResultadosSolcitudesEnviadas"
+                android:padding="2dp"
+                android:background="@drawable/borde_cuadrado"
+                android:visibility="visible"
+                android:id="@+id/rVSolicitudesAdopcionEnviadas"/>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+</RelativeLayout>

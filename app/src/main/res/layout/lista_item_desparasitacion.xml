@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivFotoListaDesparasitaciones"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:background="@drawable/ic_desparasitacion"
+            android:backgroundTint="@color/lila"/>
+
+        <TextView
+            android:id="@+id/tVEncNombreDesparasitacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaDesparasitaciones"
+            android:text="Nombre:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVNombreDesparasitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncNombreDesparasitacion"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncFechaDesparasitacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVNombreDesparasitacion"
+            android:layout_toEndOf="@+id/ivFotoListaDesparasitaciones"
+            android:text="Fecha:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVFechaDesparasitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVNombreDesparasitacion"
+            android:layout_toEndOf="@+id/tVEncNombreDesparasitacion"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncProximaDesparasitacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVFechaDesparasitacion"
+            android:layout_toEndOf="@+id/ivFotoListaDesparasitaciones"
+            android:text="Próxima \ndesparasitacion:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVProximaDesparasitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_below="@+id/tVFechaDesparasitacion"
+            android:layout_toEndOf="@+id/tVEncProximaDesparasitacion"
+            android:layout_alignTop="@+id/tVEncProximaDesparasitacion"
+            android:layout_alignBottom="@+id/tVEncProximaDesparasitacion"
+            android:gravity="center_vertical"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncCantidadDesparasitacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVEncProximaDesparasitacion"
+            android:layout_toEndOf="@+id/ivFotoListaDesparasitaciones"
+            android:text="Cantidad (cm):"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVCantidadDesparasitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVEncProximaDesparasitacion"
+            android:layout_toEndOf="@+id/tVEncCantidadDesparasitacion"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/lLBotonesDesparasitacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tVCantidadDesparasitacion"
+            android:layout_toEndOf="@+id/ivFotoListaDesparasitaciones"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/lLEditarDesparasitacion"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="visible"
+                android:backgroundTint="@color/dark_green"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_editar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Editar"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/lLEliminarDesparasitacion"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="visible"
+                android:backgroundTint="@color/red"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_eliminar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Eliminar"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

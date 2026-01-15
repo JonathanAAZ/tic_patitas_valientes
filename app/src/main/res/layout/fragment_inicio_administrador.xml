@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    tools:context=".Vista.Fragments.InicioAdministradorFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVEncabezadoMenuAdmin"
+            android:text="MENÚ DEL ADMINISTRADOR"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonVerMascotas"
+            android:layout_below="@+id/tVEncabezadoMenuAdmin"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnVerListaMascotas"
+            android:text="Ver lista de mascotas"
+            android:layout_below="@+id/iVBotonVerMascotas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonVerUsuarios"
+            android:layout_below="@+id/tVBtnVerListaMascotas"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnVerUsuarios"
+            android:text="Ver usuarios"
+            android:layout_below="@+id/iVBotonVerUsuarios"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonCambiarClave"
+            android:layout_below="@+id/tVBtnVerUsuarios"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnCambiarClave"
+            android:text="Cambiar contraseña"
+            android:layout_below="@+id/iVBotonCambiarClave"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonVerSolicitudes"
+            android:layout_below="@+id/tVBtnCambiarClave"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnVerSolicitudes"
+            android:text="Ver solicitudes"
+            android:layout_below="@+id/iVBotonVerSolicitudes"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonGestionarSeguimientos"
+            android:layout_below="@+id/tVBtnVerSolicitudes"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnGestionarSeguimientos"
+            android:text="Gestionar seguimientos"
+            android:layout_below="@+id/iVBotonGestionarSeguimientos"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+    </RelativeLayout>
+
+</ScrollView>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:id="@+id/rLItemAdoptantes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:orientation="vertical">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivFotoListaAdoptante"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:padding="5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/celeste"
+            app:civ_border_color="@color/blue_2"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/tvEncNombreAdoptante"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaAdoptante"
+            android:text="Nombre:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNombreListaAdoptante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tvEncNombreAdoptante"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvEncMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tvNombreListaAdoptante"
+            android:layout_toEndOf="@+id/ivFotoListaAdoptante"
+            android:text="Mascota:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvMascotaListaAdoptante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tvNombreListaAdoptante"
+            android:layout_toEndOf="@+id/tvEncNombreAdoptante"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+
+        <LinearLayout
+            android:id="@+id/lLBotonesSeguimientos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvMascotaListaAdoptante"
+            android:layout_toEndOf="@+id/ivFotoListaAdoptante"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/lLAsignarSeguimiento"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:backgroundTint="@color/dark_green"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_add"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Asignar al voluntario"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/lLQuitarSeguimiento"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:backgroundTint="@color/red"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_cerrar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Quitar seguimiento"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

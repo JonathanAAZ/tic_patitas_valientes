@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/white"
+    tools:context=".Vista.CambiarClaveActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorCambiarClave"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarCambiarClave"
+            android:layout_centerVertical="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/ic_retroceder"
+            android:backgroundTint="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloCambiarClave"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Cambiar contraseña"/>
+
+        <View
+            android:id="@+id/viewTituloCambiarClave"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloCambiarClave"
+            android:background="@color/black" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/lYSuperiorCambiarClave">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollCambiarClave">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="15dp"
+                    android:id="@+id/rLAutenticarUsuario"
+                    android:background="@drawable/border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/encabezadoAutenticar"
+                        android:text="Por favor, ingrese su contraseña actual"
+                        android:layout_centerHorizontal="true"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvClaveCC"
+                        android:padding="6dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@id/encabezadoAutenticar"
+                        android:text="Contraseña actual:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:id="@+id/eTClaveCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvClaveCC"
+                        android:layout_alignParentStart="true"
+                        android:layout_toEndOf="@+id/iVVerClaveActual"
+                        android:layout_toStartOf="@+id/iVVerClaveActual"
+                        android:background="@drawable/border"
+                        android:ems="10"
+                        android:hint="Ejemplo: Hola*1234"
+                        android:inputType="text|textPassword"
+                        android:layout_marginBottom="10dp"
+                        android:padding="6dp"
+                        android:maxLength="15"
+                        android:textSize="16sp" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="10dp"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_below="@+id/tvClaveCC"
+                        android:id="@+id/iVVerClaveActual"/>
+
+                    <Button
+                        android:id="@+id/btnConfirmarAutenticacion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@+id/eTClaveCC"
+                        android:layout_centerHorizontal="true"
+                        android:backgroundTint="@color/blue_2"
+                        android:text="Confirmar" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:padding="15dp"
+                    android:id="@+id/rLNuevaClave"
+                    android:visibility="gone"
+                    android:background="@drawable/border">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Ingrese su nueva contraseña"
+                        android:id="@+id/encabezadoActualizarClave"
+                        android:textAlignment="center"
+                        android:layout_centerHorizontal="true"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvNuevaClaveCC"
+                        android:layout_marginTop="15dp"
+                        android:padding="6dp"
+                        android:layout_below="@+id/encabezadoActualizarClave"
+                        android:text="Nueva Contraseña:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
+
+                    <TextView
+                        android:id="@+id/tVIndicNuevaClave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tvNuevaClaveCC"
+                        android:padding="6dp"
+                        android:text="La contraseña debe contar con un mínimo de 8 caracteres, un máximo de 15 caracteres, letras mayúsculas, minúsculas, números y caracteres especiales (@,-,_,#,*)"
+                        android:textColor="@color/black"
+                        android:textStyle="italic"
+                        android:textSize="14sp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etNuevaClaveCC"
+                        android:inputType="textPassword"
+                        android:layout_alignParentStart="true"
+                        android:layout_toEndOf="@+id/iVVerNuevaClave"
+                        android:layout_toStartOf="@+id/iVVerNuevaClave"
+                        android:hint="Ejemplo: Hola*123"
+                        android:padding="6dp"
+                        android:layout_marginBottom="10dp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/border"
+                        android:layout_below="@id/tVIndicNuevaClave"
+                        android:maxLength="15"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="10dp"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_below="@+id/tVIndicNuevaClave"
+                        android:id="@+id/iVVerNuevaClave"/>
+
+                    <TextView
+                        android:id="@+id/tVMaxCaracteresCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/etNuevaClaveCC"
+                        android:text="✔ Al menos 8 caracteres"
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:id="@+id/tVMinusculasCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tVMaxCaracteresCC"
+                        android:text="✔ Al menos una letra minúscula"
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:id="@+id/tVMayusculasCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tVMinusculasCC"
+                        android:text="✔ Al menos una letra mayúscula"
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:id="@+id/tVNumeroCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tVMayusculasCC"
+                        android:text="✔ Al menos un número"
+                        android:textColor="@android:color/holo_red_light" />
+
+                    <TextView
+                        android:id="@+id/tVCaracterEspecialCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tVNumeroCC"
+                        android:text="✔ Al menos un carácter especial"
+                        android:textColor="@android:color/holo_red_light" />
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvNuevaClaveConfirCC"
+                        android:layout_marginTop="10dp"
+                        android:padding="6dp"
+                        android:layout_below="@+id/tVCaracterEspecialCC"
+                        android:text="Confirmar nueva contraseña:"
+                        android:textStyle="bold"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/etNuevaClaveConfirCC"
+                        android:inputType="textPassword"
+                        android:layout_alignParentStart="true"
+                        android:layout_toEndOf="@+id/iVVerConfirmNuevaClave"
+                        android:layout_toStartOf="@+id/iVVerConfirmNuevaClave"
+                        android:hint="Por favor, vuelva a ingresar su contraseña"
+                        android:padding="6dp"
+                        android:textColor="@color/black"
+                        android:background="@drawable/border"
+                        android:layout_below="@id/tvNuevaClaveConfirCC"
+                        android:maxLength="15"
+                        android:textSize="16sp"/>
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="10dp"
+                        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                        android:layout_below="@+id/tvNuevaClaveConfirCC"
+                        android:id="@+id/iVVerConfirmNuevaClave"/>
+
+                    <TextView
+                        android:id="@+id/tVErrorConfirClaveCC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/etNuevaClaveConfirCC"
+                        android:text="* Las contraseñas no coinciden"
+                        android:textStyle="italic"
+                        android:visibility="gone"
+                        android:textColor="@android:color/holo_red_light"/>
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnGuardarCambioClave"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="15dp"
+                        android:layout_below="@+id/tVErrorConfirClaveCC"
+                        android:text="Aceptar"/>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+</RelativeLayout>

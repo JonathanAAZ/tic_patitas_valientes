@@ -1,0 +1,354 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Vista.EditarInformacionPerfilActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorEditarInformacionPerfil"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarEditarInformacionPerfil"
+            android:layout_centerVertical="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/ic_retroceder"
+            android:clickable="true"
+            android:backgroundTint="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloEditarInformacionPerfil"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Editar información de perfil"/>
+
+        <View
+            android:id="@+id/viewTituloEditarInformacionPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloEditarInformacionPerfil"
+            android:background="@color/black" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_below="@+id/lYSuperiorEditarInformacionPerfil">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollEditarInformacionPerfil">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/textEncabezadoEditarPerfil"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="DATOS PERSONALES"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/labelEditarNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textEncabezadoEditarPerfil"
+                    android:layout_marginTop="50dp"
+                    android:padding="6dp"
+                    android:text="Nombre:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarNombreUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarNombre"
+                    android:ems="10"
+                    android:hint="Ingrese el nombre"
+                    android:inputType="text|textPersonName"
+                    android:padding="6dp"
+                    android:textSize="16sp"
+                    android:maxLength="50"
+                    android:background="@drawable/border"/>
+
+                <TextView
+                    android:id="@+id/labelEditarCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarNombreUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Cédula de identidad:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarCedula"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese la cédula de identidad"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tVErrorCedulaEditarInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarCedula"
+                    android:text="* Por favor, ingrese una cédula válida"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_light"/>
+
+                <TextView
+                    android:id="@+id/labelEditarFecha"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVErrorCedulaEditarInfo"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Fecha de Nacimiento:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarFechaNac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarFecha"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Seleccione la fecha de nacimiento"
+                    android:focusable="false"
+                    android:inputType="datetime|date"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/labelEditarEstadoCiv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarFechaNac"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Estado Civil:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/rgEditarEstadoCiv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarEstadoCiv"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/editarOpcionSoltero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Soltero"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/editarOpcionCasado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Casado"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/editarOpcionDivorciado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Divorciado"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/editarOpcionViudo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Viudo"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/editarOpcionUnion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Unión de hecho"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/labelEditarOcupacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rgEditarEstadoCiv"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Profesión/Ocupación:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarOcupacionUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarOcupacion"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese la profesión/ocupación"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/labelEditarTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarOcupacionUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Número de celular/teléfono:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarTelefono"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese el número de teléfono"
+                    android:inputType="phone"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tVErrorTelefonoEditarInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarTelefono"
+                    android:text="* Por favor, ingrese un número de teléfono válido"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_light"/>
+
+                <TextView
+                    android:id="@+id/labelEditarInsta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVErrorTelefonoEditarInfo"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Usuario de Instagram (opcional):"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarInstaUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarInsta"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese el usuario de Instagram"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/labelEditarFb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarInstaUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Nombre en Facebook (opcional):"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/etEditarFbUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/labelEditarFb"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese el nombre en Facebook"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btnGuardarCambiosPerfil"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/etEditarFbUsuario"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="Guardar" />
+
+                <ProgressBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/barraProgresoEditarPerfil"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:elevation="10dp"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+</RelativeLayout>

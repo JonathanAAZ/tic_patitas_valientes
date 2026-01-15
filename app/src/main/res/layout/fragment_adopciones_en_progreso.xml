@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.Fragments.AdopcionesEnProgresoFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVTituloFragmentAdopcionesProgreso"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        style="@style/TextAppearance.AppCompat.Headline"
+        android:text="Adopciones en progreso"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/tVTituloFragmentAdopcionesProgreso"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVAdopcionesPorRevisar"
+            android:textSize="16sp"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:text="POR REVISAR:"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lila"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVNoHayAdopcionesPorRevisar"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:hint="---- No tiene adopciones en progreso ----"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAdopcionesPorRevisar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVAdopcionesAceptadas"
+            android:textSize="16sp"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_marginBottom="5dp"
+            android:text="RECHAZADAS:"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:id="@+id/viewAdopcionesAceptadas"
+            android:background="@color/lila"
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVNoHayAdopcionesAceptadas"
+            android:textSize="16sp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:visibility="gone"
+            android:hint="---- No tiene adopciones en progreso ----"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewAdopcionesAceptadas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

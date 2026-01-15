@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/yellow"
+    android:padding="5dp"
+    android:id="@+id/main"
+    tools:context=".Vista.BottomNavigationMenu">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYCerrarSesion"
+        android:padding="5dp"
+        android:backgroundTint="@color/yellow"
+        android:background="@drawable/borde_cuadrado"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/textNombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="6dp"
+            android:text="Cerrar Sesión:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/baseline_logout_24"
+            android:backgroundTint="@color/lila"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:layout_gravity="right"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/yellow"
+        android:id="@+id/viewSeparador"
+        android:padding="5dp"
+        android:layout_below="@+id/lYCerrarSesion"/>
+
+    <FrameLayout
+        android:id="@+id/flFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:background="@drawable/bordes_fragment"
+        android:layout_below="@id/viewSeparador"
+        android:layout_above="@+id/lYBottomNavigationMenu"/>
+
+    <LinearLayout
+        android:id="@+id/lYBottomNavigationMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/lila"/>
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottomNavigationViewMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:itemIconTint="@color/lila"
+            app:itemTextColor="@color/lila"
+            app:itemTextAppearanceActive="@color/celeste"
+            android:background="@color/white"
+            app:backgroundTint="@color/white"
+            android:backgroundTint="@color/yellow"
+            android:layout_gravity="bottom"
+            app:menu="@menu/bottom_menu"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

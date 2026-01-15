@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cVItemCatalogoAdopcion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="7dp"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/rLItemUsuario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVNombreMascotaCatalogo"
+                android:textAlignment="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:hint="Cargando..."
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/lila"
+                android:textStyle="bold"
+                android:layout_margin="10dp"
+                android:layout_marginStart="5dp"/>
+
+            <ImageView
+                android:id="@+id/iVFotoMascotaCatalogo"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="5dp"
+                android:backgroundTint="@color/gray"
+                android:background="@drawable/border"
+                android:layout_below="@+id/tVNombreMascotaCatalogo"
+                android:padding="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaEdadMascota"
+                android:text="Edad:"
+                android:textSize="16sp"
+                android:textColor="@color/lila"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/iVFotoMascotaCatalogo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEdadMascotaCatalogo"
+                android:hint="Cargando..."
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tVEtiquetaEspecieMascota"
+                android:layout_below="@+id/iVFotoMascotaCatalogo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaEspecieMascota"
+                android:text="Especie:"
+                android:textSize="16sp"
+                android:textColor="@color/lila"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/tVEdadMascotaCatalogo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEspecieMascotaCatalogo"
+                android:hint="Cargando..."
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tVEtiquetaEspecieMascota"
+                android:layout_below="@+id/tVEdadMascotaCatalogo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaSexoMascota"
+                android:text="Sexo:"
+                android:textSize="16sp"
+                android:textColor="@color/lila"
+                android:textStyle="bold"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/tVEspecieMascotaCatalogo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVSexoMascotaCatalogo"
+                android:hint="Cargando..."
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/tVEtiquetaEspecieMascota"
+                android:layout_below="@+id/tVEspecieMascotaCatalogo"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lLBotonIniciarAdopcion"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:focusable="true"
+                android:layout_centerHorizontal="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:layout_marginTop="15dp"
+                android:backgroundTint="@color/light_green"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border"
+                android:layout_below="@+id/tVSexoMascotaCatalogo">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_adopcion"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Iniciar proceso de adopción"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVMensajeAdopcionProceso"
+                android:layout_marginTop="10dp"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:textStyle="italic"
+                android:textColor="@color/blue_2"
+                android:visibility="gone"
+                android:layout_below="@+id/tVSexoMascotaCatalogo"
+                android:text="Esta mascota tiene una adopción en proceso."/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

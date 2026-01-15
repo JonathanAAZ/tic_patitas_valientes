@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.Fragments.HistorialMedicoFragment"
+    android:background="@drawable/fondo_huellas_borde">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lLAgregarVacuna"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:visibility="visible"
+        android:layout_marginTop="15dp"
+        android:backgroundTint="@color/light_green"
+        android:backgroundTintMode="multiply"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/border">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_add_vaccine"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar vacuna"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lLAgregarDesparasitacion"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:layout_marginBottom="10dp"
+        android:focusable="true"
+        android:clickable="true"
+        android:visibility="gone"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/lLAgregarVacuna"
+        android:backgroundTint="@color/light_green"
+        android:backgroundTintMode="multiply"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:background="@drawable/border">
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_agregar_desparasitacion"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Agregar desparasitación"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyViewListaVacunas"
+        android:layout_below="@+id/lLAgregarDesparasitacion"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyViewListaDesparasitaciones"
+        android:layout_below="@+id/lLAgregarDesparasitacion"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</RelativeLayout>

@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.tic_pv">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VISUAL_USER_SELECTED" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/logo_patitas_valientes"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TIC_PV"
+        tools:targetApi="31">
+        <activity
+            android:name=".Vista.EditarHistorialMedicoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.AgregarHistorialMedicoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.SeguimientosVoluntarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.GestionarSeguimientosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.VerMiMascotaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.MisMascotasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.UltimosRequisitosActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.CompletarProcesoAdopcionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.ResponderSolicitudAdopcionActivity"
+            android:exported="false" />
+
+        <service
+            android:name=".Controlador.ServicioNotificacionesFirebase"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_huella_android" />
+        <meta-data
+            android:name="CLOUDINARY_URL"
+            android:value="cloudinary://176417194926829:LITvQ_VpkeqIZcvbZwrS2JAl0as@de3pikkwa" />
+
+        <activity
+            android:name=".Vista.GestionarSolicitudesAdopcionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.VerSolicitudesAdopcionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.ProcesoAdopcionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.GestionarMascotaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.EditarMascotaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.VerMascotasActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.CatalogoMascotasActivity"
+            android:exported="false" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.tic_pv.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <activity
+            android:name=".Vista.BottomNavigationMenu"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.MenuVoluntarioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.CambiarClaveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.CrearVoluntarioActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.MenuAdministradorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.VerUsuariosActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.EditarFotoPerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.EditarDomicilioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.EditarInformacionPerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.MenuAdoptanteActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.VerInformacionPerfilActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.IniciarSesionActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.SubirFotoPerfil"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.AgregarDomicilioActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Vista.CrearCuentaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

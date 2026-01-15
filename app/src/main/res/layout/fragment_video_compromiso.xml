@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.Fragments.VideoCompromisoFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVTituloVideoCompromiso"
+        android:text="VÍDEO DE COMPROMISO"
+        android:textSize="16sp"
+        android:paddingTop="10dp"
+        android:textAlignment="center"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/lila"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tVDescripcionVideoCompromiso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tVTituloVideoCompromiso"
+        android:hint="Cargando..."
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:text="A continuación, se muestra el video de compromiso grabado por el adoptante. Si el contenido del video y el contrato de adopción son válidos, puede finalizar el proceso; la mascota será asignada automáticamente a la cuenta del adoptante. En caso contrario, tendrá la opción de volver a solicitar los requisitos pendientes."
+        android:textColor="@color/blue_2"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/rLVideoViewCompromisoUltimos"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp"
+        android:background="@color/black"
+        android:layout_below="@+id/tVDescripcionVideoCompromiso">
+
+        <VideoView
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:id="@+id/videoCompromisoUltimos"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iVReproducirVideoCompromisoUltimos"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/ic_reproducir"/>
+
+        <ProgressBar
+            android:id="@+id/barraProgresoVideoCompromisoUltimos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/white"
+            android:elevation="10dp"
+            android:visibility="visible"/>
+    </FrameLayout>
+
+</RelativeLayout>

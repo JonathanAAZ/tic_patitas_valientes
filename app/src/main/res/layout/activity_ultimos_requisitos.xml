@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    android:background="@color/yellow"
+    android:descendantFocusability="blocksDescendants"
+    tools:context=".Vista.UltimosRequisitosActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorUltimosRequisitos"
+        android:background="@color/yellow"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarUltimosRequisitos"
+            android:layout_centerVertical="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/ic_retroceder"
+            android:clickable="true"
+            android:backgroundTint="@color/lila"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloUltimosRequisitos"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:text="Validar requisitos finales"/>
+
+        <View
+            android:id="@+id/viewTituloResponderSolicitud"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloUltimosRequisitos"
+            android:background="@color/yellow" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bordes_fragment"
+        android:layout_below="@+id/lYSuperiorUltimosRequisitos">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@drawable/bordes_fragment">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVTituloRequisitosFinales"
+                android:paddingTop="15dp"
+                android:text="REQUISITOS FINALES"
+                android:textAlignment="center"
+                style="@style/TextAppearance.AppCompat.Headline"
+                android:textStyle="bold"
+                android:textColor="@color/lila"/>
+
+            <TextView
+                android:id="@+id/tVOpcionesUltimosRequisitos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVTituloRequisitosFinales"
+                android:text="Seleccione el requisito que desea validar:"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:id="@+id/lYBtnCambiarUltimosRequisitos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVOpcionesUltimosRequisitos"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/lLBtnContrato"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_contrato"
+                        android:backgroundTint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Contrato de adopción firmado"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lLBtnVerVideoCompromiso"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/black"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:background="@drawable/ic_video_compromiso"
+                        android:backgroundTint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Vídeo de compromiso"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <FrameLayout
+                android:id="@+id/fLVerContrato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/lYBotonesTerminarAdopcion"
+                android:layout_below="@+id/lYBtnCambiarUltimosRequisitos"
+                android:background="@drawable/border"
+                android:padding="5dp"
+                android:visibility="visible">
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fLVerVideoCompromiso"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/lYBotonesTerminarAdopcion"
+                android:layout_below="@+id/fLVerContrato"
+                android:background="@drawable/border"
+                android:padding="5dp"
+                android:visibility="gone">
+
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/lYBotonesTerminarAdopcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/border"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_alignParentBottom="true"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lLTerminarAdopcion"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:backgroundTint="@color/light_green"
+                    android:backgroundTintMode="multiply"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/border">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:backgroundTint="@color/white"
+                        android:background="@drawable/ic_visto_bueno"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Terminar proceso de adopción"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lLSolicitarNuevamente"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_margin="5dp"
+                    android:backgroundTint="@color/red"
+                    android:backgroundTintMode="multiply"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/border">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:backgroundTint="@color/white"
+                        android:background="@drawable/ic_cerrar"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Solicitar reenvío de requisitos"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lLBarraProgresoUltimosRequisitos"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/lila"
+            style="?android:attr/progressBarStyleLarge"
+            android:elevation="10dp"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textSize="14dp"
+            android:textColor="@color/lila"
+            android:text="Finalizando el proceso de adopción… por favor espere mientras se actualiza la información."/>
+    </LinearLayout>
+
+</RelativeLayout>

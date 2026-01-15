@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".Vista.SubirFotoPerfil">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorAgregarFotoPerfil"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarAgregarFotoPerfil"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_retroceder"
+            android:backgroundTint="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloAgregarFotoPerfil"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Agregar una foto de perfil"/>
+
+        <View
+            android:id="@+id/viewTituloAgregarFotoPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloAgregarFotoPerfil"
+            android:background="@color/black" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:layout_below="@+id/lYSuperiorAgregarFotoPerfil"
+        android:background="@drawable/borde_cuadrado">
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/layoutEncabezadoSubirFoto"
+            android:text="FOTO DE PERFIL"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:id="@+id/vistaFotoPerfilSubida"
+            android:layout_marginTop="20dp"
+            android:scaleType="fitCenter"
+            android:background="@drawable/frame_redondeado"
+            android:padding="10dp"
+            android:layout_below="@+id/layoutEncabezadoSubirFoto"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSeleccionarFotoPerfil"
+            android:layout_below="@+id/vistaFotoPerfilSubida"
+            android:layout_marginTop="10dp"
+            android:padding="5dp"
+            android:layout_centerHorizontal="true"
+            style="@style/Widget.MaterialComponents.CardView"
+            android:textStyle="italic"
+            android:text="Seleccione una foto" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnGuardarFotoPerfil"
+            android:layout_below="@id/btnSeleccionarFotoPerfil"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:text="Guardar Información"/>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/barraProgresoSubirFotoPerfil"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:elevation="10dp"
+            android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

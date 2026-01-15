@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    tools:context=".Vista.Fragments.AgregarMascotaFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="30dp"
+            android:text="AGREGAR UNA MASCOTA AL CATÁLOGO"
+            android:id="@+id/tVEncabezadoAgregarMascota"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/tVNombreMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVEncabezadoAgregarMascota"
+            android:layout_marginTop="50dp"
+            android:padding="6dp"
+            android:text="Nombre:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/eTNombreMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVNombreMascota"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:maxLength="50"
+            android:hint="Ingrese el nombre de la mascota"
+            android:inputType="text|textPersonName"
+            android:padding="6dp"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZáéíóúÁÉÍÓÚñÑ123456789 "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEspecieMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eTNombreMascota"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="Especie:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spEspecieMascota"
+            android:background="@drawable/border"
+            android:padding="0dp"
+            android:layout_below="@id/tVEspecieMascota"/>
+
+        <TextView
+            android:id="@+id/tVEdadMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spEspecieMascota"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="Edad:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spEdadMascota"
+            android:background="@drawable/border"
+            android:padding="0dp"
+            android:layout_below="@id/tVEdadMascota"/>
+
+        <TextView
+            android:id="@+id/tVSexoMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spEdadMascota"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="Sexo:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:id="@+id/spSexoMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:padding="0dp"
+            android:layout_below="@id/tVSexoMascota"/>
+
+        <TextView
+            android:id="@+id/tvColorMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spSexoMascota"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="Color:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/eTColorMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvColorMascota"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="Ingrese el color de la mascota"
+            android:inputType="text|textPersonName"
+            android:padding="6dp"
+            android:maxLength="30"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZáéíóúÁÉÍÓÚñÑ "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVRazaMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eTColorMascota"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="Raza:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/eTRazaMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVRazaMascota"
+            android:layout_marginTop="0dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="Ingrese la raza de la mascota"
+            android:inputType="text|textPersonName"
+            android:padding="6dp"
+            android:maxLength="50"
+            android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZáéíóúÁÉÍÓÚñÑ "
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvCaracterMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eTRazaMascota"
+            android:layout_marginTop="10dp"
+            android:padding="6dp"
+            android:text="Carácter de la mascota:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/eTCaracterMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCaracterMascota"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="Ejemplo: Luna es una cachorra juguetona y muy cariñosa. Le encanta correr y es perfecta para familias activas."
+            android:inputType="textMultiLine"
+            android:maxLength="150"
+            android:padding="6dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVVacunacionMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eTCaracterMascota"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="6dp"
+            android:text="¿La mascota está vacunada?:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <RadioGroup
+            android:id="@+id/rGVacunacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVVacunacionMascota"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rBOpcionVacunado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sí"
+                android:textColor="@color/lila"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rBOpcionNoVacunado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="No"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tVDesparasitacionMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rGVacunacion"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="6dp"
+            android:text="¿La mascota está desparasitada?:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <RadioGroup
+            android:id="@+id/rGDesparasitacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVDesparasitacionMascota"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rBOpcionDesparasitado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sí"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rBOpcionNoDesparasitado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="No"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tVEsterilizacionMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rGDesparasitacion"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="6dp"
+            android:text="¿La mascota está esterilizada?:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <RadioGroup
+            android:id="@+id/rGEsterilizacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVEsterilizacionMascota"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rBOpcionEsterilizado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Sí"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rBOpcionNoEsterilizado"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="No"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tVFechaEsterilizacionMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rGEsterilizacion"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="6dp"
+            android:text="Fecha de esterilización:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/eTFechaEsterilizacionMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVFechaEsterilizacionMascota"
+            android:background="@drawable/border"
+            android:ems="10"
+            android:hint="Seleccione la fecha de esterilización"
+            android:focusable="false"
+            android:inputType="datetime|date"
+            android:padding="6dp"
+            android:textSize="16sp" />
+
+
+        <TextView
+            android:id="@+id/tVDomicilioMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/eTFechaEsterilizacionMascota"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="6dp"
+            android:text="Domicilio actual de la mascota:"
+            android:textColor="@color/lila"
+            android:textStyle="bold"
+            android:textSize="16sp"/>
+
+        <RadioGroup
+            android:id="@+id/rGDomicilioMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVDomicilioMascota"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/rBOpcionRefugio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Refugio"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <RadioButton
+                android:id="@+id/rBOpcionHogarTemporal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hogar temporal (Voluntario)"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tVSeleccionarHogar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rGDomicilioMascota"
+            android:layout_marginTop="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:padding="6dp"
+            android:text="Si selecciona 'Hogar Temporal', elija al voluntario con quien la mascota reside actualmente."
+            android:textColor="@color/blue_2"
+            android:textStyle="italic"
+            android:textSize="16sp"/>
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spHogarTemporal"
+            android:background="@drawable/border"
+            android:contextClickable="false"
+            android:padding="0dp"
+            android:layout_below="@id/tVSeleccionarHogar"/>
+
+        <Button
+            android:id="@+id/btnContinuarAgregarMascota"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spHogarTemporal"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:backgroundTint="@color/yellow"
+            android:textColor="@color/lila"
+            android:layout_centerHorizontal="true"
+            android:text="CONTINUAR"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+</ScrollView>

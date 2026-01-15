@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:id="@+id/rLItemMascotaAdopcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivFotoListaMascotaAdopcion"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:background="@drawable/border"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/tVEncNombreMascotaAdopc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaMascotaAdopcion"
+            android:text="Nombre:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVNombreMascotaAdopc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncNombreMascotaAdopc"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncVacunacionMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tVNombreMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaMascotaAdopcion"
+            android:text="Vacunación:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVVacunacionMascotaAdopc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVNombreMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncVacunacionMascota"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncDesparasitacionMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tVVacunacionMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaMascotaAdopcion"
+            android:text="Desparasitación:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVDesparasitacionMascotaAdopc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVVacunacionMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncDesparasitacionMascota"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncEsterilizMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tVDesparasitacionMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaMascotaAdopcion"
+            android:text="Esterilización:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVEsterilizMascotaAdopc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVDesparasitacionMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncEsterilizMascota"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncEstadoMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tVEsterilizMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaMascotaAdopcion"
+            android:text="Estado:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVEstadoMascotaAdopc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tVEsterilizMascotaAdopc"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncEstadoMascota"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <!-- ImageView para editar -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/lYBtnEditarMascota"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="150dp"
+            android:orientation="vertical"
+            android:layout_below="@+id/tVEstadoMascotaAdopc"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/ivEditarMascotaLista"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@color/blue_2"
+                app:srcCompat="@drawable/baseline_edit_note_24" />
+
+            <TextView
+                android:id="@+id/tvEditarMascota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Editar"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center"/>
+        </LinearLayout>
+
+        <!-- Sección Activar/Desactivar -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/lYBtnEliminarMascota"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/tVEstadoMascotaAdopc"
+            android:layout_toEndOf="@+id/lYBtnEditarMascota"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="40dp"
+            android:orientation="vertical"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:id="@+id/ivEliminarMascotaLista"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvActivarDesactivarMascota"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="Cargando..."
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:gravity="center" />
+        </LinearLayout>
+<!--        <ImageView-->
+<!--            android:id="@+id/iVEditarMascotaAdopcion"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_below="@+id/tVEstadoMascotaAdopc"-->
+<!--            android:layout_centerHorizontal="false"-->
+<!--            android:layout_centerVertical="false"-->
+<!--            android:layout_marginStart="150dp"-->
+<!--            android:layout_marginLeft="0dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:background="#40C545"-->
+<!--            app:srcCompat="@drawable/baseline_edit_note_24" />-->
+
+<!--        &lt;!&ndash; ImageView para eliminar &ndash;&gt;-->
+<!--        <ImageView-->
+<!--            android:id="@+id/iVEliminarMascotaAdopcion"-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_below="@+id/tVEstadoMascotaAdopc"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_centerVertical="false"-->
+<!--            android:layout_marginStart="40dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:layout_marginBottom="10dp"-->
+<!--            android:layout_toEndOf="@+id/iVEditarMascotaAdopcion"-->
+<!--            android:background="#C10808"-->
+<!--            app:srcCompat="@drawable/baseline_delete_24" />-->
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

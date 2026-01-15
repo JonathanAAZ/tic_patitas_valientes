@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dos_bordes_redondeados"
+        android:padding="10dp"
+        android:layout_margin="15dp"
+        android:backgroundTint="@color/white">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloAlerta"
+            android:textAlignment="center"
+            android:textAllCaps="true"
+            android:textColor="@color/lila"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"
+            android:hint=""/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVMensajeAlerta"
+            android:layout_below="@+id/tVTituloAlerta"
+            android:textAlignment="center"
+            android:textColor="@color/lila"
+            android:textSize="16sp"
+            android:layout_marginBottom="5dp"
+            android:hint=""/>
+
+        <LinearLayout
+            android:id="@+id/lYBotonesAceptarCancelarAlerta"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/tVMensajeAlerta"
+            android:background="@color/white"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/lLbtnAceptar"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:backgroundTint="@color/dark_green"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="ACEPTAR"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:id="@+id/lLbtnCancelar"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:backgroundTint="@color/dashboard_blue"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="CANCELAR"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

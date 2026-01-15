@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/yellow"
+        android:background="@drawable/border"
+        android:padding="2dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVEncImagenAmpliada"
+            android:textAlignment="center"
+            android:textColor="@color/lila"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="10dp"
+            android:text="Puede ampliar la imagen para ver la información con mayor detalle."/>
+
+        <com.jsibbold.zoomage.ZoomageView
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:id="@+id/iVFotoAmpliada"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:layout_below="@+id/tVEncImagenAmpliada"
+            android:backgroundTint="@color/celeste"
+            android:background="@drawable/border"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

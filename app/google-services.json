@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "780749038293",
+    "project_id": "tic-pv",
+    "storage_bucket": "tic-pv.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780749038293:android:f96a0e79db7de4946c385c",
+        "android_client_info": {
+          "package_name": "com.example.tic_pv"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAlgJsPeSshClykrqEmhMfBBHix62N6l5I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

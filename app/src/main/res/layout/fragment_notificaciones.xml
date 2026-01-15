@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bordes_fragment"
+    tools:context=".Vista.Fragments.NotificacionesFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVTituloFragmentNotificaciones"
+        android:text="Notificaciones"
+        android:textAlignment="textEnd"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/lila"
+        android:layout_marginBottom="15dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVNoHayResultadosNotificaciones"
+        android:layout_below="@+id/tVTituloFragmentNotificaciones"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="---- No tiene notificaciones ----" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyViewListaNotificaciones"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:padding="2dp"
+        android:layout_below="@+id/tVNoHayResultadosNotificaciones"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"/>
+
+</RelativeLayout>

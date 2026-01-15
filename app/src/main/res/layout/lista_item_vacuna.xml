@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivFotoListaVacunas"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:background="@drawable/ic_vaccine"
+            android:backgroundTint="@color/lila"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/tVEncNombreVacuna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaVacunas"
+            android:text="Nombre:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVNombreVacuna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncNombreVacuna"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncFechaVacuna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVNombreVacuna"
+            android:layout_toEndOf="@+id/ivFotoListaVacunas"
+            android:text="Fecha:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVFechaVacuna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVNombreVacuna"
+            android:layout_toEndOf="@+id/tVEncNombreVacuna"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncProximaVacuna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVFechaVacuna"
+            android:layout_toEndOf="@+id/ivFotoListaVacunas"
+            android:text="Próxima vacuna:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVProximaVacuna"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/tVFechaVacuna"
+            android:layout_toEndOf="@+id/tVEncProximaVacuna"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/lLBotonesVacuna"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tVProximaVacuna"
+            android:layout_toEndOf="@+id/ivFotoListaVacunas"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/lLEditarVacuna"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="visible"
+                android:backgroundTint="@color/dark_green"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_editar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Editar"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/lLEliminarVacuna"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="visible"
+                android:backgroundTint="@color/red"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_eliminar"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Eliminar"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

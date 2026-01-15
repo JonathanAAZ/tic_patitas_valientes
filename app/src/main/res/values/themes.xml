@@ -1,0 +1,17 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.TIC_PV" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+<!--        CAMBIAR ESTILOS DE LOS BOTONES DE LA APP-->
+<!--        <item name="colorPrimary">@color/white</item>-->
+<!--        <item name="colorPrimaryVariant">@color/black</item>-->
+<!--        <item name="colorOnPrimary">@color/black</item>-->
+
+<!--        &lt;!&ndash; Desactiva estilos globales de botones si es necesario &ndash;&gt;-->
+<!--        <item name="buttonStyle">@null</item>-->
+    </style>
+
+    <style name="Theme.TIC_PV" parent="Base.Theme.TIC_PV" />
+</resources>

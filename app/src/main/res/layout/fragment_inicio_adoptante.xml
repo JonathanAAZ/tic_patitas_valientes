@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.Fragments.InicioAdoptanteFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/encabezadoMenuAdoptante"
+            android:text="MENÚ DEL ADOPTANTE"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textColor="@color/black"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonCatalogoMascotas"
+            android:layout_below="@+id/encabezadoMenuAdoptante"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnCatalogoMascotas"
+            android:text="Catálogo de mascotas de adopción"
+            android:layout_below="@+id/iVBotonCatalogoMascotas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonVerSolicitudesEnviadas"
+            android:layout_below="@+id/tVBtnCatalogoMascotas"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"
+            android:focusable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnVerSolicitudesEnviadas"
+            android:text="Ver solicitudes enviadas"
+            android:layout_below="@+id/iVBotonVerSolicitudesEnviadas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonVerMisMascotas"
+            android:layout_below="@+id/tVBtnVerSolicitudesEnviadas"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"
+            android:focusable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnVerMisMascotas"
+            android:text="Mis mascotas"
+            android:layout_below="@+id/iVBotonVerMisMascotas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+    </RelativeLayout>
+
+</ScrollView>

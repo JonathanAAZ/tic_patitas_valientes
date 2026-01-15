@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    tools:context=".Vista.Fragments.IniciarAdopcionFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollIniciarAdopcion">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="30dp"
+                android:text="INICIAR PROCESO DE ADOPCIÓN"
+                android:id="@+id/tVEncabezadoIniciarAdopcion"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                android:textColor="@color/lila"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVInstruccionesAdopcion"
+                android:layout_marginTop="15dp"
+                android:textStyle="italic"
+                android:textColor="@color/blue_2"
+                android:textAlignment="center"
+                android:layout_below="@+id/tVEncabezadoIniciarAdopcion"
+                android:text="Por favor, complete todos los requisitos necesarios para enviar su solicitud de adopción. Una vez enviada, deberá esperar la confirmación por parte del Hogar &quot;Patitas Valientes&quot;."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaNombreAdoptante"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/lila"
+                android:layout_below="@+id/tVInstruccionesAdopcion"
+                android:text="Adoptante:"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVNombreAdoptante"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/tVEtiquetaNombreMascota"
+                android:layout_below="@+id/tVInstruccionesAdopcion"
+                android:hint="Cargando..."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaCedulaAdoptantes"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/lila"
+                android:layout_below="@+id/tVNombreAdoptante"
+                android:text="Cédula del adoptante:"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVCedulaAdoptante"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/tVEtiquetaNombreMascota"
+                android:layout_below="@+id/tVNombreAdoptante"
+                android:hint="Cargando..."/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaNombreMascota"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/lila"
+                android:layout_below="@+id/tVCedulaAdoptante"
+                android:text="Mascota seleccionada:"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVNombreMascota"
+                android:layout_marginTop="15dp"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/tVEtiquetaNombreMascota"
+                android:layout_below="@+id/tVCedulaAdoptante"
+                android:hint="Cargando..."/>
+
+            <ImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:id="@+id/iVFotoMascotaInicioAdopcion"
+                android:layout_marginTop="10dp"
+                android:scaleType="fitCenter"
+                android:padding="3dp"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/celeste"
+                android:layout_below="@+id/tVNombreMascota"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaCerramiento"
+                android:textAlignment="center"
+                android:layout_marginTop="25dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/lila"
+                android:layout_below="@+id/iVFotoMascotaInicioAdopcion"
+                android:text="LISTA DE REQUISITOS A COMPLETAR"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVEtiquetaCerramientoHogar"
+                android:layout_marginTop="5dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:layout_below="@+id/tVEtiquetaCerramiento"
+                android:text="¿Su hogar dispone de un cerramiento adecuado para la seguridad de la mascota?"/>
+
+            <RadioGroup
+                android:id="@+id/rGCerramiento"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tVEtiquetaCerramientoHogar"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rBOpcionCerramiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sí"
+                    android:textColor="@color/black"
+                    android:buttonTint="@color/celeste"
+                    android:textSize="16sp" />
+
+                <RadioButton
+                    android:id="@+id/rBOpcionNoCerramiento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="No"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+
+            </RadioGroup>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/tVErrorCerramiento"
+                android:layout_below="@+id/rGCerramiento"
+                android:textColor="@color/red"
+                android:textStyle="italic"
+                android:textAlignment="center"
+                android:visibility="gone"
+                android:text="Para iniciar el proceso de adopción, su hogar debe disponer de un cerramiento adecuado."/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/rLRequisitosIniciarAdopcion"
+                android:background="@drawable/borde_cuadrado"
+                android:layout_below="@+id/rGCerramiento"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/lLRequisitoFotoCedula"
+                    android:gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/bordes_redondeados">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/iVRequisitoFotoCedula"
+                        android:backgroundTint="@color/white" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tVEncabezadoFotoCedula"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_toEndOf="@+id/lLRequisitoFotoCedula"
+                    android:textSize="16sp"
+                    android:textColor="@color/lila"
+                    android:textStyle="bold"
+                    android:text="Fotos de cédula de identidad"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lLFotosCedula"
+                    android:orientation="horizontal"
+                    android:layout_below="@+id/tVEncabezadoFotoCedula"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp">
+
+                    <!-- Grupo Frontal -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tVEncabezadoFrontalCedula"
+                            android:textAlignment="center"
+                            android:textStyle="italic"
+                            android:textColor="@color/black"
+                            android:text="Frontal de la cédula" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:padding="3dp"
+                            android:id="@+id/iVFotoCedulaFrontal"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:backgroundTint="@color/celeste"
+                            android:background="@drawable/border" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lLTomarFotoCedFrontal"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:layout_marginTop="5dp"
+                            android:padding="2dp"
+                            android:backgroundTint="@color/yellow"
+                            android:backgroundTintMode="multiply"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:background="@drawable/border">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:backgroundTint="@color/lila"
+                                android:background="@drawable/ic_camara" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="Abrir cámara"
+                                android:layout_marginStart="5dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/lila"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Grupo Reverso -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/tVEncabezadoReversoCedula"
+                            android:textAlignment="center"
+                            android:textStyle="italic"
+                            android:textColor="@color/black"
+                            android:text="Reverso de la cédula" />
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:padding="3dp"
+                            android:id="@+id/iVFotoCedulaReverso"
+                            android:layout_marginTop="5dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:backgroundTint="@color/celeste"
+                            android:background="@drawable/border" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/lLTomarFotoCedReverso"
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:focusable="true"
+                            android:clickable="true"
+                            android:layout_marginTop="5dp"
+                            android:padding="2dp"
+                            android:backgroundTint="@color/yellow"
+                            android:backgroundTintMode="multiply"
+                            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                            android:background="@drawable/border">
+
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:backgroundTint="@color/lila"
+                                android:background="@drawable/ic_camara" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textAlignment="center"
+                                android:text="Abrir cámara"
+                                android:layout_marginStart="5dp"
+                                android:textStyle="bold"
+                                android:textColor="@color/lila"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/lLRequisitoFotoServicios"
+                    android:layout_below="@+id/lLFotosCedula"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/bordes_redondeados">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/iVRequisitoFotoServicios"
+                        android:backgroundTint="@color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tVEncabezadoFotoServicios"
+                    android:layout_below="@+id/lLFotosCedula"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/lLRequisitoFotoCedula"
+                    android:textSize="16sp"
+                    android:textColor="@color/lila"
+                    android:textStyle="bold"
+                    android:text="Foto de planilla/factura de servicios básicos"/>
+
+                <ImageView
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:padding="3dp"
+                    android:id="@+id/iVFotoServicios"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/tVEncabezadoFotoServicios"
+                    android:layout_marginTop="5dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:backgroundTint="@color/celeste"
+                    android:background="@drawable/border" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lLTomarFotoServicios"
+                    android:layout_below="@+id/iVFotoServicios"
+                    android:orientation="horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_marginTop="5dp"
+                    android:padding="2dp"
+                    android:backgroundTint="@color/yellow"
+                    android:backgroundTintMode="multiply"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/border">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:backgroundTint="@color/lila"
+                        android:background="@drawable/ic_camara" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Abrir cámara"
+                        android:layout_marginStart="5dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/lila"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/lLRequisitoVideoHogarMascota"
+                    android:layout_below="@+id/lLTomarFotoServicios"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/bordes_redondeados">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/iVRequisitoVideoHogarMascota"
+                        android:backgroundTint="@color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tVEncabezadoVideoHogarMascota"
+                    android:layout_below="@+id/lLTomarFotoServicios"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/lLRequisitoFotoCedula"
+                    android:textSize="16sp"
+                    android:textColor="@color/lila"
+                    android:textStyle="bold"
+                    android:text="Vídeo mostrando el lugar donde vivirá la mascota"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tVInstruccionesVideoHogar"
+                    android:layout_below="@+id/tVEncabezadoVideoHogarMascota"
+                    android:textSize="14sp"
+                    android:textColor="@color/blue_2"
+                    android:textStyle="italic"
+                    android:textAlignment="center"
+                    android:text="El vídeo debe demostrar que el lugar cuenta con un cerramiento adecuado; de lo contrario, la solicitud de adopción será rechazada."/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rLVideoView"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:background="@color/black"
+                    android:layout_below="@+id/tVInstruccionesVideoHogar">
+
+                    <VideoView
+                        android:layout_width="match_parent"
+                        android:layout_height="300dp"
+                        android:id="@+id/videoHogarMascota"
+                        android:layout_centerHorizontal="true"
+                        android:visibility="visible"/>
+
+                    <ImageView
+                        android:id="@+id/iVReproducirVideo"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp"
+                        android:src="@drawable/ic_reproducir"
+                        android:layout_centerInParent="true"
+                        android:background="@android:color/transparent"/>
+
+
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lLGrabarHogarMascota"
+                    android:layout_below="@+id/rLVideoView"
+                    android:orientation="horizontal"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:layout_marginTop="5dp"
+                    android:padding="2dp"
+                    android:backgroundTint="@color/yellow"
+                    android:backgroundTintMode="multiply"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/border">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:backgroundTint="@color/lila"
+                        android:background="@drawable/ic_video" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Grabar vídeo"
+                        android:layout_marginStart="5dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/lila"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/lLRequisitoTipoDomicilio"
+                    android:layout_below="@+id/lLGrabarHogarMascota"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:background="@drawable/bordes_redondeados">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/iVRequisitoTipoDomicilio"
+                        android:backgroundTint="@color/white"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tVEncabezadoTipoDomicilio"
+                    android:layout_below="@+id/lLGrabarHogarMascota"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_toEndOf="@+id/lLRequisitoFotoCedula"
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:text="Especifique el tipo de vivienda en la que reside."/>
+
+                <RadioGroup
+                    android:id="@+id/rGTipoDomicilio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_below="@id/tVEncabezadoTipoDomicilio"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/rBOpcionArrendado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Arrendado"
+                        android:textColor="@color/black"
+                        android:buttonTint="@color/celeste"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/rBOpcionPropio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Propio"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                </RadioGroup>
+
+
+                <Button
+                    android:id="@+id/btnEnviarSolicitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/rGTipoDomicilio"
+                    android:layout_marginTop="10dp"
+                    android:backgroundTint="@color/yellow"
+                    android:text="Enviar solicitud"
+                    android:textColor="@color/lila"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lLBarraProgresoIniciarAdopcion"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_gravity="center">
+
+        <ProgressBar
+            android:id="@+id/barraProgresoIniciarAdopcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@color/lila"
+            style="?android:attr/progressBarStyleLarge"
+            android:elevation="10dp"
+            android:visibility="visible"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/lila"
+            android:text="Por favor, espere mientras se procesa su solicitud. Esto puede tardar según su conexión a Internet."/>
+    </LinearLayout>
+
+</FrameLayout>

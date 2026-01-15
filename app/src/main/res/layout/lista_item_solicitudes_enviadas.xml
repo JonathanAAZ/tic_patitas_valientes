@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:id="@+id/rLItemSolicitudEnviada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="5dp"
+            android:layout_centerVertical="true"
+            app:civ_border_width="3dp"
+            app:civ_border_color="@color/lila"
+            android:id="@+id/cIVFotoMascotaSoliEnv"/>
+
+        <TextView
+            android:id="@+id/tVEncNombreMascotaSoliEnv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/cIVFotoMascotaSoliEnv"
+            android:text="Mascota:"
+            android:textColor="@color/lila"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVNombreMascotaSoliEnv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncNombreMascotaSoliEnv"
+            android:hint="Cargando..."
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncFechaEmisionSoliEnv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/cIVFotoMascotaSoliEnv"
+            android:layout_below="@+id/tVNombreMascotaSoliEnv"
+            android:text="Fecha de emisión:"
+            android:textSize="16sp"
+            android:textColor="@color/lila"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVFechaEmisionSoliEnv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncFechaEmisionSoliEnv"
+            android:layout_below="@+id/tVNombreMascotaSoliEnv"
+            android:hint="Cargando..."
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tVEncEstadoSoliEnv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/cIVFotoMascotaSoliEnv"
+            android:layout_below="@+id/tVFechaEmisionSoliEnv"
+            android:text="Estado:"
+            android:textSize="16sp"
+            android:textColor="@color/lila"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tVEstadoSoliEnv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tVEncEstadoSoliEnv"
+            android:layout_below="@+id/tVFechaEmisionSoliEnv"
+            android:hint="Cargando..."
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/lYBotonesSolicitudEnviada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/tVEstadoSoliEnv"
+            android:layout_toEndOf="@+id/cIVFotoMascotaSoliEnv"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lLBtnContinuarProceso"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:backgroundTint="@color/blue_2"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_adopcion"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Continuar proceso"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lLBtnVerMotivo"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:visibility="gone"
+                android:layout_margin="5dp"
+                android:backgroundTint="@color/dashboard_blue"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_ver_clave"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Ver motivo"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tVMensajeEnRevision"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:textAlignment="center"
+                android:text="Esperando confirmación del administrador..."
+                android:textSize="14sp"
+                android:textColor="@color/dark_green"
+                android:textStyle="italic" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

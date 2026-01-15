@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:fitsSystemWindows="true"
+    android:fillViewport="true"
+    android:focusableInTouchMode="true"
+    tools:context=".Vista.CrearCuentaActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/lYSuperiorCrearCuenta"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/iVRegresarCrearCuenta"
+            android:layout_centerVertical="true"
+            android:foreground="?android:attr/selectableItemBackgroundBorderless"
+            android:background="@drawable/ic_retroceder"
+            android:clickable="true"
+            android:backgroundTint="@color/black"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVTituloCrearCuenta"
+            android:textSize="18sp"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Crear cuenta"/>
+
+        <View
+            android:id="@+id/viewTituloCrearCuenta"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/tVTituloCrearCuenta"
+            android:background="@color/black" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="10dp"
+        android:layout_below="@+id/lYSuperiorCrearCuenta">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/scrollCrearCuenta">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/textEncabezado"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="REGISTRARSE EN LA APLICACIÓN\n'PATITAS VALIENTES'"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/textNombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textEncabezado"
+                    android:layout_marginTop="50dp"
+                    android:padding="6dp"
+                    android:text="Nombre:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:maxLength="50"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/nombreUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textNombre"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese su nombre completo"
+                    android:inputType="text|textPersonName"
+                    android:padding="6dp"
+                    android:textSize="16sp"
+                    android:maxLength="50"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZáéíóúÁÉÍÓÚñÑ "/>
+
+                <TextView
+                    android:id="@+id/textCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/nombreUsuario"
+                    android:layout_marginTop="11dp"
+                    android:padding="6dp"
+                    android:text="Correo electrónico:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/correoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textCorreo"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese su correo electrónico"
+                    android:inputType="text|textWebEmailAddress"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tVErrorCorreoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/correoUsuario"
+                    android:text="* Por favor, ingrese un correo válido"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_light"/>
+
+                <TextView
+                    android:id="@+id/textCedula"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVErrorCorreoUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Cédula de identidad:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/cedulaUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textCedula"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese su cédula de identidad"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tVErrorCedulaUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cedulaUsuario"
+                    android:text="* Por favor, ingrese una cédula válida"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_light"/>
+
+                <TextView
+                    android:id="@+id/textFechaNac"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVErrorCedulaUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Fecha de nacimiento (dd/mm/aaaa):"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/fechaNacUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textFechaNac"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Seleccione su fecha de nacimiento"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="datetime|date"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textEstadoCiv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fechaNacUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Estado civil:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:textSize="16sp" />
+
+                <RadioGroup
+                    android:id="@+id/estadoCivOps"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textEstadoCiv"
+                    android:orientation="vertical">
+
+                    <RadioButton
+                        android:id="@+id/opcionSoltero"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Soltero"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opcionCasado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Casado"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opcionDivorciado"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Divorciado"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opcionViudo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Viudo"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+
+                    <RadioButton
+                        android:id="@+id/opcionUnion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Unión de hecho"
+                        android:textColor="@color/black"
+                        android:textSize="16sp" />
+                </RadioGroup>
+
+                <TextView
+                    android:id="@+id/textOcupacion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/estadoCivOps"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Profesión/Ocupación:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/ocupacionUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textOcupacion"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese su profesión/ocupación"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textTelefono"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ocupacionUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Número de teléfono/celular:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/telefonoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textTelefono"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese su número de teléfono/celular"
+                    android:inputType="number"
+                    android:padding="6dp"
+                    android:maxLength="10"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tVErrorTelefonoUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/telefonoUsuario"
+                    android:text="* Por favor, ingrese un número de teléfono válido"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_light"/>
+
+                <TextView
+                    android:id="@+id/textInsta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVErrorTelefonoUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Usuario de Instagram (opcional):"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/instaUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textInsta"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ejemplo: @patitasvalientes"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textFB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/instaUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Nombre en Facebook (opcional):"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/fbUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textFB"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ingrese su nombre de Facebook"
+                    android:inputType="text"
+                    android:padding="6dp"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textClave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fbUsuario"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Contraseña:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textClaveIndic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textClave"
+                    android:padding="6dp"
+                    android:text="La contraseña debe contar con un mínimo de 8 caracteres, un máximo de 15 caracteres, letras mayúsculas, minúsculas, números y caracteres especiales (@,-,_,#,*)"
+                    android:textColor="@color/black"
+                    android:textStyle="italic"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/claveUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textClaveIndic"
+                    android:layout_alignParentStart="true"
+                    android:layout_toEndOf="@+id/iVVerClaveCrearCuenta"
+                    android:layout_toStartOf="@+id/iVVerClaveCrearCuenta"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Ejemplo: Hola@1234"
+                    android:inputType="text|textPassword"
+                    android:layout_marginBottom="10dp"
+                    android:padding="6dp"
+                    android:maxLength="15"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_below="@+id/textClaveIndic"
+                    android:id="@+id/iVVerClaveCrearCuenta"/>
+
+                <TextView
+                    android:id="@+id/tVMaxCaracteres"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/claveUsuario"
+                    android:text="✔ Al menos 8 caracteres"
+                    android:textColor="@android:color/holo_red_light" />
+
+                <TextView
+                    android:id="@+id/tVMinusculas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tVMaxCaracteres"
+                    android:text="✔ Al menos una letra minúscula"
+                    android:textColor="@android:color/holo_red_light" />
+
+                <TextView
+                    android:id="@+id/tVMayusculas"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tVMinusculas"
+                    android:text="✔ Al menos una letra mayúscula"
+                    android:textColor="@android:color/holo_red_light" />
+
+                <TextView
+                    android:id="@+id/tVNumero"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tVMayusculas"
+                    android:text="✔ Al menos un número"
+                    android:textColor="@android:color/holo_red_light" />
+
+                <TextView
+                    android:id="@+id/tVCaracterEspecial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tVNumero"
+                    android:text="✔ Al menos un carácter especial"
+                    android:textColor="@android:color/holo_red_light" />
+
+                <TextView
+                    android:id="@+id/textClaveConfir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVCaracterEspecial"
+                    android:layout_marginTop="10dp"
+                    android:padding="6dp"
+                    android:text="Confirmación de contraseña:"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/claveUsuarioConfir"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/textClaveConfir"
+                    android:layout_alignParentStart="true"
+                    android:layout_toEndOf="@+id/iVVerConfirCrearCuenta"
+                    android:layout_toStartOf="@+id/iVVerConfirCrearCuenta"
+                    android:background="@drawable/border"
+                    android:ems="10"
+                    android:hint="Vuelva a ingresar su contraseña"
+                    android:inputType="text|textPassword"
+                    android:padding="6dp"
+                    android:maxLength="15"
+                    android:textSize="16sp" />
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_below="@+id/textClaveConfir"
+                    android:id="@+id/iVVerConfirCrearCuenta"/>
+
+                <TextView
+                    android:id="@+id/tVErrorConfirClave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/claveUsuarioConfir"
+                    android:text="* Las contraseñas no coinciden"
+                    android:textStyle="italic"
+                    android:visibility="gone"
+                    android:textColor="@android:color/holo_red_light"/>
+
+                <Button
+                    android:id="@+id/btnSiguienteReg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tVErrorConfirClave"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="30dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="SIGUIENTE"
+                    android:textStyle="bold"
+                    android:textSize="12sp" />
+
+                <ProgressBar
+                    android:id="@+id/barraProgresoCrearCuentaUsuario"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    style="?android:attr/progressBarStyleLarge"
+                    android:layout_centerHorizontal="true"
+                    android:layout_above="@+id/btnSiguienteReg"
+                    android:layout_marginBottom="16dp"
+                    android:elevation="10dp"
+                    android:visibility="gone"/>
+
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+    </FrameLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:id="@+id/rLItemVoluntarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivFotoListaVoluntario"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:padding="5dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/celeste"
+            android:background="@drawable/border"
+            android:layout_marginStart="5dp" />
+
+        <TextView
+            android:id="@+id/tvEncNombreVoluntario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaVoluntario"
+            android:text="Nombre:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNombreListaVoluntario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tvEncNombreVoluntario"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvEncCedulaVoluntario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNombreListaVoluntario"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaVoluntario"
+            android:text="Cédula:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvCedulaListaVoluntario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvNombreListaVoluntario"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tvEncCedulaVoluntario"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvEncNroSeguiVoluntario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvEncCedulaVoluntario"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/ivFotoListaVoluntario"
+            android:text="Nro. seguimientos:"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNroSeguiListaVoluntario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvCedulaListaVoluntario"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@+id/tvEncNroSeguiVoluntario"
+            android:hint="Cargando..."
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/lLBotonesSeguimientos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/tvNroSeguiListaVoluntario"
+            android:layout_toEndOf="@+id/ivFotoListaVoluntario"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/lLVerSeguimientos"
+                android:orientation="horizontal"
+                android:layout_margin="5dp"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:backgroundTint="@color/dark_green"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/border">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:backgroundTint="@color/white"
+                    android:background="@drawable/ic_seguimiento"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:text="Ver seguimientos"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
