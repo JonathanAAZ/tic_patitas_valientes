@@ -52,52 +52,72 @@ public class HistorialMedicoFragment extends Fragment {
         binding.recyViewListaDesparasitaciones.setLayoutManager(new LinearLayoutManager(getContext()));
 
         if (isVacuna) {
+            binding.shimmerRecyListaVacunas.startShimmer();
+            binding.shimmerRecyListaVacunas.setVisibility(View.VISIBLE);
+
             binding.lLAgregarVacuna.setVisibility(View.VISIBLE);
             binding.recyViewListaVacunas.setVisibility(View.VISIBLE);
 
             binding.lLAgregarDesparasitacion.setVisibility(View.GONE);
             binding.recyViewListaDesparasitaciones.setVisibility(View.GONE);
+
+            // Configurar Recycler View de vacunas
+            controladorHistorialMedico.obtenerListaVacunas(idMascota, new ControladorHistorialMedico.Callback<List<HistorialMedico>>() {
+                @Override
+                public void onComplete(List<HistorialMedico> result) {
+                    listaVacunas.clear();
+                    listaVacunas.addAll(result);
+
+                    listaVacunasAdaptador = new ListaVacunasAdaptador(listaVacunas, idMascota);
+                    binding.recyViewListaVacunas.setAdapter(listaVacunasAdaptador);
+
+                    binding.shimmerRecyListaVacunas.stopShimmer();
+                    binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
+                    binding.recyViewListaVacunas.setVisibility(View.VISIBLE);
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    Log.e("ERROR", "Error al obtener la lista de vacunas");
+                }
+            });
+
         } else {
             binding.lLAgregarVacuna.setVisibility(View.GONE);
             binding.recyViewListaVacunas.setVisibility(View.GONE);
 
             binding.lLAgregarDesparasitacion.setVisibility(View.VISIBLE);
             binding.recyViewListaDesparasitaciones.setVisibility(View.VISIBLE);
+
+            // Configurar Recycler View de desparasitaciones
+            controladorHistorialMedico.obtenerListaDesparasitaciones(idMascota, new ControladorHistorialMedico.Callback<List<Desparasitacion>>() {
+                @Override
+                public void onComplete(List<Desparasitacion> result) {
+
+
+                    listaDesparasitaciones.clear();
+                    listaDesparasitaciones.addAll(result);
+
+                    listaDesparasitacionesAdaptador = new ListaDesparasitacionesAdaptador(listaDesparasitaciones, idMascota);
+                    binding.recyViewListaDesparasitaciones.setAdapter(listaDesparasitacionesAdaptador);
+
+//                if (listaDesparasitacionesAdaptador.getItemCount() == 0) {
+//                    binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.VISIBLE);
+//                } else {
+//                    binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.GONE);
+//                }
+                }
+
+                @Override
+                public void onError(Exception e) {
+
+                }
+            });
         }
 
-        // Configurar Recycler View de vacunas
-        controladorHistorialMedico.obtenerListaVacunas(idMascota, new ControladorHistorialMedico.Callback<List<HistorialMedico>>() {
-            @Override
-            public void onComplete(List<HistorialMedico> result) {
-                listaVacunas.clear();
-                listaVacunas.addAll(result);
 
-                listaVacunasAdaptador = new ListaVacunasAdaptador(listaVacunas, idMascota);
-                binding.recyViewListaVacunas.setAdapter(listaVacunasAdaptador);
-            }
 
-            @Override
-            public void onError(Exception e) {
-                Log.e("ERROR", "Error al obtener la lista de vacunas");
-            }
-        });
-
-        // Configurar Recycler View de desparasitaciones
-        controladorHistorialMedico.obtenerListaDesparasitaciones(idMascota, new ControladorHistorialMedico.Callback<List<Desparasitacion>>() {
-            @Override
-            public void onComplete(List<Desparasitacion> result) {
-                listaDesparasitaciones.clear();
-                listaDesparasitaciones.addAll(result);
-
-                listaDesparasitacionesAdaptador = new ListaDesparasitacionesAdaptador(listaDesparasitaciones, idMascota);
-                binding.recyViewListaDesparasitaciones.setAdapter(listaDesparasitacionesAdaptador);
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });
 
 
         // Configurar botones para ver Vacunas o Desparasitaciones

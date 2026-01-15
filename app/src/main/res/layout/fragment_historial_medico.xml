@@ -71,16 +71,49 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVNoHayResultadosListaVacunas"
+        android:layout_below="@+id/lLAgregarVacuna"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="---- No se encontraron resultados ----"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tVNoHayResultadosListaDesparasitaciones"
+        android:layout_below="@+id/lLAgregarDesparasitacion"
+        android:textSize="16sp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:text="---- No se encontraron resultados ----"/>
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerRecyListaVacunas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tVNoHayResultadosListaVacunas"
+        android:layout_marginTop="5dp"
+        android:visibility="visible">
+
+        <include layout="@layout/shimmer_layout" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyViewListaVacunas"
-        android:layout_below="@+id/lLAgregarDesparasitacion"
-        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/shimmerRecyListaVacunas"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyViewListaDesparasitaciones"
-        android:layout_below="@+id/lLAgregarDesparasitacion"
+        android:layout_below="@+id/tVNoHayResultadosListaDesparasitaciones"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
