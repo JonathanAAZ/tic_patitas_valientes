@@ -36,6 +36,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tic_pv.Controlador.ControladorUsuario;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
+import com.example.tic_pv.Controlador.SessionManager;
 import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -215,6 +216,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
     }
 
     private void verificarInicioSesion (String idCuenta) {
+        SessionManager sessionManager = new SessionManager(IniciarSesionActivity.this);
         barraProgresoIS.setVisibility(View.VISIBLE);
 //        final String[] rol = new String[1];
         dbCuentas.collection("Cuentas").document(idCuenta).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -233,13 +235,17 @@ public class IniciarSesionActivity extends AppCompatActivity {
                             i.putExtra("id", R.id.bMInicio);
                             i.putExtra("rol", rolCuenta);
                             startActivity(i);
+                            sessionManager.saveUserRole(rolCuenta);
 //                            finish();
                             barraProgresoIS.setVisibility(View.GONE);
 //                            pedirPermisosNotificaciones();
                             controladorUsuario.actualizarTokenInicioSesion(idCuenta);
                         } else if (rolCuenta.equals("Voluntario")) {
-                            Intent i = new Intent(IniciarSesionActivity.this, MenuVoluntarioActivity.class);
+                            Intent i = new Intent(IniciarSesionActivity.this, BottomNavigationMenu.class);
+                            i.putExtra("id", R.id.bMInicio);
+                            i.putExtra("rol", rolCuenta);
                             startActivity(i);
+                            sessionManager.saveUserRole(rolCuenta);
 //                            finish();
                             barraProgresoIS.setVisibility(View.GONE);
 //                            pedirPermisosNotificaciones();
@@ -249,6 +255,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
                             i.putExtra("id", R.id.bMInicio);
                             i.putExtra("rol", rolCuenta);
                             startActivity(i);
+                            sessionManager.saveUserRole(rolCuenta);
 //                            finish();
                             barraProgresoIS.setVisibility(View.GONE);
 //                            pedirPermisosNotificaciones();

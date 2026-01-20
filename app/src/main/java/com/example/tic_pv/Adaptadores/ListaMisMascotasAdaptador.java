@@ -1,5 +1,6 @@
 package com.example.tic_pv.Adaptadores;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tic_pv.Controlador.ControladorHistorialMedico;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.Modelo.Mascota;
 import com.example.tic_pv.R;
@@ -20,9 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class ListaMisMascotasAdaptador extends RecyclerView.Adapter<ListaMisMascotasAdaptador.MascotaViewHolder> {
+public class  ListaMisMascotasAdaptador extends RecyclerView.Adapter<ListaMisMascotasAdaptador.MascotaViewHolder> {
     private ArrayList <Mascota> listaMisMascotas;
-    private ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
+    private final ControladorHistorialMedico controladorHistorialMedico = new ControladorHistorialMedico();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ArrayList<Mascota> getListaMisMascotas() {
@@ -51,8 +54,18 @@ public class ListaMisMascotasAdaptador extends RecyclerView.Adapter<ListaMisMasc
                 holder.iVFotoMiMascota, holder.iVFotoMiMascota.getContext());
 
         holder.nombreMiMascota.setText(listaMisMascotas.get(position).getNombreMascota());
-        holder.fechaUltimaVacuna.setText(listaMisMascotas.get(position).getSexoMascota());
-        holder.fechaUltimaDesp.setText(listaMisMascotas.get(position).getSexoMascota());
+
+        controladorHistorialMedico.obtenerFechaUltimaVacuna(listaMisMascotas.get(position).getId(),
+                holder.fechaUltimaVacuna);
+        controladorHistorialMedico.obtenerFechaUltimaDesparasitacion(listaMisMascotas.get(position).getId(),
+                holder.fechaUltimaDesp);
+
+//        holder.fechaUltimaVacuna.setText(listaMisMascotas.get(position).getSexoMascota());
+//        holder.fechaUltimaDesp.setText(listaMisMascotas.get(position).getSexoMascota());
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    private void actualizarAdaptador() {
+        notifyDataSetChanged();
     }
 
     @Override

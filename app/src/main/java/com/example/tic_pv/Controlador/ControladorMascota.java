@@ -172,6 +172,37 @@ public class ControladorMascota {
                 });
     }
 
+    public void obtenerListaMascotas(Callback<List<Mascota>> callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("Mascotas")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    ArrayList<Mascota> listaMascotas = new ArrayList<>();
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Mascota mascota = new Mascota();
+                        mascota.setId(document.getId());
+                        mascota.setNombreMascota(document.getString("nombre"));
+                        mascota.setFotoMascota(document.getString("fotoMascota"));
+                        mascota.setEdadMascota(document.getString("edad"));
+                        mascota.setEspecieMascota(document.getString("especie"));
+                        mascota.setSexoMascota(document.getString("sexo"));
+                        mascota.setMascotaVacunada(Boolean.TRUE.equals(document.getBoolean("vacunacionMascota")));
+                        mascota.setMascotaDesparasitada(Boolean.TRUE.equals(document.getBoolean("desparasitacionMascota")));
+                        mascota.setMascotaEsterilizada(Boolean.TRUE.equals(document.getBoolean("esterilizacionMascota")));
+                        mascota.setEstadoMascota(document.getString("estado"));
+                        mascota.setMascotaAdoptada(Boolean.TRUE.equals(document.getBoolean("mascotaAdoptada")));
+
+                        listaMascotas.add(mascota);
+                    }
+                    // Notificar que los datos están listos
+                    callback.onComplete(listaMascotas);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FirebaseError", "Error al obtener mascotas", e);
+                    callback.onError(e);
+                });
+    }
+
     // Callback genérico
     public interface Callback<T> {
         void onComplete(T result);

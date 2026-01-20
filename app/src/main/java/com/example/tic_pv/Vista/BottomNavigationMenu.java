@@ -17,6 +17,7 @@ import com.example.tic_pv.Modelo.Mascota;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.Fragments.InicioAdministradorFragment;
 import com.example.tic_pv.Vista.Fragments.InicioAdoptanteFragment;
+import com.example.tic_pv.Vista.Fragments.InicioVoluntarioFragment;
 import com.example.tic_pv.Vista.Fragments.NotificacionesFragment;
 import com.example.tic_pv.Vista.Fragments.PerfilFragment;
 import com.example.tic_pv.databinding.ActivityBottomNavigationMenuBinding;
@@ -70,6 +71,8 @@ public class BottomNavigationMenu extends AppCompatActivity {
                     controladorUtilidades.reemplazarFragments(R.id.flFragment, getSupportFragmentManager(), new InicioAdministradorFragment());
                 } else if (rol.equalsIgnoreCase("Adoptante")) {
                     controladorUtilidades.reemplazarFragments(R.id.flFragment, getSupportFragmentManager(), new InicioAdoptanteFragment());
+                } else if (rol.equalsIgnoreCase("Voluntario")) {
+                    controladorUtilidades.reemplazarFragments(R.id.flFragment, getSupportFragmentManager(), new InicioVoluntarioFragment());
                 }
             } else if (menuItem.getItemId() == R.id.bMPerfil) {
                 Bundle bundle = new Bundle();
@@ -102,6 +105,8 @@ public class BottomNavigationMenu extends AppCompatActivity {
                 controladorUtilidades.reemplazarFragments(R.id.flFragment, getSupportFragmentManager(), new InicioAdministradorFragment());
             } else if (rol.equalsIgnoreCase("Adoptante")) {
                 controladorUtilidades.reemplazarFragments(R.id.flFragment, getSupportFragmentManager(), new InicioAdoptanteFragment());
+            } else if (rol.equalsIgnoreCase("Voluntario")) {
+                controladorUtilidades.reemplazarFragments(R.id.flFragment, getSupportFragmentManager(), new InicioVoluntarioFragment());
             }
         } else if (id == R.id.bMPerfil) {
             Bundle bundle = new Bundle();

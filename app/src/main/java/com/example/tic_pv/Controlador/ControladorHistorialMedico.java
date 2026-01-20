@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tic_pv.Modelo.Desparasitacion;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ControladorHistorialMedico {
@@ -301,6 +303,76 @@ public class ControladorHistorialMedico {
         }).addOnFailureListener(e -> {
             Log.e("FIREBASE-REALTIME", "No fue posible actualizar la información de la vacuna.");
         });
+    }
+
+    public void obtenerFechaUltimaVacuna(String idMascota, TextView textView) {
+        databaseReference.child(idMascota)
+                .orderByChild("fechaColocacion")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String fechaMasCercana = null;
+
+                        if (snapshot.exists()) {
+                            for (DataSnapshot data : snapshot.getChildren()) {
+                                if (Objects.requireNonNull(data.child("tipo").getValue(String.class))
+                                        .equalsIgnoreCase(EstadosCuentas.VACUNA.toString())) {
+                                    String fechaActual = data.child("fechaColocacion").getValue(String.class);
+
+                                    if (fechaMasCercana == null || Objects.requireNonNull(fechaActual).compareTo(fechaMasCercana) > 0) {
+                                        fechaMasCercana = fechaActual;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (fechaMasCercana != null) {
+                            textView.setText(fechaMasCercana);
+                        } else {
+                            textView.setText("N/A");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("FIREBASE", error.getMessage());
+                    }
+                });
+    }
+
+    public void obtenerFechaUltimaDesparasitacion(String idMascota, TextView textView) {
+        databaseReference.child(idMascota)
+                .orderByChild("fechaColocacion")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String fechaMasCercana = null;
+
+                        if (snapshot.exists()) {
+                            for (DataSnapshot data : snapshot.getChildren()) {
+                                if (Objects.requireNonNull(data.child("tipo").getValue(String.class))
+                                        .equalsIgnoreCase(EstadosCuentas.DESPARASITACION.toString())) {
+                                    String fechaActual = data.child("fechaColocacion").getValue(String.class);
+
+                                    if (fechaMasCercana == null || Objects.requireNonNull(fechaActual).compareTo(fechaMasCercana) > 0) {
+                                        fechaMasCercana = fechaActual;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (fechaMasCercana != null) {
+                            textView.setText(fechaMasCercana);
+                        } else {
+                            textView.setText("N/A");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("FIREBASE", error.getMessage());
+                    }
+                });
     }
 
 

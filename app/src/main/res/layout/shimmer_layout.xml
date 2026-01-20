@@ -1,74 +1,226 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
-    app:cardUseCompatPadding="true"
-    app:cardElevation="4dp">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp">
 
-        <View
-            android:id="@+id/shimmerImage"
-            android:layout_width="0dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/shimmer_background"
-            app:layout_constraintWidth_percent="0.2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-        <!-- Placeholder for Title -->
-        <View
-            android:id="@+id/shimmerTitle"
-            android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/shimmer_background"
-            app:layout_constraintWidth_percent="0.6"
-            app:layout_constraintStart_toEndOf="@id/shimmerImage"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-        <!-- Placeholder for Subtitle -->
-        <View
-            android:id="@+id/shimmerSubtitle"
-            android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:background="@drawable/shimmer_background"
-            app:layout_constraintWidth_percent="0.4"
-            app:layout_constraintStart_toEndOf="@id/shimmerImage"
-            app:layout_constraintTop_toBottomOf="@id/shimmerTitle" />
+            <View
+                android:id="@+id/shimmerImage"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <!-- Placeholder for Title -->
+            <View
+                android:id="@+id/shimmerTitle"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.6"
+                app:layout_constraintStart_toEndOf="@id/shimmerImage"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Placeholder for Buttons -->
-        <View
-            android:id="@+id/shimmerButton1"
-            android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/shimmer_background"
-            app:layout_constraintWidth_percent="0.2"
-            app:layout_constraintEnd_toStartOf="@id/shimmerButton2"
-            app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle" />
+            <!-- Placeholder for Subtitle -->
+            <View
+                android:id="@+id/shimmerSubtitle"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintStart_toEndOf="@id/shimmerImage"
+                app:layout_constraintTop_toBottomOf="@id/shimmerTitle" />
 
-        <View
-            android:id="@+id/shimmerButton2"
-            android:layout_width="0dp"
-            android:layout_height="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/shimmer_background"
-            app:layout_constraintWidth_percent="0.2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle" />
+            <!-- Placeholder for Buttons -->
+            <View
+                android:id="@+id/shimmerButton1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintEnd_toStartOf="@id/shimmerButton2"
+                app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                android:id="@+id/shimmerButton2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle" />
 
-</androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/shimmerImage1"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <!-- Placeholder for Title -->
+            <View
+                android:id="@+id/shimmerTitle1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.6"
+                app:layout_constraintStart_toEndOf="@id/shimmerImage1"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Placeholder for Subtitle -->
+            <View
+                android:id="@+id/shimmerSubtitle1"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintStart_toEndOf="@id/shimmerImage1"
+                app:layout_constraintTop_toBottomOf="@id/shimmerTitle1" />
+
+            <!-- Placeholder for Buttons -->
+            <View
+                android:id="@+id/shimmerButton11"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintEnd_toStartOf="@id/shimmerButton21"
+                app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle1" />
+
+            <View
+                android:id="@+id/shimmerButton21"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle1" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="10dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/shimmerImage2"
+                android:layout_width="0dp"
+                android:layout_height="55dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <!-- Placeholder for Title -->
+            <View
+                android:id="@+id/shimmerTitle2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.6"
+                app:layout_constraintStart_toEndOf="@id/shimmerImage2"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <!-- Placeholder for Subtitle -->
+            <View
+                android:id="@+id/shimmerSubtitle2"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.4"
+                app:layout_constraintStart_toEndOf="@id/shimmerImage2"
+                app:layout_constraintTop_toBottomOf="@id/shimmerTitle2" />
+
+            <!-- Placeholder for Buttons -->
+            <View
+                android:id="@+id/shimmerButton12"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintEnd_toStartOf="@id/shimmerButton22"
+                app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle2" />
+
+            <View
+                android:id="@+id/shimmerButton22"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/shimmer_background"
+                app:layout_constraintWidth_percent="0.2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shimmerSubtitle2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</LinearLayout>

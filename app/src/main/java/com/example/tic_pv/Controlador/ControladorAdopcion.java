@@ -531,7 +531,7 @@ public class ControladorAdopcion {
         });
     }
 
-    public void obtenerIdAdoptante(String idMascota, Callback<String> callback) {
+    public void obtenerNombreAdoptante(String idMascota, Callback<String> callback) {
         db.collection("Adopciones")
                 .whereEqualTo("mascotaAdopcion", idMascota)
                 .whereEqualTo("estado", EstadosCuentas.COMPLETADA.toString())
@@ -543,7 +543,24 @@ public class ControladorAdopcion {
                             for (QueryDocumentSnapshot documento : querySnapshot) {
                                 String idAdoptante = documento.getString("adoptante");
 
-                                callback.onComplete(idAdoptante);
+                                db.collection("Usuarios")
+                                        .whereEqualTo("cuentaUsuario", idAdoptante)
+                                        .get().addOnCompleteListener(task2 -> {
+                                            if (task2.isSuccessful()) {
+                                                QuerySnapshot querySnapshot2 = task2.getResult();
+                                                if (!querySnapshot2.isEmpty()) {
+                                                    for (QueryDocumentSnapshot documento2 : querySnapshot2) {
+                                                        String nombreAdoptante = documento2.getString("nombre");
+                                                        callback.onComplete(nombreAdoptante);
+                                                        return;
+                                                    }
+                                                } else {
+                                                    Log.e("FIREBASE", "No se encontró el adoptante");
+                                                }
+                                            } else {
+                                                Log.e("FIREBASE", "Error al obtener el adoptante");
+                                            }
+                                        });
                             }
 
                         } else {

@@ -1,5 +1,6 @@
 package com.example.tic_pv.Adaptadores;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -186,6 +187,7 @@ public class ListaUsuariosAdaptador extends RecyclerView.Adapter<ListaUsuariosAd
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filtrar (String filtro) {
         String busqueda = filtro.trim();
         ControladorUsuario controladorUsuario = new ControladorUsuario();

@@ -12,8 +12,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.tic_pv.Controlador.ControladorAdopcion;
 import com.example.tic_pv.Controlador.ControladorMascota;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
+import com.example.tic_pv.Controlador.SessionManager;
 import com.example.tic_pv.Modelo.Mascota;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.Fragments.HistorialMedicoFragment;
@@ -23,9 +25,10 @@ import com.example.tic_pv.databinding.ActivityVerMiMascotaBinding;
 public class VerMiMascotaActivity extends AppCompatActivity {
 
     private ActivityVerMiMascotaBinding binding;
-    private String idMascota;
+    private String idMascota, rolUsuario;
     private ControladorMascota controladorMascota = new ControladorMascota();
     private ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
+    private ControladorAdopcion controladorAdopcion = new ControladorAdopcion();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +40,21 @@ public class VerMiMascotaActivity extends AppCompatActivity {
             return insets;
         });
 
+        SessionManager sessionManager = new SessionManager(this);
+
+        rolUsuario = sessionManager.getUserRole();
+
         Intent i = getIntent();
         idMascota = i.getStringExtra("idMascota");
 
         binding = ActivityVerMiMascotaBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        if (rolUsuario.equalsIgnoreCase("Adoptante")) {
+            binding.tVTituloVerMiMascota.setText("Información de mi mascota");
+        } else {
+            binding.tVTituloVerMiMascota.setText("Información de mascota");
+        }
 
         // Crear instancia del Fragment para ver historial de vacunas
         Bundle bundleVacuna = new Bundle();
@@ -96,6 +109,33 @@ public class VerMiMascotaActivity extends AppCompatActivity {
                 controladorUtilidades.insertarImagenDesdeBDD(result.getFotoMascota(),
                         binding.iVFotoMiMascota,
                         context);
+
+                if (rolUsuario.equalsIgnoreCase("Voluntario")) {
+                    binding.rLDatosVoluntario.setVisibility(View.VISIBLE);
+                    if (result.isMascotaAdoptada()) {
+                        binding.tVMascotaAdoptada.setText("ADOPTADA");
+                        binding.tVMascotaAdoptada.setTextColor(getResources().getColor(R.color.dark_green, null));
+
+                        controladorAdopcion.obtenerNombreAdoptante(idMascota, new ControladorAdopcion.Callback<String>() {
+                            @Override
+                            public void onComplete(String resultAdoptante) {
+                                binding.tVAdoptanteMiMascota.setText(resultAdoptante);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                Log.e("ERROR", "No se pudo obtener el nombre del adoptante");
+                                binding.tVAdoptanteMiMascota.setText("N/A");
+                            }
+                        });
+                    } else {
+                        binding.tVMascotaAdoptada.setText("EN ADOPCIÓN");
+                        binding.tVMascotaAdoptada.setTextColor(getResources().getColor(R.color.blue_word, null));
+                        binding.tVAdoptanteMiMascota.setText("N/A");
+                    }
+                } else {
+                    binding.rLDatosVoluntario.setVisibility(View.GONE);
+                }
 
                 binding.tVNombreMiMascota.setText(result.getNombreMascota());
                 binding.tVEspecieMiMascota.setText(result.getEspecieMascota());

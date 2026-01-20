@@ -51,8 +51,14 @@ public class HistorialMedicoFragment extends Fragment {
         binding.recyViewListaVacunas.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyViewListaDesparasitaciones.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        binding.shimmerRecyListaVacunas.startShimmer();
+        binding.shimmerRecyListaDesparasitacion.startShimmer();
+
         if (isVacuna) {
-            binding.shimmerRecyListaVacunas.startShimmer();
+            binding.shimmerRecyListaVacunas.setVisibility(View.VISIBLE);
+            binding.shimmerRecyListaDesparasitacion.setVisibility(View.GONE);
+
+
             binding.shimmerRecyListaVacunas.setVisibility(View.VISIBLE);
 
             binding.lLAgregarVacuna.setVisibility(View.VISIBLE);
@@ -75,6 +81,10 @@ public class HistorialMedicoFragment extends Fragment {
                     binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
                     binding.recyViewListaVacunas.setVisibility(View.VISIBLE);
 
+                    if (listaVacunas.isEmpty()) {
+                        binding.tVNoHayResultadosListaVacunas.setVisibility(View.VISIBLE);
+                    }
+
                 }
 
                 @Override
@@ -84,6 +94,12 @@ public class HistorialMedicoFragment extends Fragment {
             });
 
         } else {
+            binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
+            binding.shimmerRecyListaDesparasitacion.setVisibility(View.VISIBLE);
+
+
+            binding.shimmerRecyListaDesparasitacion.setVisibility(View.VISIBLE);
+
             binding.lLAgregarVacuna.setVisibility(View.GONE);
             binding.recyViewListaVacunas.setVisibility(View.GONE);
 
@@ -95,18 +111,19 @@ public class HistorialMedicoFragment extends Fragment {
                 @Override
                 public void onComplete(List<Desparasitacion> result) {
 
-
                     listaDesparasitaciones.clear();
                     listaDesparasitaciones.addAll(result);
 
                     listaDesparasitacionesAdaptador = new ListaDesparasitacionesAdaptador(listaDesparasitaciones, idMascota);
                     binding.recyViewListaDesparasitaciones.setAdapter(listaDesparasitacionesAdaptador);
 
-//                if (listaDesparasitacionesAdaptador.getItemCount() == 0) {
-//                    binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.VISIBLE);
-//                } else {
-//                    binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.GONE);
-//                }
+                    binding.shimmerRecyListaDesparasitacion.stopShimmer();
+                    binding.shimmerRecyListaDesparasitacion.setVisibility(View.GONE);
+                    binding.recyViewListaDesparasitaciones.setVisibility(View.VISIBLE);
+
+                    if (listaDesparasitaciones.isEmpty()) {
+                        binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override

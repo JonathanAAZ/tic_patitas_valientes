@@ -99,9 +99,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tVNoHayResultadosListaVacunas"
         android:layout_marginTop="5dp"
-        android:visibility="visible">
-
+        android:visibility="gone">
         <include layout="@layout/shimmer_layout" />
+
     </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -110,6 +110,17 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/shimmerRecyListaVacunas"
         android:visibility="gone" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerRecyListaDesparasitacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tVNoHayResultadosListaDesparasitaciones"
+        android:layout_marginTop="5dp"
+        android:visibility="visible">
+
+        <include layout="@layout/shimmer_layout" />
+    </com.facebook.shimmer.ShimmerFrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyViewListaDesparasitaciones"

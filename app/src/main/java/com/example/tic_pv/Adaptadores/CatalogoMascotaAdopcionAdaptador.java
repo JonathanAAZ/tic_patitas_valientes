@@ -1,5 +1,6 @@
 package com.example.tic_pv.Adaptadores;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -113,6 +114,7 @@ public class CatalogoMascotaAdopcionAdaptador extends RecyclerView.Adapter <Cata
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void filtrar (String filtro, String criterio, TextView tVNoExiste) {
         String busqueda = criterio.trim();
         ControladorMascota controladorMascota = new ControladorMascota();
