@@ -32,6 +32,9 @@
         android:theme="@style/Theme.TIC_PV"
         tools:targetApi="31">
         <activity
+            android:name=".Vista.VerSeguimientosVoluntarioActivity"
+            android:exported="false" />
+        <activity
             android:name=".Vista.EditarHistorialMedicoActivity"
             android:exported="false" />
         <activity

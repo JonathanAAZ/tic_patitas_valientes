@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:id="@+id/rLFotosAdoptanteMascota">
+
+            <!-- Primera imagen del voluntario en un círculo -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivFotoAdoptanteSegui"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo_patitas_valientes"
+                android:layout_marginStart="10dp"
+                app:civ_border_width="3dp"
+                android:layout_marginEnd="8dp" />
+
+            <!-- Segunda imagen superpuesta en un círculo (estilo de Venn) -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivFotoMascotaSegui"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/logo_patitas_valientes"
+                android:layout_toEndOf="@id/ivFotoAdoptanteSegui"
+                android:layout_marginStart="-35dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="25dp"
+                app:civ_border_width="3dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rLContenidoSeguiVoluntario"
+            android:layout_toEndOf="@+id/rLFotosAdoptanteMascota">
+
+            <TextView
+                android:id="@+id/tVEncNombreAdoptanteSeguiVoluntario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Adoptante:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreAdoptanteSeguiVoluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/tVEncNombreAdoptanteSeguiVoluntario"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncCedulaAdoptanteSeguiVoluntario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Cédula:"
+                android:layout_below="@+id/tVNombreAdoptanteSeguiVoluntario"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVCedulaAdoptanteSeguiVoluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/tVNombreAdoptanteSeguiVoluntario"
+                android:layout_toEndOf="@+id/tVEncCedulaAdoptanteSeguiVoluntario"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncNombreMascotaSeguiVoluntario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Mascota:"
+                android:layout_below="@+id/tVCedulaAdoptanteSeguiVoluntario"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreMascotaSeguiVoluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/tVCedulaAdoptanteSeguiVoluntario"
+                android:layout_toEndOf="@+id/tVEncNombreMascotaSeguiVoluntario"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncEstadoSeguiVoluntario"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Estado:"
+                android:layout_below="@+id/tVNombreMascotaSeguiVoluntario"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEstadoSeguiVoluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/tVNombreMascotaSeguiVoluntario"
+                android:layout_toEndOf="@+id/tVEncEstadoSeguiVoluntario"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/lLBotonesSeguiVoluntario"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/tVEstadoSeguiVoluntario"
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/lLResponderSeguiVoluntario"
+                    android:orientation="horizontal"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:gravity="center"
+                    android:focusable="true"
+                    android:clickable="true"
+                    android:visibility="visible"
+                    android:backgroundTint="@color/dark_green"
+                    android:backgroundTintMode="multiply"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:background="@drawable/border">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:backgroundTint="@color/white"
+                        android:background="@drawable/ic_editar"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:text="Responder seguimiento"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
