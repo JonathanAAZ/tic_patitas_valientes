@@ -34,8 +34,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/tVBtnListaMascotas"
-            android:text="Catálogo de mascotas de adopción"
+            android:text="Mascotas"
             android:layout_below="@+id/iVBotonListaMascotas"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonMisSeguimientos"
+            android:layout_below="@+id/tVBtnListaMascotas"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnMisSeguimientos"
+            android:text="Mis seguimientos"
+            android:layout_below="@+id/iVBotonMisSeguimientos"
             android:textAlignment="center"
             android:textSize="20sp"
             android:textColor="@color/black"/>
