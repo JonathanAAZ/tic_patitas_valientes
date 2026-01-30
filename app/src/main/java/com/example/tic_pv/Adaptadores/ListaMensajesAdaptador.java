@@ -1,10 +1,8 @@
 package com.example.tic_pv.Adaptadores;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,7 +30,12 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
     @NonNull
     @Override
     public MensajeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mensaje, null, false);
+        View view;
+        if (viewType == 1) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mensaje_emisor, parent, false);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mensaje_receptor, parent, false);
+        }
         return new MensajeViewHolder(view);
     }
 
@@ -41,20 +44,11 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
         Mensaje mensaje = listaMensajes.get(position);
 
         // Obtener los parámetros del contenedor del texto
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.contenedorTexto.getLayoutParams();
-
         if (usuarioActual.getUid().equalsIgnoreCase(mensaje.getIdEmisor())) {
-            // Mensaje del usuario actual: alinearlo a la derecha (END)
-            params.gravity = Gravity.END; // Posicionar el contenedor completo al END
-            holder.contenedorTexto.setLayoutParams(params); // Aplicar cambios dinámicos
             holder.tVEmisor.setText("Tú"); // Texto del emisor
         } else {
-            // Mensaje del receptor: alinearlo a la izquierda (START)
-            params.gravity = Gravity.START; // Posicionar el contenedor completo al START
-            holder.contenedorTexto.setLayoutParams(params); // Aplicar cambios dinámicos
             holder.tVEmisor.setText(mensaje.getEmisor()); // Texto del emisor
         }
-
         // Configurar el contenido del mensaje
         holder.tVContenido.setText(mensaje.getContenido());
     }
@@ -70,9 +64,17 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
         public MensajeViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            contenedorTexto = itemView.findViewById(R.id.contenedorTexto);
             tVEmisor = itemView.findViewById(R.id.tVEmisor);
             tVContenido = itemView.findViewById(R.id.tVContenido);
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if (usuarioActual.getUid().equalsIgnoreCase(listaMensajes.get(position).getIdEmisor())) {
+            return 1; // Tipo de vista para mensajes enviados por el usuario actual
+        } else {
+            return -1; // Tipo de vista para mensajes recibidos
         }
     }
 }
