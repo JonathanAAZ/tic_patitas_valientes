@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Fondo principal de la nube -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" /> <!-- Fondo blanco -->
+            <corners android:radius="16dp" /> <!-- Bordes redondeados -->
+            <stroke android:width="2dp" android:color="@android:color/darker_gray" />
+        </shape>
+    </item>
+
+    <!-- Cola de la nube -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/white" />
+            <stroke android:width="2dp" android:color="@android:color/darker_gray" />
+            <corners android:radius="4dp" />
+        </shape>
+        <!-- Posición de la cola en el diseño -->
+        <gravity android:layout_gravity="bottom|start" />
+        <rotation android:angle="45" />
+    </item>
+</layer-list>

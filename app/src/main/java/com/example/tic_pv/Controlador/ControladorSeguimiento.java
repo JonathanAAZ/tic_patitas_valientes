@@ -2,6 +2,7 @@ package com.example.tic_pv.Controlador;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 
 import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Mascota;
+import com.example.tic_pv.Modelo.Mensaje;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.Modelo.Usuario;
 import com.example.tic_pv.R;
@@ -21,6 +23,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -31,6 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ControladorSeguimiento {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -49,7 +57,7 @@ public class ControladorSeguimiento {
         mapSeguimiento.put("nombreMascota", seguimiento.getNombreMascota());
         mapSeguimiento.put("idVoluntario", "");
         mapSeguimiento.put("nombreVoluntario", "");
-        mapSeguimiento.put("listaPreguntas", "");
+        mapSeguimiento.put("listaMensajes", seguimiento.getListaMensajes());
 
         db.collection("Seguimientos").add(mapSeguimiento)
                 .addOnSuccessListener(documentReference -> {
@@ -68,6 +76,7 @@ public class ControladorSeguimiento {
                 if (document.exists()) {
                     seguimiento.setIdMascota(idMascota);
                     seguimiento.setNombreMascota(document.getString("nombre"));
+                    seguimiento.setListaMensajes(UUID.randomUUID().toString());
 
                     db.collection("Usuarios").whereEqualTo("cuentaUsuario", idCuenta).get().addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
@@ -119,7 +128,7 @@ public class ControladorSeguimiento {
                         seguimiento.setNombreMascota(documentSnapshot.getString("nombreMascota"));
                         seguimiento.setIdVoluntario(documentSnapshot.getString("idVoluntario"));
                         seguimiento.setNombreVoluntario(documentSnapshot.getString("nombreVoluntario"));
-                        seguimiento.setListaPreguntas(documentSnapshot.getString("listaPreguntas"));
+                        seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
 
                         if (seguimiento.getIdVoluntario().equalsIgnoreCase("") &&
                         seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
@@ -151,7 +160,7 @@ public class ControladorSeguimiento {
                         seguimiento.setNombreMascota(documentSnapshot.getString("nombreMascota"));
                         seguimiento.setIdVoluntario(documentSnapshot.getString("idVoluntario"));
                         seguimiento.setNombreVoluntario(documentSnapshot.getString("nombreVoluntario"));
-                        seguimiento.setListaPreguntas(documentSnapshot.getString("listaPreguntas"));
+                        seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
 
                         if (seguimiento.getIdVoluntario().equalsIgnoreCase(idVoluntario) &&
                                 seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
@@ -182,8 +191,8 @@ public class ControladorSeguimiento {
                             seguimiento.setNombreVoluntario(nombreVoluntario);
 
                             Map<String, Object> mapSeguimiento = new HashMap<>();
-                            mapSeguimiento.put("idVoluntario", idVoluntario);
-                            mapSeguimiento.put("nombreVoluntario", nombreVoluntario);
+                            mapSeguimiento.put("idVoluntario", seguimiento.getIdVoluntario());
+                            mapSeguimiento.put("nombreVoluntario", seguimiento.getNombreVoluntario());
 
                             db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                     .addOnSuccessListener(unused -> {
@@ -230,8 +239,8 @@ public class ControladorSeguimiento {
                         seguimiento.setNombreVoluntario(nombreVoluntario);
 
                         Map<String, Object> mapSeguimiento = new HashMap<>();
-                        mapSeguimiento.put("idVoluntario", idVoluntario);
-                        mapSeguimiento.put("nombreVoluntario", nombreVoluntario);
+                        mapSeguimiento.put("idVoluntario", seguimiento.getIdVoluntario());
+                        mapSeguimiento.put("nombreVoluntario", seguimiento.getNombreVoluntario());
 
                         db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                 .addOnSuccessListener(unused -> {
@@ -260,5 +269,40 @@ public class ControladorSeguimiento {
                 .addOnFailureListener(e ->
                         Log.e("FIRESTORE", "Error al obtener el seguimiento"));
     }
+
+    public void obtenerOManejarMensajes(String idChat, Callback<ArrayList<Mensaje>> callback) {
+        DatabaseReference messagesRef = FirebaseDatabase.getInstance()
+                .getReference("chats")
+                .child(idChat)
+                .child("mensajes");
+
+        messagesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()) {
+                    // Si el nodo no existe, lo creamos
+                    messagesRef.setValue(new ArrayList<>()); // Crear el nodo vacío
+                    callback.onComplete(new ArrayList<>()); // Retornamos una lista vacía
+                } else {
+                    // Si el nodo existe, obtenemos los mensajes
+                    ArrayList<Mensaje> mensajes = new ArrayList<>();
+                    for (DataSnapshot hijo : dataSnapshot.getChildren()) {
+                        Mensaje mensaje = hijo.getValue(Mensaje.class);
+                        if (mensaje != null) {
+                            mensajes.add(mensaje);
+                        }
+                    }
+                    callback.onComplete(mensajes); // Retornamos la lista completa
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // En caso de error al leer de Firebase
+                callback.onError(databaseError.toException());
+            }
+        });
+    }
+
 
 }

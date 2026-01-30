@@ -1,8 +1,13 @@
 package com.example.tic_pv.Modelo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 
-public class Seguimiento {
+public class Seguimiento implements Parcelable {
     private String id;
     private String estado;
     private String idAdoptante;
@@ -12,13 +17,13 @@ public class Seguimiento {
     private String nombreMascota;
     private String nombreVoluntario;
 
-    private String listaPreguntas;
+    private String listaMensajes;
 
-    public Seguimiento(String estado, String idAdoptante, String idMascota, String listaPreguntas) {
+    public Seguimiento(String estado, String idAdoptante, String idMascota, String listaMensajes) {
         this.estado = estado;
         this.idAdoptante = idAdoptante;
         this.idMascota = idMascota;
-        this.listaPreguntas = listaPreguntas;
+        this.listaMensajes = listaMensajes;
     }
 
     public Seguimiento() {
@@ -88,12 +93,52 @@ public class Seguimiento {
         this.nombreVoluntario = nombreVoluntario;
     }
 
-    public String getListaPreguntas() {
-        return listaPreguntas;
+    public String getListaMensajes() {
+        return listaMensajes;
     }
 
-    public void setListaPreguntas(String listaPreguntas) {
-        this.listaPreguntas = listaPreguntas;
+    public void setListaMensajes(String listaPreguntas) {
+        this.listaMensajes = listaPreguntas;
     }
+
+    protected Seguimiento (Parcel in) {
+        id = in.readString();
+        estado = in.readString();
+        idAdoptante = in.readString();
+        idMascota = in.readString();
+        idVoluntario = in.readString();
+        nombreAdoptante = in.readString();
+        nombreMascota = in.readString();
+        nombreVoluntario = in.readString();
+        listaMensajes = in.readString();
+    }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(estado);
+        dest.writeString(idAdoptante);
+        dest.writeString(idMascota);
+        dest.writeString(idVoluntario);
+        dest.writeString(nombreAdoptante);
+        dest.writeString(nombreMascota);
+        dest.writeString(nombreVoluntario);
+        dest.writeString(listaMensajes);
+    }
+    public static final Creator<Seguimiento> CREATOR = new Creator<Seguimiento>() {
+        @Override
+        public Seguimiento createFromParcel(Parcel in) {
+            return new Seguimiento(in);
+        }
+
+        @Override
+        public Seguimiento[] newArray(int size) {
+            return new Seguimiento[size];
+        }
+    };
 }
 
