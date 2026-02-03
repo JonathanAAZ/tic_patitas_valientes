@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border"
+        android:backgroundTint="@color/yellow"
+        android:padding="2dp">
+
+        <!-- Título del diálogo -->
+        <TextView
+            android:id="@+id/tVEncImagenAmpliada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Puede ampliar la imagen o reproducir el video."
+            android:textAlignment="center"
+            android:textColor="@color/lila"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <com.jsibbold.zoomage.ZoomageView
+            android:id="@+id/iVFotoMultimedia"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_below="@+id/tVEncImagenAmpliada"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/celeste"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:visibility="gone" />
+
+        <FrameLayout
+            android:id="@+id/frameVideoMultimedia"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_below="@+id/iVFotoMultimedia"
+            android:layout_margin="10dp"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/celeste"
+            android:scaleType="fitCenter"
+            android:visibility="gone">
+
+            <VideoView
+                android:id="@+id/videoViewVisualizar"
+                android:layout_width="wrap_content"
+                android:layout_height="500dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/iVReproducirVideoMultimedia"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_reproducir"
+                android:backgroundTint="@color/white"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/lLEnviarMultimedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frameVideoMultimedia"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/blue_2"
+            android:clickable="true"
+            android:focusable="true"
+            android:orientation="horizontal"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_enviar" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Enviar"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

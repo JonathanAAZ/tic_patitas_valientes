@@ -68,7 +68,7 @@ public class ControladorSeguimiento {
                 });
     }
 
-    public void crearSeguimiento (String idCuenta, String idMascota) {
+    public void crearSeguimiento(String idCuenta, String idMascota) {
         Seguimiento seguimiento = new Seguimiento();
         db.collection("Mascotas").document(idMascota).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -103,11 +103,13 @@ public class ControladorSeguimiento {
 
     public interface Callback<T> {
         void onComplete(T result);
+
         void onError(Exception e);
     }
 
     public interface CallbackSeguimientosVol<T> {
         void onComplete(T result);
+
         void onError(Exception e);
     }
 
@@ -131,7 +133,7 @@ public class ControladorSeguimiento {
                         seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
 
                         if (seguimiento.getIdVoluntario().equalsIgnoreCase("") &&
-                        seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                                seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
                             listaSeguimientos.add(seguimiento);
                         }
                     }
@@ -196,20 +198,20 @@ public class ControladorSeguimiento {
 
                             db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                     .addOnSuccessListener(unused -> {
-                                            Toast.makeText(context, "Seguimiento asignado correctamente.", Toast.LENGTH_SHORT).show();
-                                            obtenerSeguimientosDisponibles(new Callback<ArrayList<Seguimiento>>() {
-                                                @Override
-                                                public void onComplete(ArrayList<Seguimiento> result) {
-                                                    nuevaLista.onComplete(result);
+                                        Toast.makeText(context, "Seguimiento asignado correctamente.", Toast.LENGTH_SHORT).show();
+                                        obtenerSeguimientosDisponibles(new Callback<ArrayList<Seguimiento>>() {
+                                            @Override
+                                            public void onComplete(ArrayList<Seguimiento> result) {
+                                                nuevaLista.onComplete(result);
 
-                                                    controladorNotificaciones.enviarNotificacionAsignacionSeguimiento(seguimiento);
-                                                }
+                                                controladorNotificaciones.enviarNotificacionAsignacionSeguimiento(seguimiento);
+                                            }
 
-                                                @Override
-                                                public void onError(Exception e) {
-                                                    Log.e("ERROR", "Error al actualizar los seguimientos.");
-                                                }
-                                            });
+                                            @Override
+                                            public void onError(Exception e) {
+                                                Log.e("ERROR", "Error al actualizar los seguimientos.");
+                                            }
+                                        });
                                     })
                                     .addOnFailureListener(e ->
                                             Toast.makeText(context, "Error al asignar el seguimiento.", Toast.LENGTH_SHORT).show());
@@ -230,44 +232,51 @@ public class ControladorSeguimiento {
                                                String nombreVoluntario,
                                                CallbackSeguimientosVol<ArrayList<Seguimiento>> nuevaLista) {
 
-        db.collection("Seguimientos").document(idSeguimiento).get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    if (documentSnapshot.exists()) {
-                        Seguimiento seguimiento = new Seguimiento();
-                        seguimiento.setId(documentSnapshot.getId());
-                        seguimiento.setIdVoluntario(idVoluntario);
-                        seguimiento.setNombreVoluntario(nombreVoluntario);
+        if (idVoluntarioOriginal.equalsIgnoreCase(idVoluntario)) {
+            Toast.makeText(context, "El seguimiento ya se encuentra asignado a este voluntario.", Toast.LENGTH_SHORT).show();
+        } else {
+            db.collection("Seguimientos").document(idSeguimiento).get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            Seguimiento seguimiento = new Seguimiento();
+                            seguimiento.setId(documentSnapshot.getId());
+                            seguimiento.setIdVoluntario(idVoluntario);
+                            seguimiento.setNombreVoluntario(nombreVoluntario);
 
-                        Map<String, Object> mapSeguimiento = new HashMap<>();
-                        mapSeguimiento.put("idVoluntario", seguimiento.getIdVoluntario());
-                        mapSeguimiento.put("nombreVoluntario", seguimiento.getNombreVoluntario());
+                            Map<String, Object> mapSeguimiento = new HashMap<>();
+                            mapSeguimiento.put("idVoluntario", seguimiento.getIdVoluntario());
+                            mapSeguimiento.put("nombreVoluntario", seguimiento.getNombreVoluntario());
 
-                        db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
-                                .addOnSuccessListener(unused -> {
-                                    Toast.makeText(context, "Seguimiento reasignado correctamente.", Toast.LENGTH_SHORT).show();
-                                    obtenerSeguimientosVoluntario(idVoluntarioOriginal, new CallbackSeguimientosVol<ArrayList<Seguimiento>>() {
-                                        @Override
-                                        public void onComplete(ArrayList<Seguimiento> result) {
-                                            nuevaLista.onComplete(result);
 
-                                            controladorNotificaciones.enviarNotificacionAsignacionSeguimiento(seguimiento);
-                                        }
+                            db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
+                                    .addOnSuccessListener(unused -> {
+                                        Toast.makeText(context, "Seguimiento reasignado correctamente.", Toast.LENGTH_SHORT).show();
+                                        obtenerSeguimientosVoluntario(idVoluntarioOriginal, new CallbackSeguimientosVol<ArrayList<Seguimiento>>() {
+                                            @Override
+                                            public void onComplete(ArrayList<Seguimiento> result) {
+                                                nuevaLista.onComplete(result);
 
-                                        @Override
-                                        public void onError(Exception e) {
+                                                controladorNotificaciones.enviarNotificacionAsignacionSeguimiento(seguimiento);
+                                            }
 
-                                        }
-                                    });
-                                })
-                                .addOnFailureListener(e ->
-                                        Toast.makeText(context, "Error al asignar el seguimiento.", Toast.LENGTH_SHORT).show());
+                                            @Override
+                                            public void onError(Exception e) {
 
-                    } else {
-                        Log.e("FIRESTORE", "Seguimiento no encontrado.");
-                    }
-                })
-                .addOnFailureListener(e ->
-                        Log.e("FIRESTORE", "Error al obtener el seguimiento"));
+                                            }
+                                        });
+                                    })
+                                    .addOnFailureListener(e ->
+                                            Toast.makeText(context, "Error al asignar el seguimiento.", Toast.LENGTH_SHORT).show());
+
+                        } else {
+                            Log.e("FIRESTORE", "Seguimiento no encontrado.");
+                        }
+                    })
+                    .addOnFailureListener(e ->
+                            Log.e("FIRESTORE", "Error al obtener el seguimiento"));
+        }
+
+
     }
 
     public void obtenerOManejarMensajes(String idChat, Callback<ArrayList<Mensaje>> callback) {
