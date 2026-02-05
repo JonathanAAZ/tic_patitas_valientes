@@ -417,44 +417,44 @@ public class ControladorAdopcion {
     public void subirVideoCompromiso(Uri video, LinearLayout barraProgreso, String urlFotoAdop,
                                      Adopcion adopcion, ContratoAdopcion contrato, Context context) {
 
-        //Para ahorrar creditos, no se sube el video usando esto
-        String urlVideo = "https://res.cloudinary.com/de3pikkwa/video/upload/v1744002396/ex4gs7wl60das4wnqocm.mp4";
-        completarAdopcionContratoFirebase(urlFotoAdop, urlVideo, adopcion,
-                contrato, barraProgreso, context);
+//        //Para ahorrar creditos, no se sube el video usando esto
+//        String urlVideo = "https://res.cloudinary.com/de3pikkwa/video/upload/v1744002396/ex4gs7wl60das4wnqocm.mp4";
+//        completarAdopcionContratoFirebase(urlFotoAdop, urlVideo, adopcion,
+//                contrato, barraProgreso, context);
 
         // Subir video a Cloudinary
-//        MediaManager.get().upload(video)
-//                .option("resource_type", "video") // Asegura que Cloudinary lo reconozca como video
-//                .option("transformation", new Transformation<>()
-//                        .quality("auto:low") // Reduce calidad automáticamente
-//                        .fetchFormat("mp4") // Asegura formato MP4
-//                )
-//                .callback(new UploadCallback() {
-//                    @Override
-//                    public void onStart(String requestId) {
-//                        Log.d("CLOUDINARY", "Subiendo video...");
-//                    }
-//
-//                    @Override
-//                    public void onProgress(String requestId, long bytes, long totalBytes) {}
-//
-//                    @Override
-//                    public void onSuccess(String requestId, Map resultData) {
-//                        String urlVideo = (String) resultData.get("secure_url");
-//                        completarAdopcionContratoFirebase(urlFotoAdop, urlVideo, adopcion,
-//                                contrato, barraProgreso, context);
-//                    }
-//
-//                    @Override
-//                    public void onError(String requestId, ErrorInfo error) {
-//                        Toast.makeText(context, "Ocurrió un error al intentar subir el vídeo de compromiso.", Toast.LENGTH_SHORT).show();
-//                        Log.e("CLOUDINARY", "Error al subir video: " + error.getDescription());
-//                        barraProgreso.setVisibility(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onReschedule(String requestId, ErrorInfo error) {}
-//                }).dispatch();
+        MediaManager.get().upload(video)
+                .option("resource_type", "video") // Asegura que Cloudinary lo reconozca como video
+                .option("transformation", new Transformation<>()
+                        .quality("auto:low") // Reduce calidad automáticamente
+                        .fetchFormat("mp4") // Asegura formato MP4
+                )
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                        Log.d("CLOUDINARY", "Subiendo video...");
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {}
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        String urlVideo = (String) resultData.get("secure_url");
+                        completarAdopcionContratoFirebase(urlFotoAdop, urlVideo, adopcion,
+                                contrato, barraProgreso, context);
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        Toast.makeText(context, "Ocurrió un error al intentar subir el vídeo de compromiso.", Toast.LENGTH_SHORT).show();
+                        Log.e("CLOUDINARY", "Error al subir video: " + error.getDescription());
+                        barraProgreso.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {}
+                }).dispatch();
     }
 
     private void completarAdopcionContratoFirebase(String urlFirma, String videoComp, Adopcion adopcion,

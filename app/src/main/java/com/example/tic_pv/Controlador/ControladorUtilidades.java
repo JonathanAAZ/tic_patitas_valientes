@@ -944,5 +944,36 @@ public class ControladorUtilidades {
         });
     }
 
+    public boolean esImagen(String url) {
+        // Detectar por la ruta en Cloudinary
+        if (url.contains("/image/upload/")) {
+            return true;
+        }
+
+        // Detectar por extensión del archivo
+        String urlLowerCase = url.toLowerCase();
+        return urlLowerCase.endsWith(".jpg") ||
+                urlLowerCase.endsWith(".jpeg") ||
+                urlLowerCase.endsWith(".png") ||
+                urlLowerCase.endsWith(".gif") ||
+                urlLowerCase.endsWith(".bmp") ||
+                urlLowerCase.endsWith(".webp");
+    }
+
+    public boolean esVideo(String url) {
+        // Detectar por la ruta en Cloudinary
+        if (url.contains("/video/upload/")) {
+            return true;
+        }
+
+        // Detectar por extensión del archivo
+        String urlLowerCase = url.toLowerCase();
+        return urlLowerCase.endsWith(".mp4") ||
+                urlLowerCase.endsWith(".avi") ||
+                urlLowerCase.endsWith(".mov") ||
+                urlLowerCase.endsWith(".mkv") ||
+                urlLowerCase.endsWith(".webm") ||
+                urlLowerCase.endsWith(".3gp");
+    }
 
 }

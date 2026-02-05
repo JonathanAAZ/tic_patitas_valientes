@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -67,6 +68,8 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
     private FrameLayout frameLayoutVisualizarMultimedia;
     private Uri videoUri;
     private File archivoFoto;
+    private LinearLayout enviarMultimedia;
+    private ProgressBar barraProgresoSubirMultimedia;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,8 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         visualizarVideo = dialogVisualizarMultimedia.findViewById(R.id.videoViewVisualizar);
         frameLayoutVisualizarMultimedia = dialogVisualizarMultimedia.findViewById(R.id.frameVideoMultimedia);
         iVReproducirVideo = dialogVisualizarMultimedia.findViewById(R.id.iVReproducirVideoMultimedia);
+        enviarMultimedia = dialogVisualizarMultimedia.findViewById(R.id.lLEnviarMultimedia);
+        barraProgresoSubirMultimedia = dialogVisualizarMultimedia.findViewById(R.id.barraProgresoEnviarMultimedia);
 
         // Configurar el VideoView
         configurarVideoView();
@@ -263,6 +268,26 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
             visualizarVideo.setVisibility(View.VISIBLE);
 
         });
+
+        enviarMultimedia.setOnClickListener(v -> {
+            if (esParaFoto || accionTomarFoto) {
+                controladorSeguimiento.subirFotoChat(videoUri,
+                        seguimiento,
+                        dialogVisualizarMultimedia,
+                        mensajesRef,
+                        enviarMultimedia,
+                        barraProgresoSubirMultimedia);
+            } else {
+                controladorSeguimiento.subirVideoChat(videoUri,
+                        seguimiento,
+                        dialogVisualizarMultimedia,
+                        mensajesRef,
+                        enviarMultimedia,
+                        barraProgresoSubirMultimedia);
+            }
+
+        });
+
     }
 
     private void configurarVideoView() {

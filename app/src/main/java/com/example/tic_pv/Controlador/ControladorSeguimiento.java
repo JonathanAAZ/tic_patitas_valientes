@@ -1,14 +1,22 @@
 package com.example.tic_pv.Controlador;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.cloudinary.Transformation;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Mascota;
 import com.example.tic_pv.Modelo.Mensaje;
@@ -38,6 +46,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 public class ControladorSeguimiento {
@@ -311,6 +320,125 @@ public class ControladorSeguimiento {
                 callback.onError(databaseError.toException());
             }
         });
+    }
+
+    public void subirFotoChat (Uri foto,
+                               Seguimiento seguimiento,
+                               Dialog dialog,
+                               DatabaseReference databaseReference,
+                               LinearLayout enviarMultimedia,
+                               ProgressBar barraProgreso) {
+
+        MediaManager.get().upload(foto)
+                .option("resource_type", "image") // Asegura que Cloudinary lo reconozca como imagen
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                        Log.d("CLOUDINARY", "Subiendo imagen...");
+                        enviarMultimedia.setEnabled(false);
+                        barraProgreso.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {}
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        String urlFoto = Objects.requireNonNull(resultData.get("secure_url")).toString();
+                        Log.d("CLOUDINARY", "Video subido correctamente: " + urlFoto);
+                        enviarMensaje(urlFoto, databaseReference, seguimiento);
+                        dialog.dismiss();
+                        enviarMultimedia.setEnabled(true);
+                        barraProgreso.setVisibility(View.GONE);
+
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        Log.e("CLOUDINARY", "Error al subir imagen: " + error.getDescription());
+                        barraProgreso.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {}
+                }).dispatch();
+    }
+
+    public void subirVideoChat(Uri video,
+                               Seguimiento seguimiento,
+                               Dialog dialog,
+                               DatabaseReference databaseReference,
+                               LinearLayout enviarMultimedia,
+                               ProgressBar barraProgreso) {
+        MediaManager.get().upload(video)
+                .option("resource_type", "video")
+                .option("transformation", new Transformation<>()
+                        .quality("auto:low")
+                        .fetchFormat("mp4")
+                )
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                        Log.d("CLOUDINARY", "Subiendo video...");
+                        enviarMultimedia.setEnabled(false);
+                        barraProgreso.setVisibility(View.VISIBLE);
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        String urlVideo = Objects.requireNonNull(resultData.get("secure_url")).toString();
+                        Log.d("CLOUDINARY", "Video subido correctamente: " + urlVideo);
+                        enviarMensaje(urlVideo, databaseReference, seguimiento);
+                        dialog.dismiss();
+                        enviarMultimedia.setEnabled(true);
+                        barraProgreso.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        Log.e("CLOUDINARY", "Error al subir el video: " + error.getDescription());
+                        barraProgreso.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                    }
+                }).dispatch();
+
+    }
+
+    private void enviarMensaje(String urlMultimedia, DatabaseReference mensajesRef, Seguimiento seguimiento) {
+        if (!urlMultimedia.isEmpty()) {
+            // Generate a unique Firebase key for the message
+            DatabaseReference mensajeRef = mensajesRef.push(); // Generate a node with a unique ID
+            String mensajeId = mensajeRef.getKey(); // Get the key (ID)
+
+            // Create the new message object and assign the Firebase key as ID
+            Mensaje nuevoMensaje = new Mensaje(
+                    mensajeId,  // Use the key generated by Firebase as the ID
+                    seguimiento.getNombreVoluntario(),
+                    seguimiento.getIdVoluntario(),
+                    urlMultimedia,
+                    seguimiento.getNombreAdoptante(),
+                    seguimiento.getIdAdoptante(),
+                    System.currentTimeMillis()
+            );
+
+            // Save the message in Firebase using the generated key
+            mensajeRef.setValue(nuevoMensaje).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    Log.d("FIREBASE", "Mensaje enviado correctamente");
+                } else {
+                    Log.e("FIREBASE", "Error al enviar el mensaje");
+                }
+            });
+        }
     }
 
 
