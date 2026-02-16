@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -60,7 +62,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
     private ArrayList<Mensaje> listaMensajes;
     private DatabaseReference mensajesRef;
     private ActivitySeguimientoVoluntarioChatBinding binding;
-    private boolean accionTomarFoto, esParaFoto, reproduciendo;
+    private boolean accionTomarFoto, esParaFoto, reproduciendo, cardVisible;
     private final ControladorSeguimiento controladorSeguimiento = new ControladorSeguimiento();
     private Dialog dialogVisualizarMultimedia;
     private ImageView visualizarFoto, iVReproducirVideo;
@@ -87,8 +89,10 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         binding = ActivitySeguimientoVoluntarioChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        cardVisible = false;
+
         listaMensajes = new ArrayList<>();
-        listaMensajesAdaptador = new ListaMensajesAdaptador(listaMensajes);
+        listaMensajesAdaptador = new ListaMensajesAdaptador(listaMensajes, this);
         binding.recyclerViewChatSeguiVol.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewChatSeguiVol.setAdapter(listaMensajesAdaptador);
 
@@ -288,6 +292,50 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
 
         });
 
+        binding.lLMostrarPreguntasFrecuentes.setOnClickListener(v -> {
+
+            if (!cardVisible) {
+                Animation slideUp = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+                binding.cardPreguntasFrecuentes.setVisibility(View.VISIBLE);
+                binding.cardPreguntasFrecuentes.startAnimation(slideUp);
+                cardVisible = !cardVisible;
+
+                binding.iVFlechaPreguntasFrecuentes.animate()
+                        .rotation(180)
+                        .setDuration(300)
+                        .start();
+            } else {
+                Animation slideDown = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+                binding.cardPreguntasFrecuentes.setVisibility(View.VISIBLE);
+                binding.cardPreguntasFrecuentes.startAnimation(slideDown);
+                cardVisible = !cardVisible;
+
+                binding.iVFlechaPreguntasFrecuentes.animate()
+                        .rotation(0)
+                        .setDuration(300)
+                        .start();
+            }
+
+
+        });
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // Liberar todos los players cuando la actividad se pausa
+        if (listaMensajesAdaptador != null) {
+            listaMensajesAdaptador.releaseAllPlayers();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (listaMensajesAdaptador != null) {
+            listaMensajesAdaptador.releaseAllPlayers();
+        }
     }
 
     private void configurarVideoView() {

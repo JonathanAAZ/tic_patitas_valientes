@@ -71,75 +71,420 @@
             android:id="@+id/lLOpcionesMensajeria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:padding="8dp">
 
-            <!-- Campo para escribir mensajes -->
-            <EditText
-                android:id="@+id/eTEscribirMensaje"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:background="@android:drawable/editbox_background"
-                android:hint="Escriba un mensaje"
-                android:padding="8dp"
-                android:textSize="16sp" />
-
-            <!-- Botón para adjuntar archivos -->
-            <ImageView
-                android:id="@+id/iVAdjuntarArchivo"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="2dp"
-                android:background="@drawable/ic_clip"
-                android:backgroundTint="@color/blue_2"
-                android:clickable="true"
-                android:focusable="true" />
-
-            <!-- Botón para enviar mensajes -->
+            <!-- Botón para mostrar preguntas frecuentes -->
             <LinearLayout
-                android:id="@+id/lLEnviarMensaje"
-                android:layout_width="wrap_content"
+                android:id="@+id/lLMostrarPreguntasFrecuentes"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/border"
                 android:backgroundTint="@color/blue_2"
                 android:clickable="true"
                 android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:backgroundTint="@color/white"
-                    android:src="@drawable/ic_enviar" />
+                    android:background="@drawable/ic_visto_bueno"
+                    android:backgroundTint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
-                    android:text="Enviar"
+                    android:layout_marginStart="8dp"
+                    android:text="Preguntas Frecuentes"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <ImageView
+                    android:id="@+id/iVFlechaPreguntasFrecuentes"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_flecha_abajo"
+                    android:backgroundTint="@color/white" />
+            </LinearLayout>
+
+            <!-- Fila de EditText y botones -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- Campo para escribir mensajes -->
+                <EditText
+                    android:id="@+id/eTEscribirMensaje"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/editbox_background"
+                    android:hint="Escriba un mensaje"
+                    android:padding="8dp"
+                    android:textSize="16sp" />
+
+                <!-- Botón para adjuntar archivos -->
+                <ImageView
+                    android:id="@+id/iVAdjuntarArchivo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="2dp"
+                    android:background="@drawable/ic_clip"
+                    android:backgroundTint="@color/blue_2"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- Botón para enviar mensajes -->
+                <LinearLayout
+                    android:id="@+id/lLEnviarMensaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/border"
+                    android:backgroundTint="@color/blue_2"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:backgroundTint="@color/white"
+                        android:src="@drawable/ic_enviar" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Enviar"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
-    <!-- CardView oculto con las opciones en un Grid -->
+    <!-- CardView con Preguntas Frecuentes (oculto por defecto) -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardPreguntasFrecuentes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lLChatSeguimientoVoluntario"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="125dp"
+        android:backgroundTint="@color/white"
+        android:elevation="4dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Seleccione una pregunta:"
+                android:textColor="@color/lila"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:paddingBottom="8dp" />
+
+            <!-- ScrollView para preguntas frecuentes -->
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxHeight="200dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- Pregunta 1 -->
+                    <TextView
+                        android:id="@+id/tVPregunta1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿La mascota llora?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 2 -->
+                    <TextView
+                        android:id="@+id/tVPregunta2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿La mascota se alimenta de forma normal?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 3 -->
+                    <TextView
+                        android:id="@+id/tVPregunta3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Necesita algún tipo de cuidado especial?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 4 -->
+                    <TextView
+                        android:id="@+id/tVPregunta4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Cuál es el estado de ánimo de la mascota? (Feliz, Ansiosa, Tranquila, Triste)"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 5 -->
+                    <TextView
+                        android:id="@+id/tVPregunta5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Cómo ha sido la interacción de la mascota con los miembros de la familia?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 6 -->
+                    <TextView
+                        android:id="@+id/tVPregunta6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Ha notado algún comportamiento inusual?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <!-- Pregunta 7 -->
+                    <TextView
+                        android:id="@+id/tVPregunta7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Se han presentado problemas desde la adopción?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 8 -->
+                    <TextView
+                        android:id="@+id/tVPregunta8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Cómo se ha adoptado la mascota a su nuevo hogar?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 9 -->
+                    <TextView
+                        android:id="@+id/tVPregunta9"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Ha llevado a la mascota al veterinario?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 10 -->
+                    <TextView
+                        android:id="@+id/tVPregunta10"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿La mascota está al día con sus vacunas y desparasitaciones?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 11 -->
+                    <TextView
+                        android:id="@+id/tVPregunta11"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Qué tipo de alimentación recibe la mascota?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 12 -->
+                    <TextView
+                        android:id="@+id/tVPregunta12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Cuánto ejercicio o tiempo de juego se dedica al día?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 13 -->
+                    <TextView
+                        android:id="@+id/tVPregunta13"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Existe alguna inquietud sobre el cuidado de la mascota?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                    <!-- Pregunta 14 -->
+                    <TextView
+                        android:id="@+id/tVPregunta14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?android:attr/selectableItemBackground"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:padding="12dp"
+                        android:text="¿Se siente conforme con la adopción de su mascota?"
+                        android:textColor="@color/blue_2"
+                        android:textSize="14sp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0" />
+
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- CardView oculto con las opciones de adjuntar -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardOpcionesAdjuntar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
+        android:layout_gravity="end"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="150dp"
         android:backgroundTint="@color/blue_word"
         android:padding="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="60dp"
-        android:visibility="gone">
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        android:elevation="4dp">
 
         <GridLayout
             android:layout_width="match_parent"
@@ -154,19 +499,19 @@
                 android:id="@+id/lLOpcionSubirVideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless">
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:contentDescription="Subir Video"
+                    android:background="@drawable/ic_galeria"
                     android:backgroundTint="@color/white"
-                    android:background="@drawable/ic_galeria" />
+                    android:contentDescription="Subir Video" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -182,18 +527,18 @@
                 android:id="@+id/lLOpcionSubirFoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless">
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/ic_galeria" />
+                    android:background="@drawable/ic_galeria"
+                    android:backgroundTint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -209,18 +554,18 @@
                 android:id="@+id/lLOpcionGrabarVideo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless">
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/ic_video" />
+                    android:background="@drawable/ic_video"
+                    android:backgroundTint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -236,18 +581,18 @@
                 android:id="@+id/lLOpcionTomarFoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:padding="8dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackgroundBorderless">
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:backgroundTint="@color/white"
-                    android:background="@drawable/ic_camara" />
+                    android:background="@drawable/ic_camara"
+                    android:backgroundTint="@color/white" />
 
                 <TextView
                     android:layout_width="wrap_content"

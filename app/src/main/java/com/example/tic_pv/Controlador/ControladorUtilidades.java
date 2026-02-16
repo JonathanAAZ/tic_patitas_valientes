@@ -976,4 +976,25 @@ public class ControladorUtilidades {
                 urlLowerCase.endsWith(".3gp");
     }
 
+    public interface VideoUrlCallback {
+        void onSuccess(String videoUrl);
+        void onError(String error);
+    }
+
+    public void obtenerUrlVideoDesdeBDD(String contenido, VideoUrlCallback callback) {
+        // Si ya tienes la URL directa
+        if (contenido.startsWith("http")) {
+            callback.onSuccess(contenido);
+            return;
+        }
+
+        // Si es una referencia a Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference videoRef = storage.getReference().child(contenido);
+
+        videoRef.getDownloadUrl()
+                .addOnSuccessListener(uri -> callback.onSuccess(uri.toString()))
+                .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
 }
