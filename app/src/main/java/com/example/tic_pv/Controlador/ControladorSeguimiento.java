@@ -186,6 +186,28 @@ public class ControladorSeguimiento {
         });
     }
 
+    // Marca que el usuario está viendo el chat, para no notificarle los mensajes que
+    // ya está leyendo. Se llama desde onResume de las Activities de chat.
+    public void marcarPresenciaChat(String listaMensajes, String idUsuario) {
+        DatabaseReference presenciaRef = FirebaseDatabase.getInstance()
+                .getReference("presenciaChats")
+                .child(listaMensajes)
+                .child(idUsuario);
+
+        // Si la app se cierra sin pasar por onPause, Firebase limpia la marca por su cuenta
+        presenciaRef.onDisconnect().removeValue();
+        presenciaRef.setValue(true);
+    }
+
+    // Se llama desde onPause de las Activities de chat
+    public void quitarPresenciaChat(String listaMensajes, String idUsuario) {
+        FirebaseDatabase.getInstance()
+                .getReference("presenciaChats")
+                .child(listaMensajes)
+                .child(idUsuario)
+                .removeValue();
+    }
+
     // Obtiene de una sola vez las fotos de perfil de los dos participantes del chat,
     // para que el adaptador no tenga que consultarlas mensaje por mensaje
     public void obtenerFotosPerfilChat(Seguimiento seguimiento, Callback<HashMap<String, String>> fotosCallback) {
@@ -502,6 +524,7 @@ public class ControladorSeguimiento {
             mensajeRef.setValue(nuevoMensaje).addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     Log.d("FIREBASE", "Mensaje enviado correctamente");
+                    controladorNotificaciones.enviarNotificacionMensajeChat(seguimiento, enviaVoluntario, urlMultimedia);
                 } else {
                     Log.e("FIREBASE", "Error al enviar el mensaje");
                 }

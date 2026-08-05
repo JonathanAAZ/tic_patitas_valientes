@@ -84,6 +84,12 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/ic_huella_android" />
+        <!-- Con la app cerrada es FCM quien muestra la notificación, no onMessageReceived.
+             Sin este canal la publica en su canal de respaldo, que tiene importancia normal
+             y por eso solo aparecía en la barra de estado. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="canal_notificaciones_v3" />
         <meta-data
             android:name="CLOUDINARY_URL"
             android:value="cloudinary://176417194926829:LITvQ_VpkeqIZcvbZwrS2JAl0as@de3pikkwa" />

@@ -266,6 +266,91 @@ public class ControladorNotificaciones {
 
     }
 
+    // Notifica al otro participante del chat de seguimiento.
+    // enviaVoluntario indica desde qué lado se envió el mensaje.
+    public void enviarNotificacionMensajeChat(Seguimiento seguimiento, boolean enviaVoluntario, String contenidoMensaje) {
+        String idReceptor = enviaVoluntario ? seguimiento.getIdAdoptante() : seguimiento.getIdVoluntario();
+        String nombreEmisor = enviaVoluntario ? seguimiento.getNombreVoluntario() : seguimiento.getNombreAdoptante();
+
+        if (idReceptor == null || idReceptor.isEmpty()) {
+            Log.e(TAG, "El seguimiento no tiene receptor al que notificar el mensaje");
+            return;
+        }
+
+        // Si el receptor tiene el chat abierto no se le notifica, ya está viendo el mensaje
+        FirebaseDatabase.getInstance()
+                .getReference("presenciaChats")
+                .child(seguimiento.getListaMensajes())
+                .child(idReceptor)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        if (snapshot.exists()) {
+                            Log.d(TAG, "El receptor está dentro del chat, no se envía notificación");
+                            return;
+                        }
+                        enviarNotificacionMensaje(seguimiento, idReceptor, nombreEmisor, contenidoMensaje);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Si no se puede leer la presencia se prefiere notificar de más antes que perder el aviso
+                        enviarNotificacionMensaje(seguimiento, idReceptor, nombreEmisor, contenidoMensaje);
+                    }
+                });
+    }
+
+    private void enviarNotificacionMensaje(Seguimiento seguimiento, String idReceptor, String nombreEmisor, String contenidoMensaje) {
+        // Se usa una variable local en lugar del campo compartido para que dos mensajes
+        // seguidos no se pisen entre sí
+        Notificacion notificacionMensaje = new Notificacion();
+
+        notificacionMensaje.setId(UUID.randomUUID().toString());
+        notificacionMensaje.setTipoNotificacion(EstadosCuentas.NOTIFICACION_MENSAJE_CHAT.toString());
+        notificacionMensaje.setIdRelacionado(seguimiento.getId());
+        notificacionMensaje.setTitulo("Nuevo mensaje de " + nombreEmisor);
+        notificacionMensaje.setCuerpo(resumirMensajeChat(contenidoMensaje));
+        notificacionMensaje.setEstado(EstadosCuentas.NOTIFICACION_ENVIADA.toString());
+        notificacionMensaje.setIdUsuarioReceptor(idReceptor);
+        notificacionMensaje.establecerFechaHoraActual();
+
+        bd.collection("Cuentas").document(idReceptor).get().addOnSuccessListener(documentSnapshot -> {
+            if (documentSnapshot.exists()) {
+                String estado = documentSnapshot.getString("estado");
+                String token = documentSnapshot.getString("dispositivo");
+
+                if (estado != null && estado.equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                    enviarNotificacionServidor(token, notificacionMensaje);
+                } else {
+                    Log.e("ERROR_NOTIFICACION", "El receptor del mensaje no es un usuario activo");
+                }
+            }
+        }).addOnFailureListener(e -> {
+            Log.e("ERROR", "No se encontró la cuenta del receptor para notificar el mensaje");
+        });
+    }
+
+    // La multimedia viaja como URL, así que se describe en lugar de mostrar el enlace
+    private String resumirMensajeChat(String contenido) {
+        if (contenido == null || contenido.isEmpty()) {
+            return "Le ha enviado un mensaje";
+        }
+
+        if (controladorUtilidades.esImagen(contenido)) {
+            return "Le ha enviado una foto";
+        }
+
+        if (controladorUtilidades.esVideo(contenido)) {
+            return "Le ha enviado un video";
+        }
+
+        if (contenido.length() > 120) {
+            return contenido.substring(0, 117) + "...";
+        }
+
+        return contenido;
+    }
+
     public void enviarNotificacionVacuna(HistorialMedico vacuna, Mascota mascota, String hora) {
 
         // Fecha principal en formato ISO "yyyy-MM-dd'T'HH:mm:ssXXX"

@@ -36,6 +36,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tic_pv.Adaptadores.ListaMensajesAdaptador;
+import com.example.tic_pv.Controlador.ControladorNotificaciones;
 import com.example.tic_pv.Controlador.ControladorSeguimiento;
 import com.example.tic_pv.Modelo.Mensaje;
 import com.example.tic_pv.Modelo.Seguimiento;
@@ -64,6 +65,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
     private ActivitySeguimientoVoluntarioChatBinding binding;
     private boolean accionTomarFoto, esParaFoto, reproduciendo, cardVisible;
     private final ControladorSeguimiento controladorSeguimiento = new ControladorSeguimiento();
+    private final ControladorNotificaciones controladorNotificaciones = new ControladorNotificaciones();
     private Dialog dialogVisualizarMultimedia;
     private ImageView visualizarFoto, iVReproducirVideo;
     private VideoView visualizarVideo;
@@ -352,6 +354,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                 if (limpiarCampoTexto) {
                     binding.eTEscribirMensaje.setText(""); // Clear the input field
                 }
+                controladorNotificaciones.enviarNotificacionMensajeChat(seguimiento, true, contenidoMensaje);
             } else {
                 Toast.makeText(this, "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
             }
@@ -432,8 +435,21 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Mientras el chat esté abierto no se reciben notificaciones de este chat
+        if (seguimiento != null) {
+            controladorSeguimiento.marcarPresenciaChat(seguimiento.getListaMensajes(), seguimiento.getIdVoluntario());
+        }
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
+        if (seguimiento != null) {
+            controladorSeguimiento.quitarPresenciaChat(seguimiento.getListaMensajes(), seguimiento.getIdVoluntario());
+        }
+
         // Liberar todos los players cuando la actividad se pausa
         if (listaMensajesAdaptador != null) {
             listaMensajesAdaptador.releaseAllPlayers();
