@@ -1,6 +1,5 @@
 package com.example.tic_pv.Controlador;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -13,11 +12,32 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.tic_pv.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class ServicioNotificacionesFirebase extends FirebaseMessagingService {
+
+    private final ControladorUsuario controladorUsuario = new ControladorUsuario();
+
+    // Firebase rota el token por su cuenta al reinstalar, limpiar datos o restaurar el
+    // dispositivo. Sin esto el token guardado en Cuentas queda muerto y las notificaciones
+    // dejan de llegar sin ningún error visible hasta el siguiente inicio de sesión.
+    @Override
+    public void onNewToken(@NonNull String token) {
+        super.onNewToken(token);
+        Log.d("FCM", "Token rotado: " + token);
+
+        FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
+        if (usuarioActual == null) {
+            // Sin sesión no hay a qué cuenta asociarlo; se guardará al iniciar sesión
+            Log.d("FCM", "Token rotado sin sesión activa, se actualizará al iniciar sesión");
+            return;
+        }
+
+        controladorUsuario.actualizarTokenRotado(usuarioActual.getUid(), token);
+    }
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage message) {

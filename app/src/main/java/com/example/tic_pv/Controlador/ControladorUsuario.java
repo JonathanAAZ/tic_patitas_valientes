@@ -374,6 +374,12 @@ public class ControladorUsuario {
                     @Override
                     public void onSuccess(Void unused) {
                         Log.d("TOKEN", "TOKEN ACTUALIZADO");
+
+                        // El token identifica al dispositivo, no al usuario. Si quedó registrado
+                        // en otra cuenta que inició sesión antes en este mismo dispositivo, sus
+                        // notificaciones llegarían aquí, así que se limpia.
+                        liberarTokenDeOtrasCuentas(token, id);
+
                         db.collection("NotificacionesProgramadas")
                                 .whereEqualTo("idUsuario", idUsuario)
                                 .get()
@@ -403,6 +409,49 @@ public class ControladorUsuario {
                 });
             }
         });
+    }
+
+    // Quita este token de las demás cuentas, porque un dispositivo solo puede tener
+    // una sesión activa y el resto son residuos de sesiones anteriores
+    private void liberarTokenDeOtrasCuentas(String token, String idCuentaActual) {
+        if (token == null || token.isEmpty()) {
+            return;
+        }
+
+        db.collection("Cuentas")
+                .whereEqualTo("dispositivo", token)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot doc : querySnapshot.getDocuments()) {
+                        if (doc.getId().equals(idCuentaActual)) {
+                            continue;
+                        }
+                        doc.getReference()
+                                .update("dispositivo", "")
+                                .addOnSuccessListener(aVoid ->
+                                        Log.d("TOKEN", "Token liberado de la cuenta " + doc.getId()))
+                                .addOnFailureListener(e ->
+                                        Log.e("TOKEN", "Error al liberar el token: " + e.getMessage()));
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Log.e("TOKEN", "Error al buscar cuentas con el mismo token: " + e.getMessage()));
+    }
+
+    // Actualiza el token de la cuenta en sesión cuando Firebase lo rota
+    public void actualizarTokenRotado(String idCuenta, String token) {
+        if (idCuenta == null || idCuenta.isEmpty() || token == null || token.isEmpty()) {
+            return;
+        }
+
+        db.collection("Cuentas").document(idCuenta)
+                .update("dispositivo", token)
+                .addOnSuccessListener(unused -> {
+                    Log.d("TOKEN", "Token rotado actualizado");
+                    liberarTokenDeOtrasCuentas(token, idCuenta);
+                })
+                .addOnFailureListener(e ->
+                        Log.e("TOKEN", "Error al actualizar el token rotado: " + e.getMessage()));
     }
 
     // Callback genérico
