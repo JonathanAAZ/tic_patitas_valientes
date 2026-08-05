@@ -1,5 +1,6 @@
 package com.example.tic_pv.Adaptadores;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -33,6 +34,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAdaptador.MensajeViewHolder> {
 
     private ArrayList<Mensaje> listaMensajes;
@@ -45,9 +48,20 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
     private int playingPosition = -1;
     private Context context;
 
+    // Fotos de perfil de los participantes del chat, indexadas por id de cuenta
+    private final HashMap<String, String> fotosPerfil = new HashMap<>();
+
     public ListaMensajesAdaptador(ArrayList<Mensaje> listaMensajes, Context context) {
         this.listaMensajes = listaMensajes;
         this.context = context;
+    }
+
+    // Se llama una sola vez al abrir el chat, con las fotos ya consultadas
+    @SuppressLint("NotifyDataSetChanged")
+    public void setFotosPerfil(HashMap<String, String> fotos) {
+        fotosPerfil.clear();
+        fotosPerfil.putAll(fotos);
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -77,6 +91,16 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
             holder.tVEmisor.setText("Tú");
         } else {
             holder.tVEmisor.setText(mensaje.getEmisor());
+        }
+
+        // Foto de perfil de quien envió el mensaje
+        String urlFotoPerfil = fotosPerfil.get(mensaje.getIdEmisor());
+        if (urlFotoPerfil != null && !urlFotoPerfil.isEmpty()) {
+            controladorUtilidades.insertarImagenDesdeBDD(urlFotoPerfil,
+                    holder.iVFotoPerfilMensaje,
+                    holder.itemView.getContext());
+        } else {
+            holder.iVFotoPerfilMensaje.setImageResource(R.drawable.logo_patitas_valientes);
         }
 
         // Configurar el contenido del mensaje
@@ -180,6 +204,7 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
     public static class MensajeViewHolder extends RecyclerView.ViewHolder {
         TextView tVEmisor, tVContenido;
         ImageView iVFotoMensaje;
+        CircleImageView iVFotoPerfilMensaje;
         FrameLayout fLVideoMensaje;
         PlayerView playerViewMensaje;
         ProgressBar barraProgresoVideoMensaje;
@@ -191,6 +216,7 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
             tVEmisor = itemView.findViewById(R.id.tVEmisor);
             tVContenido = itemView.findViewById(R.id.tVContenido);
             iVFotoMensaje = itemView.findViewById(R.id.iVFotoMensaje);
+            iVFotoPerfilMensaje = itemView.findViewById(R.id.iVFotoPerfilMensaje);
             fLVideoMensaje = itemView.findViewById(R.id.fLVideoMensaje);
             playerViewMensaje = itemView.findViewById(R.id.viewVideoMensaje);
             barraProgresoVideoMensaje = itemView.findViewById(R.id.barraProgresoVideoMensaje);
