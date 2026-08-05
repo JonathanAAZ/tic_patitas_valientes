@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Vista.Fragments.MisSeguimientosAdoptanteFragment">
+
+    <TextView
+        android:id="@+id/tVNoHayResultadosListaMisSeguimientosAdoptante"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="---- No se encontraron resultados ----"
+        android:textAlignment="center"
+        android:textSize="16sp"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyViewListaMisSeguimientosAdoptante"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tVNoHayResultadosListaMisSeguimientosAdoptante"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="15dp"
+        android:padding="2dp"
+        android:visibility="visible" />
+
+</RelativeLayout>

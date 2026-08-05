@@ -186,6 +186,66 @@ public class ControladorSeguimiento {
         });
     }
 
+    // Obtiene de una sola vez las fotos de perfil de los dos participantes del chat,
+    // para que el adaptador no tenga que consultarlas mensaje por mensaje
+    public void obtenerFotosPerfilChat(Seguimiento seguimiento, Callback<HashMap<String, String>> fotosCallback) {
+        HashMap<String, String> fotosPorUsuario = new HashMap<>();
+
+        db.collection("Cuentas").document(seguimiento.getIdVoluntario()).get().addOnCompleteListener(taskVoluntario -> {
+            if (taskVoluntario.isSuccessful()) {
+                DocumentSnapshot docVoluntario = taskVoluntario.getResult();
+                if (docVoluntario.exists()) {
+                    fotosPorUsuario.put(seguimiento.getIdVoluntario(), docVoluntario.getString("fotoPerfil"));
+                }
+            }
+
+            db.collection("Cuentas").document(seguimiento.getIdAdoptante()).get().addOnCompleteListener(taskAdoptante -> {
+                if (taskAdoptante.isSuccessful()) {
+                    DocumentSnapshot docAdoptante = taskAdoptante.getResult();
+                    if (docAdoptante.exists()) {
+                        fotosPorUsuario.put(seguimiento.getIdAdoptante(), docAdoptante.getString("fotoPerfil"));
+                    }
+                }
+                fotosCallback.onComplete(fotosPorUsuario);
+            });
+        });
+    }
+
+    public void obtenerSeguimientosAdoptante(String idAdoptante, CallbackSeguimientosVol<ArrayList<Seguimiento>> seguimientosCallback) {
+        db.collection("Seguimientos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    ArrayList<Seguimiento> listaSeguimientos = new ArrayList<>();
+                    Seguimiento seguimiento;
+                    for (DocumentSnapshot documentSnapshot : task.getResult()) {
+                        seguimiento = new Seguimiento();
+                        seguimiento.setId(documentSnapshot.getId());
+                        seguimiento.setEstado(documentSnapshot.getString("estado"));
+                        seguimiento.setIdAdoptante(documentSnapshot.getString("idAdoptante"));
+                        seguimiento.setNombreAdoptante(documentSnapshot.getString("nombreAdoptante"));
+                        seguimiento.setIdMascota(documentSnapshot.getString("idMascota"));
+                        seguimiento.setNombreMascota(documentSnapshot.getString("nombreMascota"));
+                        seguimiento.setIdVoluntario(documentSnapshot.getString("idVoluntario"));
+                        seguimiento.setNombreVoluntario(documentSnapshot.getString("nombreVoluntario"));
+                        seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
+
+                        // Solo se listan los seguimientos del adoptante que ya tienen un voluntario
+                        // asignado, porque sin voluntario no hay con quién conversar
+                        if (seguimiento.getIdAdoptante().equalsIgnoreCase(idAdoptante) &&
+                                !seguimiento.getIdVoluntario().isEmpty() &&
+                                seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                            listaSeguimientos.add(seguimiento);
+                        }
+                    }
+                    seguimientosCallback.onComplete(listaSeguimientos);
+                } else {
+                    Log.e("FIREBASE", "Error al obtener los seguimientos del adoptante");
+                }
+            }
+        });
+    }
+
     public void asignarSeguimientoVoluntario(Context context, String idSeguimiento, String idVoluntario, String nombreVoluntario, Callback<ArrayList<Seguimiento>> nuevaLista) {
 
         db.collection("Seguimientos").document(idSeguimiento).get()
@@ -327,7 +387,8 @@ public class ControladorSeguimiento {
                                Dialog dialog,
                                DatabaseReference databaseReference,
                                LinearLayout enviarMultimedia,
-                               ProgressBar barraProgreso) {
+                               ProgressBar barraProgreso,
+                               boolean enviaVoluntario) {
 
         MediaManager.get().upload(foto)
                 .option("resource_type", "image") // Asegura que Cloudinary lo reconozca como imagen
@@ -345,8 +406,8 @@ public class ControladorSeguimiento {
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
                         String urlFoto = Objects.requireNonNull(resultData.get("secure_url")).toString();
-                        Log.d("CLOUDINARY", "Video subido correctamente: " + urlFoto);
-                        enviarMensaje(urlFoto, databaseReference, seguimiento);
+                        Log.d("CLOUDINARY", "Imagen subida correctamente: " + urlFoto);
+                        enviarMensaje(urlFoto, databaseReference, seguimiento, enviaVoluntario);
                         dialog.dismiss();
                         enviarMultimedia.setEnabled(true);
                         barraProgreso.setVisibility(View.GONE);
@@ -369,7 +430,8 @@ public class ControladorSeguimiento {
                                Dialog dialog,
                                DatabaseReference databaseReference,
                                LinearLayout enviarMultimedia,
-                               ProgressBar barraProgreso) {
+                               ProgressBar barraProgreso,
+                               boolean enviaVoluntario) {
         MediaManager.get().upload(video)
                 .option("resource_type", "video")
                 .option("transformation", new Transformation<>()
@@ -393,7 +455,7 @@ public class ControladorSeguimiento {
                     public void onSuccess(String requestId, Map resultData) {
                         String urlVideo = Objects.requireNonNull(resultData.get("secure_url")).toString();
                         Log.d("CLOUDINARY", "Video subido correctamente: " + urlVideo);
-                        enviarMensaje(urlVideo, databaseReference, seguimiento);
+                        enviarMensaje(urlVideo, databaseReference, seguimiento, enviaVoluntario);
                         dialog.dismiss();
                         enviarMultimedia.setEnabled(true);
                         barraProgreso.setVisibility(View.GONE);
@@ -413,20 +475,26 @@ public class ControladorSeguimiento {
 
     }
 
-    private void enviarMensaje(String urlMultimedia, DatabaseReference mensajesRef, Seguimiento seguimiento) {
+    private void enviarMensaje(String urlMultimedia, DatabaseReference mensajesRef, Seguimiento seguimiento, boolean enviaVoluntario) {
         if (!urlMultimedia.isEmpty()) {
             // Generate a unique Firebase key for the message
             DatabaseReference mensajeRef = mensajesRef.push(); // Generate a node with a unique ID
             String mensajeId = mensajeRef.getKey(); // Get the key (ID)
 
+            // El emisor depende del lado desde el que se envía la multimedia
+            String nombreEmisor = enviaVoluntario ? seguimiento.getNombreVoluntario() : seguimiento.getNombreAdoptante();
+            String idEmisor = enviaVoluntario ? seguimiento.getIdVoluntario() : seguimiento.getIdAdoptante();
+            String nombreReceptor = enviaVoluntario ? seguimiento.getNombreAdoptante() : seguimiento.getNombreVoluntario();
+            String idReceptor = enviaVoluntario ? seguimiento.getIdAdoptante() : seguimiento.getIdVoluntario();
+
             // Create the new message object and assign the Firebase key as ID
             Mensaje nuevoMensaje = new Mensaje(
                     mensajeId,  // Use the key generated by Firebase as the ID
-                    seguimiento.getNombreVoluntario(),
-                    seguimiento.getIdVoluntario(),
+                    nombreEmisor,
+                    idEmisor,
                     urlMultimedia,
-                    seguimiento.getNombreAdoptante(),
-                    seguimiento.getIdAdoptante(),
+                    nombreReceptor,
+                    idReceptor,
                     System.currentTimeMillis()
             );
 

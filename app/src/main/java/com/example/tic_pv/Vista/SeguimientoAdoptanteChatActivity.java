@@ -19,7 +19,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -40,13 +39,12 @@ import com.example.tic_pv.Controlador.ControladorSeguimiento;
 import com.example.tic_pv.Modelo.Mensaje;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.R;
-import com.example.tic_pv.databinding.ActivitySeguimientoVoluntarioChatBinding;
+import com.example.tic_pv.databinding.ActivitySeguimientoAdoptanteChatBinding;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -54,15 +52,14 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.UUID;
 
-public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
+public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
     private Seguimiento seguimiento;
     private ListaMensajesAdaptador listaMensajesAdaptador;
     private ArrayList<Mensaje> listaMensajes;
     private DatabaseReference mensajesRef;
-    private ActivitySeguimientoVoluntarioChatBinding binding;
-    private boolean accionTomarFoto, esParaFoto, reproduciendo, cardVisible;
+    private ActivitySeguimientoAdoptanteChatBinding binding;
+    private boolean accionTomarFoto, esParaFoto, reproduciendo;
     private final ControladorSeguimiento controladorSeguimiento = new ControladorSeguimiento();
     private Dialog dialogVisualizarMultimedia;
     private ImageView visualizarFoto, iVReproducirVideo;
@@ -72,12 +69,13 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
     private File archivoFoto;
     private LinearLayout enviarMultimedia;
     private ProgressBar barraProgresoSubirMultimedia;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
 
-        binding = ActivitySeguimientoVoluntarioChatBinding.inflate(getLayoutInflater());
+        binding = ActivitySeguimientoAdoptanteChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         // El padding inferior sigue al teclado para que la barra de escritura no quede tapada
@@ -100,15 +98,13 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
             return;
         }
 
-        cardVisible = false;
-
         listaMensajes = new ArrayList<>();
         listaMensajesAdaptador = new ListaMensajesAdaptador(listaMensajes, this);
-        binding.recyclerViewChatSeguiVol.setLayoutManager(new LinearLayoutManager(this));
-        binding.recyclerViewChatSeguiVol.setAdapter(listaMensajesAdaptador);
+        binding.recyclerViewChatSeguiAdop.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerViewChatSeguiAdop.setAdapter(listaMensajesAdaptador);
 
         // Al abrirse el teclado el RecyclerView se encoge, así que volvemos al último mensaje
-        binding.recyclerViewChatSeguiVol.addOnLayoutChangeListener(
+        binding.recyclerViewChatSeguiAdop.addOnLayoutChangeListener(
                 (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
                     if (bottom < oldBottom) {
                         desplazarAlUltimoMensaje();
@@ -155,7 +151,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
 
                 // Desplazamos al último mensaje si hay mensajes en la lista
                 if (!result.isEmpty()) {
-                    binding.recyclerViewChatSeguiVol.scrollToPosition(result.size() - 1);
+                    binding.recyclerViewChatSeguiAdop.scrollToPosition(result.size() - 1);
                 }
             }
 
@@ -177,7 +173,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                 if (mensaje != null) {
                     listaMensajes.add(mensaje); // Agregar mensaje nuevo
                     listaMensajesAdaptador.notifyItemInserted(listaMensajes.size() - 1); // Actualizar adaptador
-                    binding.recyclerViewChatSeguiVol.scrollToPosition(listaMensajes.size() - 1); // Desplazar al último
+                    binding.recyclerViewChatSeguiAdop.scrollToPosition(listaMensajes.size() - 1); // Desplazar al último
                 }
             }
 
@@ -186,9 +182,6 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                 // Este método captura actualizaciones en los nodos hijos (ediciones)
                 Mensaje mensajeActualizado = snapshot.getValue(Mensaje.class);
                 String mensajeId = snapshot.getKey();  // Obtenemos el ID del mensaje
-
-                System.out.println("onChildChanged Triggered");
-                System.out.println("Mensaje ID: " + mensajeId);
 
                 if (mensajeId != null && mensajeActualizado != null) {
                     for (int i = 0; i < listaMensajes.size(); i++) {
@@ -226,10 +219,13 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
             }
         });
 
+        // Manejo del botón de regresar
+        binding.iVRegresarSeguimientoAdoptanteChat.setOnClickListener(v -> finish());
+
         // Manejo del botón de enviar mensaje
         binding.lLEnviarMensaje.setOnClickListener(v -> {
             String contenidoMensaje = binding.eTEscribirMensaje.getText().toString().trim();
-            enviarMensajeTexto(contenidoMensaje, true);
+            enviarMensajeTexto(contenidoMensaje);
         });
 
         binding.iVAdjuntarArchivo.setOnClickListener(v -> {
@@ -243,41 +239,41 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         binding.lLOpcionTomarFoto.setOnClickListener(v -> {
             dialogVisualizarMultimedia.create();
             accionTomarFoto = true;
+            esParaFoto = true;
             verificarPermisoCamara(true);
             binding.cardOpcionesAdjuntar.setVisibility(View.GONE);
             visualizarFoto.setVisibility(View.VISIBLE);
             visualizarVideo.setVisibility(View.GONE);
-;
         });
 
         binding.lLOpcionGrabarVideo.setOnClickListener(v -> {
             dialogVisualizarMultimedia.create();
             accionTomarFoto = false;
+            esParaFoto = false;
             verificarPermisoCamara(false);
             binding.cardOpcionesAdjuntar.setVisibility(View.GONE);
             visualizarFoto.setVisibility(View.GONE);
             visualizarVideo.setVisibility(View.VISIBLE);
-
         });
 
         binding.lLOpcionSubirFoto.setOnClickListener(v -> {
             dialogVisualizarMultimedia.create();
+            accionTomarFoto = false;
             esParaFoto = true;
             verificarPermisoGaleria(true);
             binding.cardOpcionesAdjuntar.setVisibility(View.GONE);
             visualizarFoto.setVisibility(View.VISIBLE);
             visualizarVideo.setVisibility(View.GONE);
-
         });
 
         binding.lLOpcionSubirVideo.setOnClickListener(v -> {
             dialogVisualizarMultimedia.create();
+            accionTomarFoto = false;
             esParaFoto = false;
             verificarPermisoGaleria(false);
             binding.cardOpcionesAdjuntar.setVisibility(View.GONE);
             visualizarFoto.setVisibility(View.GONE);
             visualizarVideo.setVisibility(View.VISIBLE);
-
         });
 
         enviarMultimedia.setOnClickListener(v -> {
@@ -288,7 +284,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                         mensajesRef,
                         enviarMultimedia,
                         barraProgresoSubirMultimedia,
-                        true);
+                        false);
             } else {
                 controladorSeguimiento.subirVideoChat(videoUri,
                         seguimiento,
@@ -296,37 +292,21 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                         mensajesRef,
                         enviarMultimedia,
                         barraProgresoSubirMultimedia,
-                        true);
+                        false);
             }
-
         });
-
-        binding.lLMostrarPreguntasFrecuentes.setOnClickListener(v -> {
-
-            if (!cardVisible) {
-                mostrarPreguntasFrecuentes();
-            } else {
-                ocultarPreguntasFrecuentes();
-            }
-
-
-        });
-
-        // Manejo de las preguntas frecuentes
-        configurarPreguntasFrecuentes();
-
     }
 
     // Desplaza la lista hasta el último mensaje recibido
     private void desplazarAlUltimoMensaje() {
         if (!listaMensajes.isEmpty()) {
-            binding.recyclerViewChatSeguiVol.post(() ->
-                    binding.recyclerViewChatSeguiVol.scrollToPosition(listaMensajes.size() - 1));
+            binding.recyclerViewChatSeguiAdop.post(() ->
+                    binding.recyclerViewChatSeguiAdop.scrollToPosition(listaMensajes.size() - 1));
         }
     }
 
-    // Envía un mensaje de texto al chat del seguimiento
-    private void enviarMensajeTexto(String contenidoMensaje, boolean limpiarCampoTexto) {
+    // Envía un mensaje de texto al chat del seguimiento, con el adoptante como emisor
+    private void enviarMensajeTexto(String contenidoMensaje) {
         if (contenidoMensaje.isEmpty()) {
             return;
         }
@@ -338,97 +318,22 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         // Create the new message object and assign the Firebase key as ID
         Mensaje nuevoMensaje = new Mensaje(
                 mensajeId,  // Use the key generated by Firebase as the ID
-                seguimiento.getNombreVoluntario(),
-                seguimiento.getIdVoluntario(),
-                contenidoMensaje,
                 seguimiento.getNombreAdoptante(),
                 seguimiento.getIdAdoptante(),
+                contenidoMensaje,
+                seguimiento.getNombreVoluntario(),
+                seguimiento.getIdVoluntario(),
                 System.currentTimeMillis()
         );
 
         // Save the message in Firebase using the generated key
         mensajeRef.setValue(nuevoMensaje).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                if (limpiarCampoTexto) {
-                    binding.eTEscribirMensaje.setText(""); // Clear the input field
-                }
+                binding.eTEscribirMensaje.setText(""); // Clear the input field
             } else {
                 Toast.makeText(this, "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    // Al tocar una pregunta se envía directamente como mensaje y se cierra el panel
-    private void configurarPreguntasFrecuentes() {
-        TextView[] preguntasFrecuentes = {
-                binding.tVPregunta1, binding.tVPregunta2, binding.tVPregunta3,
-                binding.tVPregunta4, binding.tVPregunta5, binding.tVPregunta6,
-                binding.tVPregunta7, binding.tVPregunta8, binding.tVPregunta9,
-                binding.tVPregunta10, binding.tVPregunta11, binding.tVPregunta12,
-                binding.tVPregunta13, binding.tVPregunta14
-        };
-
-        for (TextView pregunta : preguntasFrecuentes) {
-            pregunta.setOnClickListener(v -> {
-                // Si el panel ya está cerrado se ignora el toque
-                if (!cardVisible) {
-                    return;
-                }
-                enviarMensajeTexto(pregunta.getText().toString().trim(), false);
-                ocultarPreguntasFrecuentes();
-            });
-        }
-    }
-
-    private void mostrarPreguntasFrecuentes() {
-        cardVisible = true;
-        View card = binding.cardPreguntasFrecuentes;
-
-        card.animate().cancel();
-        card.setAlpha(0f);
-        card.setVisibility(View.VISIBLE);
-
-        // Se espera al layout porque mientras estaba GONE su altura era 0
-        card.post(() -> {
-            card.setTranslationY(card.getHeight());
-            card.animate()
-                    .translationY(0f)
-                    .alpha(1f)
-                    .setDuration(300)
-                    .start();
-        });
-
-        binding.iVFlechaPreguntasFrecuentes.animate()
-                .rotation(180)
-                .setDuration(300)
-                .start();
-    }
-
-    private void ocultarPreguntasFrecuentes() {
-        if (!cardVisible) {
-            return;
-        }
-
-        cardVisible = false;
-        View card = binding.cardPreguntasFrecuentes;
-
-        card.animate().cancel();
-        card.animate()
-                .translationY(card.getHeight())
-                .alpha(0f)
-                .setDuration(300)
-                .withEndAction(() -> {
-                    // Se comprueba por si se volvió a abrir antes de terminar la animación
-                    if (!cardVisible) {
-                        card.setVisibility(View.GONE);
-                    }
-                })
-                .start();
-
-        binding.iVFlechaPreguntasFrecuentes.animate()
-                .rotation(0)
-                .setDuration(300)
-                .start();
     }
 
     @Override
@@ -481,7 +386,6 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
             // Cambiar la imagen a "play" cuando el video termine
             iVReproducirVideo.setVisibility(View.VISIBLE);
             iVReproducirVideo.setImageResource(R.drawable.ic_reproducir);
-
         });
     }
 
@@ -535,6 +439,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                     dialogVisualizarMultimedia.show();
                     frameLayoutVisualizarMultimedia.setVisibility(View.GONE);
                     visualizarVideo.setVisibility(View.GONE);
+                    visualizarFoto.setVisibility(View.VISIBLE);
                     visualizarFoto.setImageURI(videoUri); // Mostrar la foto capturada
                 }
             }

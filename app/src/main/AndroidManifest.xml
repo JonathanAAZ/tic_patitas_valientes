@@ -36,7 +36,12 @@
             android:exported="false" />
         <activity
             android:name=".Vista.SeguimientoVoluntarioChatActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".Vista.SeguimientoAdoptanteChatActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Vista.VerSeguimientosVoluntarioActivity"
             android:exported="false" />

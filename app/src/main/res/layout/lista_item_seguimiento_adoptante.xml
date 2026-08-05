@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp"
+    app:cardUseCompatPadding="true">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rLFotosVoluntarioMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <!-- Foto del voluntario en un círculo -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivFotoVoluntarioSeguiAdop"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/logo_patitas_valientes"
+                app:civ_border_width="3dp" />
+
+            <!-- Foto de la mascota superpuesta (estilo de Venn) -->
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/ivFotoMascotaSeguiAdop"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="-35dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="10dp"
+                android:layout_toEndOf="@id/ivFotoVoluntarioSeguiAdop"
+                android:src="@drawable/logo_patitas_valientes"
+                app:civ_border_width="3dp" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rLContenidoSeguiAdoptante"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/rLFotosVoluntarioMascota">
+
+            <TextView
+                android:id="@+id/tVEncNombreVoluntarioSeguiAdoptante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Voluntario:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreVoluntarioSeguiAdoptante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/tVEncNombreVoluntarioSeguiAdoptante"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncNombreMascotaSeguiAdoptante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNombreVoluntarioSeguiAdoptante"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Mascota:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVNombreMascotaSeguiAdoptante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNombreVoluntarioSeguiAdoptante"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/tVEncNombreMascotaSeguiAdoptante"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tVEncEstadoSeguiAdoptante"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNombreMascotaSeguiAdoptante"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:text="Estado:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tVEstadoSeguiAdoptante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tVNombreMascotaSeguiAdoptante"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/tVEncEstadoSeguiAdoptante"
+                android:hint="Cargando..."
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:id="@+id/lLBotonesSeguiAdoptante"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tVEstadoSeguiAdoptante"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/lLResponderSeguiAdoptante"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/border"
+                    android:backgroundTint="@color/dark_green"
+                    android:backgroundTintMode="multiply"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:visibility="visible">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="@drawable/ic_editar"
+                        android:backgroundTint="@color/white" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:text="Responder seguimiento"
+                        android:textAlignment="center"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

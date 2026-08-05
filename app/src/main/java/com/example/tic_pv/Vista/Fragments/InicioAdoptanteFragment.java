@@ -12,12 +12,16 @@ import android.view.ViewGroup;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.CatalogoMascotasActivity;
 import com.example.tic_pv.Vista.MisMascotasActivity;
+import com.example.tic_pv.Vista.MisSeguimientosActivity;
 import com.example.tic_pv.Vista.VerSolicitudesAdopcionActivity;
 import com.example.tic_pv.databinding.FragmentInicioAdoptanteBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class InicioAdoptanteFragment extends Fragment {
 
     private FragmentInicioAdoptanteBinding binding;
+    private final FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,12 @@ public class InicioAdoptanteFragment extends Fragment {
 
         binding.iVBotonVerMisMascotas.setOnClickListener(v -> {
             Intent i = new Intent(getActivity(), MisMascotasActivity.class);
+            startActivity(i);
+        });
+
+        binding.iVBotonMisSeguimientosAdoptante.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(), MisSeguimientosActivity.class);
+            i.putExtra("idAdoptante", usuarioActual.getUid());
             startActivity(i);
         });
 

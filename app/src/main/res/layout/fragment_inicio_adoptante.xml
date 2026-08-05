@@ -82,6 +82,28 @@
             android:textSize="20sp"
             android:textColor="@color/black"/>
 
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:id="@+id/iVBotonMisSeguimientosAdoptante"
+            android:layout_below="@+id/tVBtnVerMisMascotas"
+            android:layout_marginTop="15dp"
+            android:clickable="true"
+            android:background="@drawable/logo_patitas_valientes"
+            android:layout_centerHorizontal="true"
+            android:focusable="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tVBtnMisSeguimientosAdoptante"
+            android:text="Mis seguimientos"
+            android:layout_below="@+id/iVBotonMisSeguimientosAdoptante"
+            android:layout_marginBottom="15dp"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
     </RelativeLayout>
 
 </ScrollView>
