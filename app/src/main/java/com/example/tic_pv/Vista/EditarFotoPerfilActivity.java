@@ -2,9 +2,8 @@ package com.example.tic_pv.Vista;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -31,6 +30,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.R;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -51,6 +51,7 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
 
     private ProgressBar barraProgreso;
     private ImageView vistaImagenSubirFoto;
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
     private FirebaseAuth auth;
     private FirebaseFirestore mFirestore;
     private FirebaseUser authUsuario;
@@ -93,29 +94,15 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
                 .into(vistaImagenSubirFoto);
 
         //Alerta de confirmación
-        AlertDialog.Builder builder = new AlertDialog.Builder(EditarFotoPerfilActivity.this);
-        builder.setTitle("Mensaje de confirmación");
-        builder.setMessage("¿Desea guardar los cambios?");
-
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-//                Intent i = new Intent(EditarFotoPerfilActivity.this, VerInformacionPerfilActivity.class);
-////                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                i.putExtra("id", idCuenta);
-//                startActivity(i);
-//                finish();
-                barraProgreso.setVisibility(View.VISIBLE);
-                actualizarFotoUsuarioDB();
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        Dialog alertaConfirmacion = controladorUtilidades.crearAlertaConfirmacion(
+                "Mensaje de confirmación",
+                "¿Desea guardar los cambios?",
+                EditarFotoPerfilActivity.this,
+                () -> {
+                    barraProgreso.setVisibility(View.VISIBLE);
+                    actualizarFotoUsuarioDB();
+                },
+                null);
 
         //Seleccionar foto de perfil
         btnSeleccionarFotoPerfil.setOnClickListener(new View.OnClickListener() {
@@ -140,8 +127,7 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
 //                    startActivity(i);
                     finish();
                 } else {
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    alertaConfirmacion.show();
 //                    barraProgreso.setVisibility(View.VISIBLE);
 //                    actualizarFotoUsuarioDB();
                 }

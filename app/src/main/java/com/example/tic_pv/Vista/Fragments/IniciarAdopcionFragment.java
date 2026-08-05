@@ -3,10 +3,8 @@ package com.example.tic_pv.Vista.Fragments;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -116,22 +114,14 @@ public class IniciarAdopcionFragment extends Fragment {
         configurarBotonesImagenes(binding.lLTomarFotoCedReverso, binding.iVFotoCedulaReverso, 1);
         configurarBotonesImagenes(binding.lLTomarFotoServicios, binding.iVFotoServicios, 2);
 
-        //Definir el Alert Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Mensaje de confirmación");
-        builder.setMessage("¿Seguro que desea enviar la solicitud de adopción?");
-
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                iniciarAdopcion();
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
-        });
+        //Definir la alerta personalizada de confirmación
+        Dialog alertaConfirmacion = controladorUtilidades.crearAlertaConfirmacion(
+                "Mensaje de confirmación",
+                "¿Seguro que desea enviar la solicitud de adopción?",
+                requireContext(),
+                this::iniciarAdopcion,
+                null);
+        alertaConfirmacion.setCancelable(false);
 
         //Configuración de la presentación del vídeo
         configurarVideoView();
@@ -145,9 +135,7 @@ public class IniciarAdopcionFragment extends Fragment {
                 Log.d("URIS", "URI: " + uri.toString());
             }
 //            iniciarAdopcion();
-            AlertDialog dialog = builder.create();
-            dialog.setCancelable(false);
-            dialog.show();
+            alertaConfirmacion.show();
         });
 
         mostrarInformacion();

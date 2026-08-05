@@ -2,9 +2,7 @@ package com.example.tic_pv.Adaptadores;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -22,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tic_pv.Controlador.ControladorUsuario;
+import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.Modelo.CuentaUsuario;
 import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Usuario;
@@ -34,6 +33,7 @@ import java.util.ArrayList;
 public class ListaUsuariosAdaptador extends RecyclerView.Adapter<ListaUsuariosAdaptador.UsuarioViewHolder> {
 
     private EstadosCuentas estadosCuentas;
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
     private ArrayList<Usuario> listaUsuarios;
     private ArrayList<CuentaUsuario> listaCuentas;
     private ArrayList<Usuario> listaUsuariosOriginal;
@@ -110,28 +110,6 @@ public class ListaUsuariosAdaptador extends RecyclerView.Adapter<ListaUsuariosAd
         public UsuarioViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Confirmar cambio de estado");
-//            builder.setMessage("¿Estás seguro de que quieres activar/desactivar este usuario?");
-
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Context context = itemView.getContext();
-                    ControladorUsuario controladorUsuario = new ControladorUsuario();
-                    controladorUsuario.setIdCuenta(listaCuentas.get(getAdapterPosition()).getIdCuenta());
-                    controladorUsuario.actualizarEstadoUsuario(context);
-                    Toast.makeText(itemView.getContext(), "Estado actualizado", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
             ivFotoPerfil = itemView.findViewById(R.id.ivFotoListaUsuario);
             vNombre = itemView.findViewById(R.id.tvNombreListaUsuario);
             vCedula = itemView.findViewById(R.id.tvCedulaListaUsuario);
@@ -160,14 +138,23 @@ public class ListaUsuariosAdaptador extends RecyclerView.Adapter<ListaUsuariosAd
             ivEliminarUsuario.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String estadoActual = listaCuentas.get(getAdapterPosition()).getEstadoCuenta();
-                    if (estadoActual.equals(estadosCuentas.ACTIVO.toString())) {
-                        builder.setMessage("¿Está seguro/a de que desea desactivar este usuario?");
-                    } else {
-                        builder.setMessage("¿Está seguro/a de que desea activar este usuario?");
-                    }
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    String estadoActual = listaCuentas.get(getAbsoluteAdapterPosition()).getEstadoCuenta();
+                    String mensaje = estadoActual.equals(estadosCuentas.ACTIVO.toString())
+                            ? "¿Está seguro/a de que desea desactivar este usuario?"
+                            : "¿Está seguro/a de que desea activar este usuario?";
+
+                    controladorUtilidades.crearAlertaConfirmacion(
+                            "Confirmar cambio de estado",
+                            mensaje,
+                            itemView.getContext(),
+                            () -> {
+                                Context context = itemView.getContext();
+                                ControladorUsuario controladorUsuario = new ControladorUsuario();
+                                controladorUsuario.setIdCuenta(listaCuentas.get(getAbsoluteAdapterPosition()).getIdCuenta());
+                                controladorUsuario.actualizarEstadoUsuario(context);
+                                Toast.makeText(context, "Estado actualizado", Toast.LENGTH_SHORT).show();
+                            },
+                            null).show();
 //                    AlertDialog dialog = builder.create();
 //                    dialog.show();
 

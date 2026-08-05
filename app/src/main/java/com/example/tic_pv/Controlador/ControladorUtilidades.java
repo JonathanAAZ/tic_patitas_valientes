@@ -751,6 +751,52 @@ public class ControladorUtilidades {
         return alerta;
     }
 
+    // Alerta informativa: un solo botón "Aceptar".
+    // alAceptar puede ser null si basta con cerrar el diálogo.
+    public Dialog crearAlertaInformativa(String titulo, String mensaje, Context context, Runnable alAceptar) {
+        Dialog alerta = crearAlertaPersonalizada(titulo, mensaje, context);
+
+        LinearLayout btnAceptar = alerta.findViewById(R.id.lLbtnAceptar);
+        btnAceptar.setVisibility(View.VISIBLE);
+        btnAceptar.setOnClickListener(v -> {
+            alerta.dismiss();
+            if (alAceptar != null) {
+                alAceptar.run();
+            }
+        });
+
+        return alerta;
+    }
+
+    // Alerta de confirmación: botones "Aceptar" y "Cancelar".
+    // alCancelar puede ser null si basta con cerrar el diálogo.
+    public Dialog crearAlertaConfirmacion(String titulo, String mensaje, Context context,
+                                          Runnable alAceptar, Runnable alCancelar) {
+        Dialog alerta = crearAlertaPersonalizada(titulo, mensaje, context);
+
+        LinearLayout btnAceptar = alerta.findViewById(R.id.lLbtnAceptar);
+        LinearLayout btnCancelar = alerta.findViewById(R.id.lLbtnCancelar);
+
+        btnAceptar.setVisibility(View.VISIBLE);
+        btnCancelar.setVisibility(View.VISIBLE);
+
+        btnAceptar.setOnClickListener(v -> {
+            alerta.dismiss();
+            if (alAceptar != null) {
+                alAceptar.run();
+            }
+        });
+
+        btnCancelar.setOnClickListener(v -> {
+            alerta.dismiss();
+            if (alCancelar != null) {
+                alCancelar.run();
+            }
+        });
+
+        return alerta;
+    }
+
     public void eliminarVideoCloudinary (String url) {
         String idPublico = extraerPublicIdDesdeUrl(url);
         new Thread(() -> {

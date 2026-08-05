@@ -1,7 +1,6 @@
 package com.example.tic_pv.Vista;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.service.controls.Control;
@@ -17,7 +16,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -184,11 +182,6 @@ public class CambiarClaveActivity extends AppCompatActivity {
 
     private void reautenticarUsuario(FirebaseUser usuarioFirebase) {
 
-        //Definir el Alert Dialog para confirmar el cambio de clave
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmar cambio de contraseña");
-        builder.setMessage("¿Está seguro/a de que desea cambiar su contraseña?");
-
         btnAutenticar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,22 +226,16 @@ public class CambiarClaveActivity extends AppCompatActivity {
                                         String claveNueva;
                                         claveNueva = etNuevaClave.getText().toString();
 
-                                        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                controladorUsuario.cambiarClaveUsuario(usuarioFirebase, claveNueva, CambiarClaveActivity.this);
-                                                Toast.makeText(CambiarClaveActivity.this, "Formulario valido", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-
-                                        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {dialog.dismiss();}
-                                        });
-
                                         if (validarFormulario() && todasValidas) {
-                                            AlertDialog dialog = builder.create();
-                                            dialog.show();
+                                            controladorUtilidades.crearAlertaConfirmacion(
+                                                    "Confirmar cambio de contraseña",
+                                                    "¿Está seguro/a de que desea cambiar su contraseña?",
+                                                    CambiarClaveActivity.this,
+                                                    () -> {
+                                                        controladorUsuario.cambiarClaveUsuario(usuarioFirebase, claveNueva, CambiarClaveActivity.this);
+                                                        Toast.makeText(CambiarClaveActivity.this, "Formulario valido", Toast.LENGTH_SHORT).show();
+                                                    },
+                                                    null).show();
                                         } else {
                                             Toast.makeText(CambiarClaveActivity.this, "Ingrese correctamente la información", Toast.LENGTH_SHORT).show();
                                         }

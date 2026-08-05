@@ -1,9 +1,7 @@
 package com.example.tic_pv.Adaptadores;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.tic_pv.Controlador.ControladorMascota;
 import com.example.tic_pv.Controlador.ControladorUsuario;
+import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Mascota;
 import com.example.tic_pv.R;
@@ -29,6 +28,7 @@ import java.util.ArrayList;
 public class ListaMascotasAdopcionAdaptador extends RecyclerView.Adapter<ListaMascotasAdopcionAdaptador.MascotaViewHolder> {
 
     private EstadosCuentas estadosCuentas;
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
     private ArrayList <Mascota> listaMascotasAdopcion;
     private ArrayList <Mascota> listaMascotasAdopcionOriginal;
 
@@ -111,38 +111,6 @@ public class ListaMascotasAdopcionAdaptador extends RecyclerView.Adapter<ListaMa
         public MascotaViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
-            builder.setTitle("Confirmar cambio de estado");
-//            builder.setMessage("¿Está seguro/a de que desea activar/desactivar esta mascota?");
-
-//            if (estadoActual.equals(estadosCuentas.ACTIVO.toString())) {
-//                builder.setMessage("¿Estás seguro de que quieres desactivar esta mascota?");
-//            } else {
-//                builder.setMessage("¿Estás seguro de que quieres activar esta mascota?");
-//            }
-
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Context context = itemView.getContext();
-                    FragmentActivity activity = (FragmentActivity) context;
-                    String idMascota = listaMascotasAdopcion.get(getAdapterPosition()).getId();
-                    ControladorMascota controladorMascota = new ControladorMascota();
-                    controladorMascota.actualizarEstadoMascota(context, idMascota, activity.getSupportFragmentManager());
-//                    controladorUsuario.setIdCuenta(listaMascotasAdopcion.get(getAdapterPosition()).getIdCuenta());
-//                    controladorUsuario.actualizarEstadoUsuario(context);
-//                    Toast.makeText(context, "NOMBRE CLASE " + context.getClass().getSimpleName(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(context, "Estado actualizado", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-
             fotoMascotaAdopc = itemView.findViewById(R.id.ivFotoListaMascotaAdopcion);
             nombreMascota = itemView.findViewById(R.id.tVNombreMascotaAdopc);
             vacunacionMascota = itemView.findViewById(R.id.tVVacunacionMascotaAdopc);
@@ -166,14 +134,24 @@ public class ListaMascotasAdopcionAdaptador extends RecyclerView.Adapter<ListaMa
             iVEliminarMascotaAdopc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String estadoActual = listaMascotasAdopcion.get(getAdapterPosition()).getEstadoMascota();
-                    if (estadoActual.equals(estadosCuentas.ACTIVO.toString())) {
-                        builder.setMessage("¿Está seguro/a de que desea desactivar esta mascota?");
-                    } else {
-                        builder.setMessage("¿Está seguro/a de que desea activar esta mascota?");
-                    }
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    String estadoActual = listaMascotasAdopcion.get(getAbsoluteAdapterPosition()).getEstadoMascota();
+                    String mensaje = estadoActual.equals(estadosCuentas.ACTIVO.toString())
+                            ? "¿Está seguro/a de que desea desactivar esta mascota?"
+                            : "¿Está seguro/a de que desea activar esta mascota?";
+
+                    controladorUtilidades.crearAlertaConfirmacion(
+                            "Confirmar cambio de estado",
+                            mensaje,
+                            itemView.getContext(),
+                            () -> {
+                                Context context = itemView.getContext();
+                                FragmentActivity activity = (FragmentActivity) context;
+                                String idMascota = listaMascotasAdopcion.get(getAbsoluteAdapterPosition()).getId();
+                                ControladorMascota controladorMascota = new ControladorMascota();
+                                controladorMascota.actualizarEstadoMascota(context, idMascota, activity.getSupportFragmentManager());
+                                Toast.makeText(context, "Estado actualizado", Toast.LENGTH_SHORT).show();
+                            },
+                            null).show();
                 }
             });
         }

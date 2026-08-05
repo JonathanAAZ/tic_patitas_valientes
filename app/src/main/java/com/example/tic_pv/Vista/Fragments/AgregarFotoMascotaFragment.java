@@ -2,10 +2,9 @@ package com.example.tic_pv.Vista.Fragments;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -224,43 +223,32 @@ public class AgregarFotoMascotaFragment extends Fragment {
 
     private void crearMascota () {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+        Dialog alerta;
 
         if (uriFotoMascota == null) {
-            builder.setTitle("Alerta");
-            builder.setMessage("Debe agregar una foto para la mascota");
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    procesando = false;
-                }
-            });
+            alerta = controladorUtilidades.crearAlertaInformativa(
+                    "Alerta",
+                    "Debe agregar una foto para la mascota",
+                    requireContext(),
+                    () -> procesando = false);
         } else {
-            builder.setTitle("Mensaje de confirmación");
-            builder.setMessage("¿Desea guardar la información proporcionada?");
-            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    binding.lLBarraProgresoAgregarFotoMascota.setVisibility(View.VISIBLE);
-                    controladorMascota.crearMascotaConFoto(uriFotoMascota, mascota, requireContext(), binding.lLBarraProgresoAgregarFotoMascota);
-//                    binding.barraProgresoAgregarFotoMascota.setVisibility(View.GONE);
-                    procesando = false;
-                }
-            });
-            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                    binding.lLBarraProgresoAgregarFotoMascota.setVisibility(View.GONE);
-                    procesando = false;
-                }
-            });
+            alerta = controladorUtilidades.crearAlertaConfirmacion(
+                    "Mensaje de confirmación",
+                    "¿Desea guardar la información proporcionada?",
+                    requireContext(),
+                    () -> {
+                        binding.lLBarraProgresoAgregarFotoMascota.setVisibility(View.VISIBLE);
+                        controladorMascota.crearMascotaConFoto(uriFotoMascota, mascota, requireContext(), binding.lLBarraProgresoAgregarFotoMascota);
+                        procesando = false;
+                    },
+                    () -> {
+                        binding.lLBarraProgresoAgregarFotoMascota.setVisibility(View.GONE);
+                        procesando = false;
+                    });
         }
 
-        AlertDialog alertDialog = builder.create();
-        alertDialog.setCancelable(false);
-        alertDialog.show();
+        alerta.setCancelable(false);
+        alerta.show();
     }
 
 //    private void subirFotoMascotaFirebase () {

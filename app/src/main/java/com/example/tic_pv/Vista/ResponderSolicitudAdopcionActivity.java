@@ -1,8 +1,6 @@
 package com.example.tic_pv.Vista;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -94,50 +92,39 @@ public class ResponderSolicitudAdopcionActivity extends AppCompatActivity {
         configurarImageViews(binding.iVFotoCedulaReversoSolicitud, 1);
         configurarImageViews(binding.iVFotoServiciosSolicitud, 2);
 
-        //Configurar AlertDialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(ResponderSolicitudAdopcionActivity.this);
-        builder.setTitle("Mensaje de confirmación");
-        builder.setMessage("¿Está seguro/a de que desea aceptar la solicitud de adopción enviada?");
+        //Configurar la alerta personalizada de confirmación
+        Dialog alertaConfirmacion = controladorUtilidades.crearAlertaConfirmacion(
+                "Mensaje de confirmación",
+                "¿Está seguro/a de que desea aceptar la solicitud de adopción enviada?",
+                ResponderSolicitudAdopcionActivity.this,
+                () -> {
+                    //Obtener la URL de la firma del administrador con Storage Reference
+                    StorageReference referenciaFotoAdministrador = storageReference.child(nombreFotoAdministrador);
+                    referenciaFotoAdministrador.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String urlFirmaAdministrador = uri.toString();
 
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //Obtener la URL de la firma del administrador con Storage Reference
-                StorageReference referenciaFotoAdministrador = storageReference.child(nombreFotoAdministrador);
-                referenciaFotoAdministrador.getDownloadUrl().addOnSuccessListener(uri -> {
-                    String urlFirmaAdministrador = uri.toString();
+                        //Cambiar el estado de la solicitud
+                        solicitudAdopcion.setEstadoAdopcion(EstadosCuentas.ACEPTADA.toString());
 
-                    //Cambiar el estado de la solicitud
-                    solicitudAdopcion.setEstadoAdopcion(EstadosCuentas.ACEPTADA.toString());
+                        //Crear el contrato de adopción
+                        contratoAdopcion = new ContratoAdopcion();
+                        contratoAdopcion.setEstado(EstadosCuentas.NO_FIRMADO.toString());
+                        contratoAdopcion.setFirmaAdministrador(urlFirmaAdministrador);
+                        contratoAdopcion.setIdAdoptante(solicitudAdopcion.getAdoptante());
+                        contratoAdopcion.setIdMascota(solicitudAdopcion.getMascotaAdopcion());
 
-                    //Crear el contrato de adopción
-                    contratoAdopcion = new ContratoAdopcion();
-                    contratoAdopcion.setEstado(EstadosCuentas.NO_FIRMADO.toString());
-                    contratoAdopcion.setFirmaAdministrador(urlFirmaAdministrador);
-                    contratoAdopcion.setIdAdoptante(solicitudAdopcion.getAdoptante());
-                    contratoAdopcion.setIdMascota(solicitudAdopcion.getMascotaAdopcion());
-
-                    controladorContrato.crearContratoAdopcionDB(contratoAdopcion,
-                            solicitudAdopcion,
-                            binding.lLBarraProgresoResponderAdopcion,
-                            ResponderSolicitudAdopcionActivity.this);
-                }).addOnFailureListener(e -> {
-                    Toast.makeText(ResponderSolicitudAdopcionActivity.this, "Error al obtener la firma del administrador", Toast.LENGTH_SHORT).show();
-                });
-
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) { dialog.dismiss(); }
-        });
+                        controladorContrato.crearContratoAdopcionDB(contratoAdopcion,
+                                solicitudAdopcion,
+                                binding.lLBarraProgresoResponderAdopcion,
+                                ResponderSolicitudAdopcionActivity.this);
+                    }).addOnFailureListener(e -> {
+                        Toast.makeText(ResponderSolicitudAdopcionActivity.this, "Error al obtener la firma del administrador", Toast.LENGTH_SHORT).show();
+                    });
+                },
+                null);
 
         //Configurar los botones para aceptar o rechazar solicitud de adopción
-        binding.lLAceptarSolicitudAdopcion.setOnClickListener(v -> {
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-        });
+        binding.lLAceptarSolicitudAdopcion.setOnClickListener(v -> alertaConfirmacion.show());
 
         binding.lLRechazarSolicitudAdopcion.setOnClickListener(v -> {
             solicitudAdopcion.setEstadoAdopcion(EstadosCuentas.RECHAZADA.toString());

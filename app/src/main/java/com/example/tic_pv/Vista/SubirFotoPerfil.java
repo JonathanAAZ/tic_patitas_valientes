@@ -2,10 +2,9 @@ package com.example.tic_pv.Vista;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -33,6 +32,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.tic_pv.Controlador.ControladorUsuario;
+import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.Modelo.CuentaUsuario;
 import com.example.tic_pv.Modelo.Domicilio;
 import com.example.tic_pv.Modelo.EstadosCuentas;
@@ -65,6 +65,7 @@ public class SubirFotoPerfil extends AppCompatActivity {
 
     private ProgressBar barraProgreso;
     private ImageView vistaImagenSubirFoto;
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
     private FirebaseAuth auth;
     private FirebaseFirestore mFirestore;
     private FirebaseUser authUsuario;
@@ -103,27 +104,17 @@ public class SubirFotoPerfil extends AppCompatActivity {
                 .fitCenter()
                 .into(vistaImagenSubirFoto);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(SubirFotoPerfil.this);
-        builder.setTitle("Mensaje de confirmación");
-        builder.setMessage("¿Está seguro/a de que desea crear una nueva cuenta con la información ingresada?");
-
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                btnGuardarCuenta.setEnabled(false);
-                btnSeleccionarFotoPerfil.setEnabled(false);
-                barraProgreso.setVisibility(View.VISIBLE);
-                crearCuentaUsuario();
-
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        Dialog alertaConfirmacion = controladorUtilidades.crearAlertaConfirmacion(
+                "Mensaje de confirmación",
+                "¿Está seguro/a de que desea crear una nueva cuenta con la información ingresada?",
+                SubirFotoPerfil.this,
+                () -> {
+                    btnGuardarCuenta.setEnabled(false);
+                    btnSeleccionarFotoPerfil.setEnabled(false);
+                    barraProgreso.setVisibility(View.VISIBLE);
+                    crearCuentaUsuario();
+                },
+                null);
 
 
         auth = FirebaseAuth.getInstance();
@@ -142,8 +133,7 @@ public class SubirFotoPerfil extends AppCompatActivity {
         btnGuardarCuenta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                alertaConfirmacion.show();
 //                barraProgreso.setVisibility(View.VISIBLE);
 //                crearCuentaUsuario();
 //

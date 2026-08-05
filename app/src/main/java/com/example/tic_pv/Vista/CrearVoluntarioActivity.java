@@ -1,8 +1,7 @@
 package com.example.tic_pv.Vista;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.DialogInterface;
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
@@ -195,26 +194,16 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
 //            }
 //        });
 
-        //Crear Alert Dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(CrearVoluntarioActivity.this);
-        builder.setTitle("Mensaje de confirmación");
-        builder.setMessage("¿Está seguro/a de que desea crear una nueva cuenta de voluntario con la información ingresada?");
-
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                crearVoluntario(nuevoVoluntario, nuevaCuentaVoluntario);
-                btnGuardarVoluntario.setEnabled(false);
-            }
-        });
-
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                btnGuardarVoluntario.setEnabled(true);
-            }
-        });
+        //Crear la alerta personalizada de confirmación
+        Dialog alertaConfirmacion = controladorUtilidades.crearAlertaConfirmacion(
+                "Mensaje de confirmación",
+                "¿Está seguro/a de que desea crear una nueva cuenta de voluntario con la información ingresada?",
+                CrearVoluntarioActivity.this,
+                () -> {
+                    crearVoluntario(nuevoVoluntario, nuevaCuentaVoluntario);
+                    btnGuardarVoluntario.setEnabled(false);
+                },
+                () -> btnGuardarVoluntario.setEnabled(true));
 
 //        Button btnGuardarVoluntario = findViewById(R.id.btnGuardarVoluntario);
 
@@ -251,8 +240,7 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
                     nuevoVoluntario = new Usuario(textNombre, textCedula, edad, textFechaNac, textEstadoCivVoluntario, textOcupacion, textTelefono, textEstadoVoluntario, textInsta, textFB);
                     nuevaCuentaVoluntario = new CuentaUsuario("Por seleccionar", textCorreo, textClave, "Voluntario", EstadosCuentas.ACTIVO.toString(), idDispositivo);
 
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
+                    alertaConfirmacion.show();
                 } else {
                     v.setEnabled(true);
                     btnGuardarVoluntario.setEnabled(true);
