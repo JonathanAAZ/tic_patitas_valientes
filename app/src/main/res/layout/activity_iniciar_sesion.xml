@@ -9,7 +9,7 @@
     android:fillViewport="true"
     android:layout_gravity="center"
     tools:context=".Vista.IniciarSesionActivity"
-    android:background="@color/white">
+    android:background="@color/yellow">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
         android:padding="15dp"
         android:layout_margin="15dp"
         android:gravity="center"
-        android:background="@drawable/dos_bordes_redondeados">
+        android:background="@drawable/fondo_huellas_borde">
 
         <TextView
             android:layout_width="wrap_content"

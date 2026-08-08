@@ -7,13 +7,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:fillViewport="true"
+    android:background="@color/yellow"
     tools:context=".Vista.GestionarMascotaActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rLSuperiorGestionarMascota"
-        android:background="@color/white"
+        android:background="@color/yellow"
         android:orientation="horizontal">
 
         <ImageView
@@ -26,7 +27,7 @@
             android:background="@drawable/ic_retroceder"
             android:clickable="true"
             android:layout_marginStart="5dp"
-            android:backgroundTint="@color/black"/>
+            android:backgroundTint="@color/lila"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +37,7 @@
             android:layout_centerVertical="true"
             android:textAlignment="center"
             android:textStyle="bold"
-            android:textColor="@color/black"
+            android:textColor="@color/lila"
             android:text="Agregar nueva mascota"/>
 
         <View
@@ -45,7 +46,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
             android:layout_below="@+id/tVTituloGestionarMascota"
-            android:background="@color/black" />
+            android:background="@color/yellow" />
 
     </RelativeLayout>
 
@@ -53,7 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fLFragmentGestionarMascota"
-        android:background="@drawable/frame_redondeado"
+        android:background="@drawable/bordes_fragment"
         android:layout_below="@+id/rLSuperiorGestionarMascota"
         android:padding="10dp">
 

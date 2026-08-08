@@ -54,7 +54,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/frame_redondeado"
+        android:background="@drawable/bordes_fragment"
         android:layout_below="@+id/lYSuperiorGestionarSegui"
         android:padding="15dp">
 

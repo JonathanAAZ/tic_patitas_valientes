@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/yellow"
     tools:context=".Vista.MenuAdoptanteActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:background="#FFFFFF"
+        android:layout_height="match_parent"
+        android:background="@drawable/bordes_fragment"
         android:padding="15dp">
 
         <Button
