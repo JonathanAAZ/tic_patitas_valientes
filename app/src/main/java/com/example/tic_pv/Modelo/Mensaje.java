@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-import java.sql.Timestamp;
+import com.google.firebase.database.Exclude;
 
 public class Mensaje implements Parcelable {
     private String id;
@@ -15,6 +15,12 @@ public class Mensaje implements Parcelable {
     private String receptor;
     private String idReceptor;
     private long timestamp;
+
+    // Datos del mensaje al que responde, vacíos si no es una respuesta.
+    // Se guardan copiados para poder pintar la cita sin volver a buscar el original.
+    private String idMensajeRespondido;
+    private String emisorRespondido;
+    private String contenidoRespondido;
 
     public Mensaje() {
     }
@@ -36,6 +42,9 @@ public class Mensaje implements Parcelable {
         receptor = in.readString();
         idReceptor = in.readString();
         timestamp = in.readLong();
+        idMensajeRespondido = in.readString();
+        emisorRespondido = in.readString();
+        contenidoRespondido = in.readString();
     }
 
     @Override
@@ -52,6 +61,9 @@ public class Mensaje implements Parcelable {
         dest.writeString(receptor);
         dest.writeString(idReceptor);
         dest.writeLong(timestamp);
+        dest.writeString(idMensajeRespondido);
+        dest.writeString(emisorRespondido);
+        dest.writeString(contenidoRespondido);
     }
 
     public static final Creator<Mensaje> CREATOR = new Creator<Mensaje>() {
@@ -120,5 +132,36 @@ public class Mensaje implements Parcelable {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public String getIdMensajeRespondido() {
+        return idMensajeRespondido;
+    }
+
+    public void setIdMensajeRespondido(String idMensajeRespondido) {
+        this.idMensajeRespondido = idMensajeRespondido;
+    }
+
+    public String getEmisorRespondido() {
+        return emisorRespondido;
+    }
+
+    public void setEmisorRespondido(String emisorRespondido) {
+        this.emisorRespondido = emisorRespondido;
+    }
+
+    public String getContenidoRespondido() {
+        return contenidoRespondido;
+    }
+
+    public void setContenidoRespondido(String contenidoRespondido) {
+        this.contenidoRespondido = contenidoRespondido;
+    }
+
+    // Un mensaje es respuesta si conserva el id del original.
+    // Se excluye para que Firebase no lo guarde como un campo más del mensaje.
+    @Exclude
+    public boolean esRespuesta() {
+        return idMensajeRespondido != null && !idMensajeRespondido.isEmpty();
     }
 }

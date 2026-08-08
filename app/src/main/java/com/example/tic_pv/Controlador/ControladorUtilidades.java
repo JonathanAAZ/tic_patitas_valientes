@@ -731,6 +731,24 @@ public class ControladorUtilidades {
         textView.setText(texto);
     }
 
+    // La multimedia del chat se guarda como URL, así que al citarla en una respuesta
+    // se describe en lugar de mostrar el enlace
+    public String describirContenidoMensaje(String contenido) {
+        if (contenido == null || contenido.isEmpty()) {
+            return "";
+        }
+
+        if (esImagen(contenido)) {
+            return "Foto";
+        }
+
+        if (esVideo(contenido)) {
+            return "Video";
+        }
+
+        return contenido;
+    }
+
     public Dialog crearAlertaPersonalizada(String titulo, String mensaje, Context context) {
         Dialog alerta = new Dialog(context);
 

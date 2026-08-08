@@ -410,7 +410,8 @@ public class ControladorSeguimiento {
                                DatabaseReference databaseReference,
                                LinearLayout enviarMultimedia,
                                ProgressBar barraProgreso,
-                               boolean enviaVoluntario) {
+                               boolean enviaVoluntario,
+                               Mensaje mensajeRespondido) {
 
         MediaManager.get().upload(foto)
                 .option("resource_type", "image") // Asegura que Cloudinary lo reconozca como imagen
@@ -429,7 +430,7 @@ public class ControladorSeguimiento {
                     public void onSuccess(String requestId, Map resultData) {
                         String urlFoto = Objects.requireNonNull(resultData.get("secure_url")).toString();
                         Log.d("CLOUDINARY", "Imagen subida correctamente: " + urlFoto);
-                        enviarMensaje(urlFoto, databaseReference, seguimiento, enviaVoluntario);
+                        enviarMensaje(urlFoto, databaseReference, seguimiento, enviaVoluntario, mensajeRespondido);
                         dialog.dismiss();
                         enviarMultimedia.setEnabled(true);
                         barraProgreso.setVisibility(View.GONE);
@@ -453,7 +454,8 @@ public class ControladorSeguimiento {
                                DatabaseReference databaseReference,
                                LinearLayout enviarMultimedia,
                                ProgressBar barraProgreso,
-                               boolean enviaVoluntario) {
+                               boolean enviaVoluntario,
+                               Mensaje mensajeRespondido) {
         MediaManager.get().upload(video)
                 .option("resource_type", "video")
                 .option("transformation", new Transformation<>()
@@ -477,7 +479,7 @@ public class ControladorSeguimiento {
                     public void onSuccess(String requestId, Map resultData) {
                         String urlVideo = Objects.requireNonNull(resultData.get("secure_url")).toString();
                         Log.d("CLOUDINARY", "Video subido correctamente: " + urlVideo);
-                        enviarMensaje(urlVideo, databaseReference, seguimiento, enviaVoluntario);
+                        enviarMensaje(urlVideo, databaseReference, seguimiento, enviaVoluntario, mensajeRespondido);
                         dialog.dismiss();
                         enviarMultimedia.setEnabled(true);
                         barraProgreso.setVisibility(View.GONE);
@@ -497,7 +499,7 @@ public class ControladorSeguimiento {
 
     }
 
-    private void enviarMensaje(String urlMultimedia, DatabaseReference mensajesRef, Seguimiento seguimiento, boolean enviaVoluntario) {
+    private void enviarMensaje(String urlMultimedia, DatabaseReference mensajesRef, Seguimiento seguimiento, boolean enviaVoluntario, Mensaje mensajeRespondido) {
         if (!urlMultimedia.isEmpty()) {
             // Generate a unique Firebase key for the message
             DatabaseReference mensajeRef = mensajesRef.push(); // Generate a node with a unique ID
@@ -519,6 +521,13 @@ public class ControladorSeguimiento {
                     idReceptor,
                     System.currentTimeMillis()
             );
+
+            // Si la multimedia se envía respondiendo a otro mensaje, se conserva la cita
+            if (mensajeRespondido != null) {
+                nuevoMensaje.setIdMensajeRespondido(mensajeRespondido.getId());
+                nuevoMensaje.setEmisorRespondido(mensajeRespondido.getEmisor());
+                nuevoMensaje.setContenidoRespondido(mensajeRespondido.getContenido());
+            }
 
             // Save the message in Firebase using the generated key
             mensajeRef.setValue(nuevoMensaje).addOnCompleteListener(task -> {

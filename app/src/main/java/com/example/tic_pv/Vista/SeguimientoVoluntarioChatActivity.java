@@ -33,15 +33,20 @@ import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.tic_pv.Adaptadores.DeslizarParaResponderCallback;
 import com.example.tic_pv.Adaptadores.ListaMensajesAdaptador;
 import com.example.tic_pv.Controlador.ControladorNotificaciones;
 import com.example.tic_pv.Controlador.ControladorSeguimiento;
+import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.Modelo.Mensaje;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.R;
 import com.example.tic_pv.databinding.ActivitySeguimientoVoluntarioChatBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,6 +79,10 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
     private File archivoFoto;
     private LinearLayout enviarMultimedia;
     private ProgressBar barraProgresoSubirMultimedia;
+    // Mensaje al que se está respondiendo, null si es un mensaje normal
+    private Mensaje mensajeRespondido;
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
+    private final FirebaseUser usuarioActual = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +117,13 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         listaMensajesAdaptador = new ListaMensajesAdaptador(listaMensajes, this);
         binding.recyclerViewChatSeguiVol.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerViewChatSeguiVol.setAdapter(listaMensajesAdaptador);
+
+        // Deslizar un mensaje hacia la derecha lo cita para responderlo
+        listaMensajesAdaptador.setOnResponderMensajeListener(this::mostrarPanelRespuesta);
+        new ItemTouchHelper(new DeslizarParaResponderCallback(binding.recyclerViewChatSeguiVol, listaMensajesAdaptador))
+                .attachToRecyclerView(binding.recyclerViewChatSeguiVol);
+
+        binding.iVCancelarRespuesta.setOnClickListener(v -> cancelarRespuesta());
 
         // Al abrirse el teclado el RecyclerView se encoge, así que volvemos al último mensaje
         binding.recyclerViewChatSeguiVol.addOnLayoutChangeListener(
@@ -290,7 +306,8 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                         mensajesRef,
                         enviarMultimedia,
                         barraProgresoSubirMultimedia,
-                        true);
+                        true,
+                        mensajeRespondido);
             } else {
                 controladorSeguimiento.subirVideoChat(videoUri,
                         seguimiento,
@@ -298,9 +315,10 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                         mensajesRef,
                         enviarMultimedia,
                         barraProgresoSubirMultimedia,
-                        true);
+                        true,
+                        mensajeRespondido);
             }
-
+            cancelarRespuesta();
         });
 
         binding.lLMostrarPreguntasFrecuentes.setOnClickListener(v -> {
@@ -317,6 +335,28 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         // Manejo de las preguntas frecuentes
         configurarPreguntasFrecuentes();
 
+    }
+
+    // Muestra sobre el campo de texto el mensaje que se va a responder
+    private void mostrarPanelRespuesta(Mensaje mensaje) {
+        mensajeRespondido = mensaje;
+
+        String emisor = usuarioActual != null && usuarioActual.getUid().equalsIgnoreCase(mensaje.getIdEmisor())
+                ? "Tú"
+                : mensaje.getEmisor();
+
+        binding.tVRespondiendoEmisor.setText(emisor);
+        binding.tVRespondiendoContenido.setText(controladorUtilidades.describirContenidoMensaje(mensaje.getContenido()));
+        binding.lLRespondiendoMensaje.setVisibility(View.VISIBLE);
+
+        // Al responder se cierra el panel de preguntas si estaba abierto
+        ocultarPreguntasFrecuentes();
+        binding.eTEscribirMensaje.requestFocus();
+    }
+
+    private void cancelarRespuesta() {
+        mensajeRespondido = null;
+        binding.lLRespondiendoMensaje.setVisibility(View.GONE);
     }
 
     // Desplaza la lista hasta el último mensaje recibido
@@ -348,12 +388,20 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                 System.currentTimeMillis()
         );
 
+        // Si se está respondiendo, se copia la cita dentro del mensaje
+        if (mensajeRespondido != null) {
+            nuevoMensaje.setIdMensajeRespondido(mensajeRespondido.getId());
+            nuevoMensaje.setEmisorRespondido(mensajeRespondido.getEmisor());
+            nuevoMensaje.setContenidoRespondido(mensajeRespondido.getContenido());
+        }
+
         // Save the message in Firebase using the generated key
         mensajeRef.setValue(nuevoMensaje).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 if (limpiarCampoTexto) {
                     binding.eTEscribirMensaje.setText(""); // Clear the input field
                 }
+                cancelarRespuesta();
                 controladorNotificaciones.enviarNotificacionMensajeChat(seguimiento, true, contenidoMensaje);
             } else {
                 Toast.makeText(this, "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();

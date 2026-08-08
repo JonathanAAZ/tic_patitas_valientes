@@ -51,9 +51,35 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
     // Fotos de perfil de los participantes del chat, indexadas por id de cuenta
     private final HashMap<String, String> fotosPerfil = new HashMap<>();
 
+    // Avisa a la Activity de que se quiere responder a un mensaje
+    public interface OnResponderMensajeListener {
+        void onResponderMensaje(Mensaje mensaje);
+    }
+
+    private OnResponderMensajeListener responderMensajeListener;
+
+    public void setOnResponderMensajeListener(OnResponderMensajeListener listener) {
+        this.responderMensajeListener = listener;
+    }
+
     public ListaMensajesAdaptador(ArrayList<Mensaje> listaMensajes, Context context) {
         this.listaMensajes = listaMensajes;
         this.context = context;
+    }
+
+    // Lo usa el gesto de deslizar para saber sobre qué mensaje se responde
+    public Mensaje obtenerMensaje(int position) {
+        if (position < 0 || position >= listaMensajes.size()) {
+            return null;
+        }
+        return listaMensajes.get(position);
+    }
+
+    public void responderMensaje(int position) {
+        Mensaje mensaje = obtenerMensaje(position);
+        if (mensaje != null && responderMensajeListener != null) {
+            responderMensajeListener.onResponderMensaje(mensaje);
+        }
     }
 
     // Se llama una sola vez al abrir el chat, con las fotos ya consultadas
@@ -101,6 +127,16 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
                     holder.itemView.getContext());
         } else {
             holder.iVFotoPerfilMensaje.setImageResource(R.drawable.logo_patitas_valientes);
+        }
+
+        // Cita del mensaje al que responde, si lo es
+        if (mensaje.esRespuesta()) {
+            holder.lLMensajeRespondido.setVisibility(View.VISIBLE);
+            holder.tVEmisorRespondido.setText(mensaje.getEmisorRespondido());
+            holder.tVContenidoRespondido.setText(controladorUtilidades.describirContenidoMensaje(mensaje.getContenidoRespondido()));
+        } else {
+            // El else evita que el reciclado deje la cita de un mensaje anterior
+            holder.lLMensajeRespondido.setVisibility(View.GONE);
         }
 
         // Configurar el contenido del mensaje
@@ -202,10 +238,11 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
     }
 
     public static class MensajeViewHolder extends RecyclerView.ViewHolder {
-        TextView tVEmisor, tVContenido;
+        TextView tVEmisor, tVContenido, tVEmisorRespondido, tVContenidoRespondido;
         ImageView iVFotoMensaje;
         CircleImageView iVFotoPerfilMensaje;
         FrameLayout fLVideoMensaje;
+        LinearLayout lLMensajeRespondido;
         PlayerView playerViewMensaje;
         ProgressBar barraProgresoVideoMensaje;
         ExoPlayer player;
@@ -220,6 +257,9 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
             fLVideoMensaje = itemView.findViewById(R.id.fLVideoMensaje);
             playerViewMensaje = itemView.findViewById(R.id.viewVideoMensaje);
             barraProgresoVideoMensaje = itemView.findViewById(R.id.barraProgresoVideoMensaje);
+            lLMensajeRespondido = itemView.findViewById(R.id.lLMensajeRespondido);
+            tVEmisorRespondido = itemView.findViewById(R.id.tVEmisorRespondido);
+            tVContenidoRespondido = itemView.findViewById(R.id.tVContenidoRespondido);
         }
     }
 
