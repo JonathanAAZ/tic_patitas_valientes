@@ -8,7 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -43,7 +43,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button siguiente, irIS;
+    private LinearLayout siguiente, irIS;
     private ControladorContrato controladorContrato = new ControladorContrato();
     private static final String TAG = "Notificaciones";
     @Override
@@ -68,24 +68,16 @@ public class MainActivity extends AppCompatActivity {
 
 //        generarContratoGeneral();
 
-        siguiente=(Button) findViewById(R.id.btnTest);
-        siguiente.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent i = new Intent(MainActivity.this, CrearCuentaActivity.class);
-                startActivity(i);
-//                enviarNotificacion();
-            }
+        siguiente = findViewById(R.id.btnTest);
+        siguiente.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, CrearCuentaActivity.class);
+            startActivity(i);
         });
 
-        irIS = (Button) findViewById(R.id.btnIrIS);
-        irIS.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
-                startActivity(i);
-            }
+        irIS = findViewById(R.id.btnIrIS);
+        irIS.setOnClickListener(v -> {
+            Intent i = new Intent(MainActivity.this, IniciarSesionActivity.class);
+            startActivity(i);
         });
 
 //        Log.d("MENSAJE", "Aplicacion iniciada correctamente");
