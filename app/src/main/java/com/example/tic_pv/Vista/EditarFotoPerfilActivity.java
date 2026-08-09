@@ -61,6 +61,7 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
     private String idCuenta, rol;
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri uriImage;
+    private Uri uriFotoCamara;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,10 +183,13 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
 
     private void abrirCamara() {
         File archivoFoto = new File(getCacheDir(), "foto_perfil_" + System.currentTimeMillis() + ".jpg");
-        uriImage = FileProvider.getUriForFile(this, "com.example.tic_pv.fileprovider", archivoFoto);
+
+        // Se guarda aparte: si el usuario cancela la cámara, uriImage no debe quedar
+        // apuntando a un archivo vacío que luego se subiría como foto de perfil
+        uriFotoCamara = FileProvider.getUriForFile(this, "com.example.tic_pv.fileprovider", archivoFoto);
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriImage);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriFotoCamara);
         tomarFotoLauncher.launch(intent);
     }
 
@@ -203,8 +207,10 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
     private final ActivityResultLauncher<Intent> tomarFotoLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
-                // La cámara escribe en la uri que se le pasó, así que no viene en el resultado
-                if (result.getResultCode() == Activity.RESULT_OK) {
+                // La cámara escribe en la uri que se le pasó, así que no viene en el resultado.
+                // Solo aquí se da por buena la foto.
+                if (result.getResultCode() == Activity.RESULT_OK && uriFotoCamara != null) {
+                    uriImage = uriFotoCamara;
                     Glide.with(this)
                             .load(uriImage)
                             .fitCenter()
