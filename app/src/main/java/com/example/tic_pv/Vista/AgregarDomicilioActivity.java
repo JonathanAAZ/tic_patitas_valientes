@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -41,7 +42,7 @@ public class AgregarDomicilioActivity extends AppCompatActivity {
     private Domicilio domicilio;
     private ProgressBar barraProgreso;
     private EstadosCuentas estadoObj;
-    private Button btnSiguienteDom;
+    private LinearLayout btnSiguienteDom;
     private ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
     @Override
     protected void onCreate(Bundle savedInstanceState) {

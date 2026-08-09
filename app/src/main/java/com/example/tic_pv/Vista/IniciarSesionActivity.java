@@ -150,7 +150,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
         authIS = FirebaseAuth.getInstance();
 
         //Botón para iniciar sesión
-        Button btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
+        LinearLayout btnIniciarSesion = findViewById(R.id.btnIniciarSesion);
         btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

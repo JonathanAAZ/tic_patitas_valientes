@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -95,9 +96,10 @@ public class IniciarAdopcionFragment extends Fragment {
         listaImageViews.add(binding.iVFotoServicios);
 
         binding.lLTomarFotoCedReverso.setVisibility(View.INVISIBLE);
+        // Se tiñe el fondo en lugar de reemplazarlo, para no perder las esquinas redondeadas
         binding.btnEnviarSolicitud.setEnabled(false);
-        binding.btnEnviarSolicitud.setBackgroundColor(Color.GRAY);
-        binding.btnEnviarSolicitud.setTextColor(Color.DKGRAY);
+        binding.btnEnviarSolicitud.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+        binding.tVEnviarSolicitud.setTextColor(Color.DKGRAY);
 
         //Configurar el Radio Button para que aparezcan los requisitos
         configurarRadioButtons();
@@ -452,8 +454,9 @@ public class IniciarAdopcionFragment extends Fragment {
 
         if (fotosCedulaSubidas && fotoServiciosSubida && videoSubido && opcionDomicilioSeleccionado) {
             binding.btnEnviarSolicitud.setEnabled(true);
-            binding.btnEnviarSolicitud.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.yellow));
-            binding.btnEnviarSolicitud.setTextColor(ContextCompat.getColor(requireContext(), R.color.lila));
+            binding.btnEnviarSolicitud.setBackgroundTintList(
+                    ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.lila)));
+            binding.tVEnviarSolicitud.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
         }
     }
 

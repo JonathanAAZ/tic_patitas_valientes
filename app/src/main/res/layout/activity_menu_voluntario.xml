@@ -15,11 +15,27 @@
         android:padding="15dp"
         android:orientation="vertical">
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btnVerInformacionVoluntario"
-            android:text="Ver Información de Perfil"/>
+            android:background="@drawable/border"
+            android:backgroundTint="@color/lila"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ver Información de Perfil"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </LinearLayout>
 

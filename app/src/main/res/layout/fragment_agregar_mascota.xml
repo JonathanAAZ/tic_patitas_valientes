@@ -411,18 +411,30 @@
             android:padding="0dp"
             android:layout_below="@id/tVSeleccionarHogar"/>
 
-        <Button
+        <LinearLayout
             android:id="@+id/btnContinuarAgregarMascota"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/spHogarTemporal"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:backgroundTint="@color/yellow"
-            android:textColor="@color/lila"
-            android:layout_centerHorizontal="true"
-            android:text="CONTINUAR"
-            android:textStyle="bold"/>
+            android:background="@drawable/border"
+            android:backgroundTint="@color/lila"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CONTINUAR"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
     </RelativeLayout>
 

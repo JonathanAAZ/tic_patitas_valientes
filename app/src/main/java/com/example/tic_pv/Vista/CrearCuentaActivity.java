@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -72,7 +73,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
     private ImageView iVVerClave, iVVerConfirmacionClave;
     private ProgressBar barraProgreso;
     private boolean procesando;
-    private Button btnSiguienteReg;
+    private LinearLayout btnSiguienteReg;
     private RadioGroup estadoCivOps;
     private DatePickerDialog pickerDialog;
     private RadioButton estadoCivSeleccionado;

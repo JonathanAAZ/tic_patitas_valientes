@@ -121,15 +121,29 @@
                         android:layout_below="@+id/tvClaveCC"
                         android:id="@+id/iVVerClaveActual"/>
 
-                    <Button
+                    <LinearLayout
                         android:id="@+id/btnConfirmarAutenticacion"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:layout_below="@+id/eTClaveCC"
-                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/border"
                         android:backgroundTint="@color/blue_2"
-                        android:text="Confirmar" />
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Confirmar"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                 </RelativeLayout>
 
@@ -292,14 +306,29 @@
                         android:visibility="gone"
                         android:textColor="@android:color/holo_red_light"/>
 
-                    <Button
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:id="@+id/btnGuardarCambioClave"
-                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="15dp"
                         android:layout_below="@+id/tVErrorConfirClaveCC"
-                        android:text="Aceptar"/>
+                        android:background="@drawable/border"
+                        android:backgroundTint="@color/lila"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?android:attr/selectableItemBackground"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="14dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Aceptar"
+                            android:textColor="@color/white"
+                            android:textSize="17sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
 
                 </RelativeLayout>
 

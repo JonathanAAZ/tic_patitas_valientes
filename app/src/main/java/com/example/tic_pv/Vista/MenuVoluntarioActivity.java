@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class MenuVoluntarioActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         authUsuario = auth.getCurrentUser();
 
-        Button btnVerInformacion = findViewById(R.id.btnVerInformacionVoluntario);
+        LinearLayout btnVerInformacion = findViewById(R.id.btnVerInformacionVoluntario);
         btnVerInformacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

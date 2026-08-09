@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -43,7 +44,7 @@ public class CambiarClaveActivity extends AppCompatActivity {
             , tVErrorConfirClave;
     private RelativeLayout rLCambiarClave;
     private TextView tvAutenticado;
-    private Button btnAutenticar, btnCambiarClave;
+    private LinearLayout btnAutenticar, btnCambiarClave;
     private String claveUsuario;
     private boolean todasValidas;
     private ControladorUsuario controladorUsuario = new ControladorUsuario();

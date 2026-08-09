@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -63,7 +64,7 @@ public class EditarInformacionPerfilActivity extends AppCompatActivity {
             fechaNacUsuarioEditar, estadoCivUsuarioEditar, ocupacionUsuarioEditar,
             telefonoUsuarioEditar, igUsuarioEditar, fbUsuarioEditar , idUsuarioEditado;
     private String idCuenta, rol;
-    private Button btnGuardarCambiosPerfil;
+    private LinearLayout btnGuardarCambiosPerfil;
     private boolean procesando, enAdministracion;
     private FirebaseAuth authPerfil;
     private ProgressBar barraProgresoEditarPerfil;

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
@@ -150,7 +151,7 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
         estadoCivOpsVoluntario.clearCheck();
 
         //Botón para guardar información
-        Button btnGuardarVoluntario = findViewById(R.id.btnGuardarVoluntario);
+        LinearLayout btnGuardarVoluntario = findViewById(R.id.btnGuardarVoluntario);
         btnGuardarVoluntario.setEnabled(false);
 
         //Colocar un Date Picker en el Edit Text de la fecha de nacimiento

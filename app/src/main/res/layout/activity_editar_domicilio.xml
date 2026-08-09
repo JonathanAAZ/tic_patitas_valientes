@@ -233,15 +233,30 @@
                     android:padding="6dp"
                     android:textSize="16sp" />
 
-                <Button
+                <LinearLayout
                     android:id="@+id/btnGuardarCambiosDomicilio"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/etEditarCalles"
                     android:layout_marginTop="30dp"
                     android:layout_marginBottom="30dp"
-                    android:layout_centerHorizontal="true"
-                    android:text="GUARDAR" />
+                    android:background="@drawable/border"
+                    android:backgroundTint="@color/lila"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="GUARDAR"
+                        android:textColor="@color/white"
+                        android:textSize="17sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
 
                 <ProgressBar
                     android:layout_width="wrap_content"
