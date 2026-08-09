@@ -25,6 +25,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -43,6 +44,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -75,8 +77,9 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
         idCuenta = i.getStringExtra("id");
         rol = i.getStringExtra("rol");
 
+        LinearLayout btnTomarFotoPerfil = findViewById(R.id.lLTomarFotoPerfilEditar);
         LinearLayout btnSeleccionarFotoPerfil = findViewById(R.id.lLSeleccionarFotoPerfilEditar);
-        Button btnGuardarFotoPerfilEditada = findViewById(R.id.btnGuardarFotoPerfilEditada);
+        LinearLayout btnGuardarFotoPerfilEditada = findViewById(R.id.btnGuardarFotoPerfilEditada);
         barraProgreso = findViewById(R.id.barraProgresoEditarFotoPerfil);
         vistaImagenSubirFoto = findViewById(R.id.ivFotoPerfilSubida);
 
@@ -104,15 +107,9 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
                 },
                 null);
 
-        //Seleccionar foto de perfil
-        btnSeleccionarFotoPerfil.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-//                abrirSelectorArchivo();
-                verificarPermisoGaleria();
-            }
-        });
+        //Botones para tomar o seleccionar la foto de perfil
+        btnTomarFotoPerfil.setOnClickListener(v -> verificarPermisoCamara());
+        btnSeleccionarFotoPerfil.setOnClickListener(v -> verificarPermisoGaleria());
 
         btnGuardarFotoPerfilEditada.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -174,6 +171,47 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         seleccionarFotoGaleriaLauncher.launch(intent);
     }
+
+    private void verificarPermisoCamara() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            abrirCamara();
+        } else {
+            solicitarPermisosCamaraLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void abrirCamara() {
+        File archivoFoto = new File(getCacheDir(), "foto_perfil_" + System.currentTimeMillis() + ".jpg");
+        uriImage = FileProvider.getUriForFile(this, "com.example.tic_pv.fileprovider", archivoFoto);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriImage);
+        tomarFotoLauncher.launch(intent);
+    }
+
+    private final ActivityResultLauncher<String> solicitarPermisosCamaraLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (isGranted) {
+                    abrirCamara();
+                } else {
+                    Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_LONG).show();
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> tomarFotoLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // La cámara escribe en la uri que se le pasó, así que no viene en el resultado
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Glide.with(this)
+                            .load(uriImage)
+                            .fitCenter()
+                            .into(vistaImagenSubirFoto);
+                }
+            }
+    );
 
     private final ActivityResultLauncher<Intent> seleccionarFotoGaleriaLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

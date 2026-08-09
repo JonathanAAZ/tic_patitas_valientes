@@ -254,6 +254,153 @@ if (url != null && !url.isEmpty()) {
 
 ---
 
+## Botones — OBLIGATORIO
+
+**No se usa `<Button>`.** El widget de Material desentona con el resto de la app y arrastra
+su propio fondo, elevación y `textAllCaps`. Todos los botones son un `LinearLayout` clicable
+con el texto dentro:
+
+```xml
+<LinearLayout
+    android:id="@+id/btnGuardarX"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/border"
+    android:backgroundTint="@color/lila"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <!-- El icono es opcional; se omite en los botones de formulario -->
+    <ImageView
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:background="@drawable/ic_x"
+        android:backgroundTint="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="GUARDAR"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+</LinearLayout>
+```
+
+### Colores
+
+| Uso | Tinte |
+|---|---|
+| Acción principal (guardar, continuar, enviar, iniciar sesión) | `@color/lila` |
+| Acción secundaria (seleccionar foto, ver información) | `@color/blue_2` |
+| Confirmar en listas | `@color/dark_green` |
+
+Texto **siempre blanco en negrita**, `17sp`, con `padding="14dp"` y `layout_width="match_parent"`.
+Los botones al final de un formulario ocupan el ancho completo; no se centran con
+`layout_centerHorizontal` ni se dejan en `wrap_content`.
+
+### En el código
+
+`findViewById` devuelve el tipo que se le pida y **casta en tiempo de ejecución**, así que
+declarar `Button` sobre uno de estos botones compila sin error y revienta con
+`ClassCastException` al abrir la pantalla. El campo se declara `LinearLayout`:
+
+```java
+private LinearLayout btnGuardarX;   // NO Button
+```
+
+Para cambiar el estado deshabilitado hay que **teñir el fondo, no reemplazarlo**, o se pierden
+las esquinas redondeadas. El color del texto se cambia en el `TextView` interno, que para eso
+necesita su propio id:
+
+```java
+binding.btnEnviarSolicitud.setEnabled(false);
+binding.btnEnviarSolicitud.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
+binding.tVEnviarSolicitud.setTextColor(Color.DKGRAY);
+```
+
+> **Referencia:** `activity_main.xml` (con icono) y `activity_crear_cuenta.xml` (sin icono).
+
+---
+
+## Pantallas que agregan o editan fotos — formato único
+
+Toda pantalla donde el usuario aporte una foto ofrece **siempre las dos vías**, en una fila de
+dos botones del mismo ancho. Nunca solo galería.
+
+```xml
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:id="@+id/lLTomarFotoX"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/borde_cuadrado"
+        android:backgroundTint="@color/celeste"
+        android:backgroundTintMode="multiply"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:background="@drawable/ic_camara" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="Tomar una foto"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- Igual, con id lLSubirFotoX, ic_galeria y texto "Subir una foto" -->
+</LinearLayout>
+```
+
+Encima de la fila va el `ImageView` de vista previa. Los textos son siempre
+**"Tomar una foto"** y **"Subir una foto"**, con `ic_camara` e `ic_galeria`.
+
+En el código hacen falta las dos rutas, cada una con su permiso:
+
+```java
+btnTomarFotoX.setOnClickListener(v -> verificarPermisoCamara());     // Manifest.permission.CAMERA
+btnSubirFotoX.setOnClickListener(v -> verificarPermisoGaleria());    // READ_MEDIA_IMAGES / READ_EXTERNAL_STORAGE
+```
+
+La cámara escribe en la `Uri` que se le pasa por `EXTRA_OUTPUT`, así que **el resultado no trae
+datos**: se comprueba solo el `resultCode` y se pinta la uri que ya se tenía.
+
+```java
+File archivo = new File(getCacheDir(), "foto_" + System.currentTimeMillis() + ".jpg");
+uriImage = FileProvider.getUriForFile(this, "com.example.tic_pv.fileprovider", archivo);
+
+Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+intent.putExtra(MediaStore.EXTRA_OUTPUT, uriImage);
+tomarFotoLauncher.launch(intent);
+```
+
+> **Referencia:** `fragment_agregar_foto_mascota.xml`.
+
+---
+
 ## Datos
 
 ### Firestore
@@ -356,6 +503,9 @@ El id de la raíz del layout es `main` (es lo que espera el listener de insets).
 - [ ] ¿Un solo `setContentView`, con el binding?
 - [ ] ¿Los extras y argumentos se validan sin `assert`?
 - [ ] ¿La flecha de regresar tiene listener?
+- [ ] ¿Los botones son `LinearLayout` con el estilo de la casa, y no `<Button>`?
+- [ ] ¿Los campos Java de esos botones se declaran `LinearLayout`, no `Button`?
+- [ ] ¿Las pantallas de foto ofrecen tomar **y** subir, con el formato único?
 - [ ] ¿Las ramificaciones por rol tienen `else`?
 - [ ] ¿El acceso a Firestore está en un controlador, y fuera de `onBindViewHolder`?
 - [ ] ¿Las imágenes tienen fallback para el reciclado?

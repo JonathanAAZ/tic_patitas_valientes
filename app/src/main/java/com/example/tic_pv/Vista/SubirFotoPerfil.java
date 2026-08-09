@@ -15,6 +15,7 @@ import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -94,8 +96,9 @@ public class SubirFotoPerfil extends AppCompatActivity {
             return insets;
         });
 
-        Button btnSeleccionarFotoPerfil = findViewById(R.id.btnSeleccionarFotoPerfil);
-        Button btnGuardarCuenta = findViewById(R.id.btnGuardarFotoPerfil);
+        LinearLayout btnTomarFotoPerfil = findViewById(R.id.lLTomarFotoPerfil);
+        LinearLayout btnSeleccionarFotoPerfil = findViewById(R.id.btnSeleccionarFotoPerfil);
+        LinearLayout btnGuardarCuenta = findViewById(R.id.btnGuardarFotoPerfil);
         barraProgreso = findViewById(R.id.barraProgresoSubirFotoPerfil);
         vistaImagenSubirFoto = findViewById(R.id.vistaFotoPerfilSubida);
 
@@ -126,7 +129,8 @@ public class SubirFotoPerfil extends AppCompatActivity {
         cuenta = i.getParcelableExtra("cuenta");
         domicilio = i.getParcelableExtra("domicilio");
 
-        //Botón para seleccionar foto de perfil
+        //Botones para tomar o seleccionar la foto de perfil
+        btnTomarFotoPerfil.setOnClickListener(v -> verificarPermisoCamara());
         btnSeleccionarFotoPerfil.setOnClickListener(v -> verificarPermisoGaleria());
 
         //Botón para crear la cuenta
@@ -225,6 +229,47 @@ public class SubirFotoPerfil extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         seleccionarFotoGaleriaLauncher.launch(intent);
     }
+
+    private void verificarPermisoCamara() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            abrirCamara();
+        } else {
+            solicitarPermisosCamaraLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void abrirCamara() {
+        File archivoFoto = new File(getCacheDir(), "foto_perfil_" + System.currentTimeMillis() + ".jpg");
+        uriImage = FileProvider.getUriForFile(this, "com.example.tic_pv.fileprovider", archivoFoto);
+
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, uriImage);
+        tomarFotoLauncher.launch(intent);
+    }
+
+    private final ActivityResultLauncher<String> solicitarPermisosCamaraLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            isGranted -> {
+                if (isGranted) {
+                    abrirCamara();
+                } else {
+                    Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_LONG).show();
+                }
+            }
+    );
+
+    private final ActivityResultLauncher<Intent> tomarFotoLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // La cámara escribe en la uri que se le pasó, así que no viene en el resultado
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Glide.with(this)
+                            .load(uriImage)
+                            .fitCenter()
+                            .into(vistaImagenSubirFoto);
+                }
+            }
+    );
 
     private final ActivityResultLauncher<Intent> seleccionarFotoGaleriaLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),

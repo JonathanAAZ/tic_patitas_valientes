@@ -70,26 +70,103 @@
             android:padding="10dp"
             android:layout_below="@+id/layoutEncabezadoSubirFoto"/>
 
-        <Button
-            android:layout_width="wrap_content"
+        <!-- Fila de acciones de foto, igual que en fragment_agregar_foto_mascota -->
+        <LinearLayout
+            android:id="@+id/lLBotonesFotoPerfil"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btnSeleccionarFotoPerfil"
             android:layout_below="@+id/vistaFotoPerfilSubida"
             android:layout_marginTop="10dp"
-            android:padding="5dp"
-            android:layout_centerHorizontal="true"
-            style="@style/Widget.MaterialComponents.CardView"
-            android:textStyle="italic"
-            android:text="Seleccione una foto" />
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <Button
-            android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/lLTomarFotoPerfil"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:backgroundTint="@color/celeste"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/borde_cuadrado">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_camara" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="Tomar una foto"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/btnSeleccionarFotoPerfil"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginStart="5dp"
+                android:orientation="horizontal"
+                android:padding="5dp"
+                android:gravity="center"
+                android:focusable="true"
+                android:clickable="true"
+                android:backgroundTint="@color/celeste"
+                android:backgroundTintMode="multiply"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless"
+                android:background="@drawable/borde_cuadrado">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_galeria" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="Subir una foto"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/btnGuardarFotoPerfil"
-            android:layout_below="@id/btnSeleccionarFotoPerfil"
+            android:layout_below="@id/lLBotonesFotoPerfil"
             android:layout_marginTop="20dp"
-            android:layout_centerHorizontal="true"
-            android:text="Guardar Información"/>
+            android:background="@drawable/border"
+            android:backgroundTint="@color/lila"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar Información"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <ProgressBar
             android:layout_width="wrap_content"
