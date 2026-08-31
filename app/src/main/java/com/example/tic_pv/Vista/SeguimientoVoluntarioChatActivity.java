@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.media.MediaPlayer;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -124,6 +126,9 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                 .attachToRecyclerView(binding.recyclerViewChatSeguiVol);
 
         binding.iVCancelarRespuesta.setOnClickListener(v -> cancelarRespuesta());
+
+        // Retirar la mascota es irreversible desde la app, así que se pide el motivo antes
+        binding.lLRetirarMascota.setOnClickListener(v -> mostrarDialogRetirarMascota());
 
         // Al abrirse el teclado el RecyclerView se encoge, así que volvemos al último mensaje
         binding.recyclerViewChatSeguiVol.addOnLayoutChangeListener(
@@ -335,6 +340,73 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
         // Manejo de las preguntas frecuentes
         configurarPreguntasFrecuentes();
 
+    }
+
+    // Antes de retirar se exige un motivo: queda registrado y se le comunica al adoptante
+    private void mostrarDialogRetirarMascota() {
+        Dialog dialogRetiro = new Dialog(this);
+        dialogRetiro.setContentView(R.layout.dialog_motivo_rechazo_solicitud);
+        Objects.requireNonNull(dialogRetiro.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tVEncabezado = dialogRetiro.findViewById(R.id.tVEncMotivoRechazoSolicitud);
+        EditText eTMotivo = dialogRetiro.findViewById(R.id.etMotivoRechazoSolicitud);
+        ImageView btnSalir = dialogRetiro.findViewById(R.id.iVSalirObservacionesRechazo);
+        LinearLayout btnRetirar = dialogRetiro.findViewById(R.id.lLEnviarMotivoRechazo);
+        TextView tVBotonRetirar = dialogRetiro.findViewById(R.id.tVEnviarMotivoRechazo);
+
+        // El encabezado explica las consecuencias, porque la acción no se puede deshacer
+        tVEncabezado.setText("Va a retirar a " + seguimiento.getNombreMascota() + " de "
+                + seguimiento.getNombreAdoptante() + ".\n\n"
+                + "La mascota volverá al catálogo de adopción y este seguimiento se cerrará.\n\n"
+                + "Indique el motivo del retiro:");
+
+        eTMotivo.setHint("Describa el motivo del retiro");
+
+        // El botón se adapta a esta acción, que es destructiva
+        tVBotonRetirar.setText("Retirar mascota");
+        btnRetirar.setBackgroundTintList(ColorStateList.valueOf(
+                ContextCompat.getColor(this, R.color.red)));
+
+        btnSalir.setOnClickListener(v -> dialogRetiro.dismiss());
+
+        btnRetirar.setOnClickListener(v -> {
+            String motivo = eTMotivo.getText().toString().trim();
+
+            if (motivo.isEmpty()) {
+                eTMotivo.setError("Debe indicar el motivo del retiro");
+                return;
+            }
+
+            // Se evita un segundo toque mientras se procesa
+            btnRetirar.setEnabled(false);
+            retirarMascota(motivo, dialogRetiro);
+        });
+
+        dialogRetiro.show();
+    }
+
+    private void retirarMascota(String motivo, Dialog dialogRetiro) {
+        // Se evita un segundo toque mientras se procesa
+        binding.lLRetirarMascota.setEnabled(false);
+
+        controladorSeguimiento.retirarMascotaAdoptante(seguimiento, motivo, new ControladorSeguimiento.Callback<Void>() {
+            @Override
+            public void onComplete(Void result) {
+                dialogRetiro.dismiss();
+                Toast.makeText(SeguimientoVoluntarioChatActivity.this,
+                        "La mascota volvió al catálogo de adopción", Toast.LENGTH_LONG).show();
+                // El seguimiento quedó cerrado, así que ya no tiene sentido seguir en el chat
+                finish();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                dialogRetiro.dismiss();
+                binding.lLRetirarMascota.setEnabled(true);
+                Toast.makeText(SeguimientoVoluntarioChatActivity.this,
+                        "No se pudo retirar la mascota", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     // Muestra sobre el campo de texto el mensaje que se va a responder

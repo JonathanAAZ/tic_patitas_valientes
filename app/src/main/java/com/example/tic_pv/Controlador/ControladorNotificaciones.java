@@ -351,6 +351,122 @@ public class ControladorNotificaciones {
         return contenido;
     }
 
+    // Avisa al adoptante de que la mascota fue retirada. Sin esto vería desaparecer a la
+    // mascota de su perfil sin ninguna explicación.
+    public void enviarNotificacionMascotaRetirada(Seguimiento seguimiento, String motivo) {
+        if (seguimiento.getIdAdoptante() == null || seguimiento.getIdAdoptante().isEmpty()) {
+            Log.e(TAG, "El seguimiento no tiene adoptante al que avisar del retiro");
+            return;
+        }
+
+        // Variable local en lugar del campo compartido, para que otra notificación en
+        // curso no sobrescriba estos datos antes de que responda Firestore
+        Notificacion notificacionRetiro = new Notificacion();
+
+        String nombreMascota = seguimiento.getNombreMascota() != null ? seguimiento.getNombreMascota() : "la mascota";
+
+        notificacionRetiro.setId(UUID.randomUUID().toString());
+        notificacionRetiro.setTipoNotificacion(EstadosCuentas.NOTIFICACION_MASCOTA_RETIRADA.toString());
+        notificacionRetiro.setIdRelacionado(seguimiento.getId());
+        notificacionRetiro.setTitulo("Su proceso de adopción ha finalizado");
+        String cuerpo = "Le informamos que " + nombreMascota + " ha sido retirada de su hogar y el "
+                + "seguimiento ha finalizado.";
+        if (motivo != null && !motivo.trim().isEmpty()) {
+            cuerpo += "\n\nMotivo: " + motivo.trim();
+        }
+        cuerpo += "\n\nSi tiene dudas sobre esta decisión, comuníquese con la agrupación.";
+
+        notificacionRetiro.setCuerpo(cuerpo);
+
+        notificacionRetiro.setEstado(EstadosCuentas.NOTIFICACION_ENVIADA.toString());
+        notificacionRetiro.setIdUsuarioReceptor(seguimiento.getIdAdoptante());
+        notificacionRetiro.establecerFechaHoraActual();
+
+        bd.collection("Cuentas").document(seguimiento.getIdAdoptante()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String estado = documentSnapshot.getString("estado");
+                        String token = documentSnapshot.getString("dispositivo");
+
+                        if (estado != null && estado.equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                            enviarNotificacionServidor(token, notificacionRetiro);
+                        } else {
+                            Log.e("ERROR_NOTIFICACION", "El adoptante no es un usuario activo");
+                        }
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Log.e("ERROR", "No se encontró la cuenta del adoptante para avisar del retiro"));
+    }
+
+    // Al retirar una mascota, los recordatorios ya programados siguen apuntando al ex
+    // adoptante. Se eliminan solo los suyos: los del voluntario se conservan, porque la
+    // mascota vuelve a estar bajo su cuidado.
+    public void eliminarNotificacionesVacunaAdoptante(String idMascota, String idAdoptante) {
+        if (idMascota == null || idMascota.isEmpty() || idAdoptante == null || idAdoptante.isEmpty()) {
+            return;
+        }
+
+        DatabaseReference refNotificaciones = FirebaseDatabase.getInstance().getReference("notificaciones");
+
+        // El historial médico se guarda como historial_medico/{idMascota}/{idHistorial}
+        FirebaseDatabase.getInstance().getReference("historial_medico").child(idMascota)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot historial : snapshot.getChildren()) {
+                            String idHistorial = historial.getKey();
+                            if (idHistorial == null) {
+                                continue;
+                            }
+
+                            // Cada notificación guarda el id del historial en idRelacionado
+                            refNotificaciones.child(idAdoptante)
+                                    .orderByChild("idRelacionado")
+                                    .equalTo(idHistorial)
+                                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot notificaciones) {
+                                            for (DataSnapshot notificacion : notificaciones.getChildren()) {
+                                                String key = notificacion.getKey();
+                                                notificacion.getRef().removeValue();
+                                                eliminarNotificacionProgramada(key);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+                                            Log.e("FIREBASE", "Error al leer las notificaciones del adoptante");
+                                        }
+                                    });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("FIREBASE", "Error al leer el historial médico de la mascota");
+                    }
+                });
+    }
+
+    // Cancela la programación en el servidor para que el recordatorio no se dispare
+    private void eliminarNotificacionProgramada(String idNotificacion) {
+        if (idNotificacion == null) {
+            return;
+        }
+
+        bd.collection("NotificacionesProgramadas")
+                .whereEqualTo("idNotificacion", idNotificacion)
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot documento : querySnapshot.getDocuments()) {
+                        documento.getReference().delete();
+                    }
+                })
+                .addOnFailureListener(e ->
+                        Log.e("FIREBASE", "Error al eliminar la notificación programada"));
+    }
+
     public void enviarNotificacionVacuna(HistorialMedico vacuna, Mascota mascota, String hora) {
 
         // Fecha principal en formato ISO "yyyy-MM-dd'T'HH:mm:ssXXX"

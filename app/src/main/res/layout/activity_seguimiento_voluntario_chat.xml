@@ -34,11 +34,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_toStartOf="@+id/lLRetirarMascota"
             android:text="Chat de seguimiento"
             android:textAlignment="center"
             android:textColor="@color/lila"
             android:textSize="18sp"
             android:textStyle="bold" />
+
+        <!-- Acción destructiva: va en el encabezado para no competir con Enviar -->
+        <LinearLayout
+            android:id="@+id/lLRetirarMascota"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/red"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="6dp">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:background="@drawable/ic_eliminar"
+                android:backgroundTint="@color/white"
+                android:contentDescription="Retirar mascota" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:text="Retirar"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <View
             android:id="@+id/viewTituloVerMascotas"

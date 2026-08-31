@@ -186,6 +186,93 @@ public class ControladorSeguimiento {
         });
     }
 
+    // Retira la mascota del adoptante: vuelve al catálogo de adopción, sale del perfil
+    // del adoptante y el seguimiento se cierra.
+    public void retirarMascotaAdoptante(Seguimiento seguimiento, String motivo, Callback<Void> callback) {
+        if (seguimiento.getIdMascota() == null || seguimiento.getIdMascota().isEmpty()) {
+            callback.onError(new IllegalStateException("El seguimiento no tiene mascota asociada"));
+            return;
+        }
+
+        // 1. La mascota vuelve al catálogo. Es el mismo campo que filtra CatalogoMascotas
+        //    y obtenerListaMisMascotas, así que con esto sale del perfil del adoptante.
+        db.collection("Mascotas").document(seguimiento.getIdMascota())
+                .update("mascotaAdoptada", false)
+                .addOnSuccessListener(unused -> {
+
+                    // 2. Los recordatorios ya programados apuntan al ex adoptante. Se cancelan
+                    //    los suyos; los del voluntario se conservan, porque la mascota vuelve a
+                    //    estar bajo su cuidado.
+                    controladorNotificaciones.eliminarNotificacionesVacunaAdoptante(
+                            seguimiento.getIdMascota(), seguimiento.getIdAdoptante());
+
+                    // 3. El seguimiento se cierra dejando registrado el motivo
+                    Map<String, Object> mapCierre = new HashMap<>();
+                    mapCierre.put("estado", EstadosCuentas.RECHAZADA.toString());
+                    mapCierre.put("motivoRetiro", motivo);
+
+                    db.collection("Seguimientos").document(seguimiento.getId())
+                            .update(mapCierre)
+                            .addOnSuccessListener(unused1 -> {
+
+                                // 4. Se avisa al adoptante, que de otro modo vería desaparecer
+                                //    la mascota de su perfil sin ninguna explicación
+                                controladorNotificaciones.enviarNotificacionMascotaRetirada(seguimiento, motivo);
+
+                                // 5. Se cierra también la adopción completada. Si se dejara en
+                                //    COMPLETADA y la mascota se adoptara de nuevo, volvería a
+                                //    aparecer en "Mis mascotas" del adoptante anterior.
+                                cerrarAdopcionCompletada(seguimiento, callback);
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("FIREBASE", "Error al cerrar el seguimiento");
+                                callback.onError(e);
+                            });
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FIREBASE", "Error al devolver la mascota al catálogo");
+                    callback.onError(e);
+                });
+    }
+
+    private void cerrarAdopcionCompletada(Seguimiento seguimiento, Callback<Void> callback) {
+        db.collection("Adopciones")
+                .whereEqualTo("adoptante", seguimiento.getIdAdoptante())
+                .whereEqualTo("mascotaAdopcion", seguimiento.getIdMascota())
+                .whereEqualTo("estado", EstadosCuentas.COMPLETADA.toString())
+                .get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot documento : querySnapshot.getDocuments()) {
+                        documento.getReference().update("estado", EstadosCuentas.RECHAZADA.toString());
+
+                        // El contrato firmado acredita una adopción que ya no existe, así que
+                        // se anula. Si no, quedarían dos contratos firmados para la misma
+                        // mascota cuando otra persona la adopte.
+                        anularContratoAdopcion(documento.getString("contratoAdopcion"));
+                    }
+                    callback.onComplete(null);
+                })
+                .addOnFailureListener(e -> {
+                    // La mascota ya volvió al catálogo, que es lo esencial de la operación
+                    Log.e("FIREBASE", "Error al cerrar la adopción completada");
+                    callback.onComplete(null);
+                });
+    }
+
+    // Marca el contrato como anulado. No se borra: es el respaldo documental de que la
+    // adopción existió.
+    private void anularContratoAdopcion(String idContrato) {
+        if (idContrato == null || idContrato.isEmpty()) {
+            Log.e("FIREBASE", "La adopción no tiene un contrato asociado que anular");
+            return;
+        }
+
+        db.collection("ContratosAdopciones").document(idContrato)
+                .update("estado", EstadosCuentas.ANULADO.toString())
+                .addOnFailureListener(e ->
+                        Log.e("FIREBASE", "Error al anular el contrato de adopción"));
+    }
+
     // Marca que el usuario está viendo el chat, para no notificarle los mensajes que
     // ya está leyendo. Se llama desde onResume de las Activities de chat.
     public void marcarPresenciaChat(String listaMensajes, String idUsuario) {
