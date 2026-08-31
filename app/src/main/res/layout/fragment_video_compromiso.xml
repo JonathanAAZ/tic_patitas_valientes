@@ -40,21 +40,11 @@
         android:background="@color/black"
         android:layout_below="@+id/tVDescripcionVideoCompromiso">
 
-        <VideoView
-            android:layout_width="wrap_content"
-            android:layout_height="300dp"
+        <!-- Los controles y el buffering se configuran desde ControladorUtilidades -->
+        <androidx.media3.ui.PlayerView
             android:id="@+id/videoCompromisoUltimos"
-            android:layout_gravity="center"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/iVReproducirVideoCompromisoUltimos"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
-            android:layout_gravity="center"
-            android:visibility="invisible"
-            android:backgroundTint="@color/white"
-            android:background="@drawable/ic_reproducir"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <ProgressBar
             android:id="@+id/barraProgresoVideoCompromisoUltimos"

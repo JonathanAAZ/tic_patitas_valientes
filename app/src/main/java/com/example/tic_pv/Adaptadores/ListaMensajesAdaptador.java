@@ -150,6 +150,16 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
                     holder.itemView.getContext()
             );
 
+            // Al tocar la foto se abre ampliada y con zoom
+            String emisor = usuarioActual.getUid().equalsIgnoreCase(mensaje.getIdEmisor())
+                    ? "Tú"
+                    : mensaje.getEmisor();
+            holder.iVFotoMensaje.setOnClickListener(v ->
+                    controladorUtilidades.mostrarImagenAmpliada(
+                            mensaje.getContenido(),
+                            "Foto de " + emisor,
+                            holder.itemView.getContext()));
+
         } else if (controladorUtilidades.esVideo(mensaje.getContenido())) {
             holder.tVContenido.setVisibility(View.GONE);
             holder.iVFotoMensaje.setVisibility(View.GONE);

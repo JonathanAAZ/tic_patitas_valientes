@@ -39,8 +39,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.annotation.OptIn;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.media3.common.MediaItem;
+import androidx.media3.common.Player;
+import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.ExoPlayer;
+import androidx.media3.ui.PlayerView;
 import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -51,6 +57,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.utils.ObjectUtils;
 import com.example.tic_pv.Modelo.VideoCache;
 import com.example.tic_pv.R;
+import com.jsibbold.zoomage.ZoomageView;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -747,6 +754,66 @@ public class ControladorUtilidades {
         }
 
         return contenido;
+    }
+
+    // Reproduce un video remoto con Media3, igual que el chat: arranca sin esperar la
+    // descarga completa y trae los controles nativos de avanzar, pausar y silenciar.
+    // El player devuelto DEBE liberarse en onPause/onDestroy de la pantalla que lo usa.
+    @OptIn(markerClass = UnstableApi.class)
+    public ExoPlayer insertarVideoConExoPlayer(String url, PlayerView playerView, ProgressBar barraProgreso) {
+        if (url == null || url.isEmpty()) {
+            Log.e("VIDEO", "No hay una url de video para reproducir");
+            return null;
+        }
+
+        ExoPlayer player = new ExoPlayer.Builder(playerView.getContext()).build();
+        playerView.setPlayer(player);
+        playerView.setUseController(true);
+        playerView.setControllerAutoShow(true);
+        playerView.setShowBuffering(PlayerView.SHOW_BUFFERING_WHEN_PLAYING);
+
+        barraProgreso.setVisibility(View.VISIBLE);
+
+        player.setMediaItem(MediaItem.fromUri(url));
+        player.prepare();
+        // No se reproduce solo: el usuario decide con los controles
+        player.setPlayWhenReady(false);
+
+        player.addListener(new Player.Listener() {
+            @Override
+            public void onPlaybackStateChanged(int playbackState) {
+                if (playbackState == Player.STATE_READY) {
+                    barraProgreso.setVisibility(View.GONE);
+                } else if (playbackState == Player.STATE_BUFFERING) {
+                    barraProgreso.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        return player;
+    }
+
+    // Muestra una imagen a pantalla casi completa con zoom.
+    // Acepta una url de Cloudinary o una Uri local, porque Glide carga ambas.
+    public void mostrarImagenAmpliada(Object imagen, String titulo, Context context) {
+        Dialog dialog = new Dialog(context);
+        dialog.setContentView(R.layout.dialog_imagen_ampliada);
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tVTitulo = dialog.findViewById(R.id.tVEncImagenAmpliada);
+        if (titulo != null && !titulo.isEmpty()) {
+            tVTitulo.setText(titulo);
+        }
+
+        ZoomageView imagenAmpliada = dialog.findViewById(R.id.iVFotoAmpliada);
+        Glide.with(context)
+                .load(imagen)
+                .fitCenter()
+                .into(imagenAmpliada);
+
+        dialog.findViewById(R.id.iVCerrarImagenAmpliada).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     public Dialog crearAlertaPersonalizada(String titulo, String mensaje, Context context) {

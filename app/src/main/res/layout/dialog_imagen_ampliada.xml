@@ -2,36 +2,69 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    android:gravity="center"
+    android:padding="10dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/yellow"
-        android:background="@drawable/border"
-        android:padding="2dp">
+        android:background="@drawable/bordes_redondeados"
+        android:backgroundTint="@color/white"
+        android:orientation="vertical">
 
-        <TextView
+        <!-- Encabezado con el mismo lenguaje que el resto de la app -->
+        <RelativeLayout
+            android:id="@+id/rLSuperiorImagenAmpliada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/tVEncImagenAmpliada"
+            android:background="@color/yellow"
+            android:padding="12dp">
+
+            <TextView
+                android:id="@+id/tVEncImagenAmpliada"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toStartOf="@+id/iVCerrarImagenAmpliada"
+                android:text="Ver imagen"
+                android:textAlignment="center"
+                android:textColor="@color/lila"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/iVCerrarImagenAmpliada"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/ic_cerrar"
+                android:backgroundTint="@color/lila"
+                android:clickable="true"
+                android:contentDescription="Cerrar"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless" />
+        </RelativeLayout>
+
+        <!-- Fondo oscuro para que la foto resalte, sin importar sus colores -->
+        <com.jsibbold.zoomage.ZoomageView
+            android:id="@+id/iVFotoAmpliada"
+            android:layout_width="match_parent"
+            android:layout_height="480dp"
+            android:background="@color/black"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/tVAyudaImagenAmpliada"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/yellow"
+            android:padding="10dp"
+            android:text="Pellizque o toque dos veces para acercar"
             android:textAlignment="center"
             android:textColor="@color/lila"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="10dp"
-            android:text="Puede ampliar la imagen para ver la información con mayor detalle."/>
+            android:textSize="13sp" />
 
-        <com.jsibbold.zoomage.ZoomageView
-            android:layout_width="match_parent"
-            android:layout_height="500dp"
-            android:id="@+id/iVFotoAmpliada"
-            android:padding="5dp"
-            android:scaleType="fitCenter"
-            android:layout_below="@+id/tVEncImagenAmpliada"
-            android:backgroundTint="@color/celeste"
-            android:background="@drawable/border"/>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

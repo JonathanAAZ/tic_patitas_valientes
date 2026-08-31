@@ -33,7 +33,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.jsibbold.zoomage.ZoomageView;
 
 import java.util.Objects;
 
@@ -261,37 +260,27 @@ public class ResponderSolicitudAdopcionActivity extends AppCompatActivity {
     private void configurarImageViews(ImageView imageView, int posicion) {
         if (solicitudAdopcion != null) {
             imageView.setOnClickListener(v -> {
-                Dialog dialog = new Dialog(this);
-                dialog.setContentView(R.layout.dialog_imagen_ampliada);
-                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                ZoomageView imagenAmpliada = dialog.findViewById(R.id.iVFotoAmpliada);
                 switch (posicion) {
                     case 0:
-                        asignarImagenDialog(solicitudAdopcion.getFotoCedulaFrontal(), imagenAmpliada);
+                        controladorUtilidades.mostrarImagenAmpliada(
+                                solicitudAdopcion.getFotoCedulaFrontal(), "Cédula (frontal)", this);
                         break;
                     case 1:
-                        asignarImagenDialog(solicitudAdopcion.getFotoCedulaPosterior(), imagenAmpliada);
+                        controladorUtilidades.mostrarImagenAmpliada(
+                                solicitudAdopcion.getFotoCedulaPosterior(), "Cédula (reverso)", this);
                         break;
                     case 2:
-                        asignarImagenDialog(solicitudAdopcion.getFotoServiciosBasicos(), imagenAmpliada);
+                        controladorUtilidades.mostrarImagenAmpliada(
+                                solicitudAdopcion.getFotoServiciosBasicos(), "Servicios básicos", this);
                         break;
                     default:
                         break;
                 }
-                dialog.show();
             });
         } else {
             Toast.makeText(this, "No hay una foto seleccionada", Toast.LENGTH_SHORT).show();
         }
 
-    }
-
-    private void asignarImagenDialog(String url, ZoomageView imagen) {
-        Glide.with(this)
-                .load(url)
-                .fitCenter()
-                .into(imagen);
     }
 
     private void redirigirVistaSolicitudes() {

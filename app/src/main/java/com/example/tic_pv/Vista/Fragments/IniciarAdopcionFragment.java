@@ -46,7 +46,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.jsibbold.zoomage.ZoomageView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -191,17 +190,10 @@ public class IniciarAdopcionFragment extends Fragment {
     private void configurarVistaAmpliada(int posicion) {
 
         if (!listaUrisFotos.isEmpty() && posicion < listaUrisFotos.size() && listaUrisFotos.get(posicion) != null) {
-            Dialog dialog = new Dialog(requireContext());
-            dialog.setContentView(R.layout.dialog_imagen_ampliada);
-            Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-            ZoomageView imagenAmpliada = dialog.findViewById(R.id.iVFotoAmpliada);
-            Glide.with(requireContext())
-                    .load(listaUrisFotos.get(posicion))
-                    .fitCenter()
-                    .into(imagenAmpliada);
-
-            dialog.show();
+            controladorUtilidades.mostrarImagenAmpliada(
+                    listaUrisFotos.get(posicion),
+                    "Requisito adjuntado",
+                    requireContext());
         } else {
             Toast.makeText(requireContext(), "No se ha tomado una foto", Toast.LENGTH_SHORT).show();
         }
