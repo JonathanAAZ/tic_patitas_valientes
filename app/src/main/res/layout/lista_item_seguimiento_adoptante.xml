@@ -145,6 +145,7 @@
                         android:backgroundTint="@color/white" />
 
                     <TextView
+                        android:id="@+id/tVResponderSeguiAdoptante"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"

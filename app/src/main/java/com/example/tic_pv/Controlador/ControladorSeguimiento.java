@@ -31,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -38,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -50,6 +52,22 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ControladorSeguimiento {
+    // El retiro toca varias colecciones. Si el cierre de la adopción falla, la mascota ya
+    // volvió al catálogo pero el proceso quedó a medias, así que hay que reintentarlo.
+    private static final String ERROR_CIERRE_ADOPCION =
+            "La mascota volvió al catálogo, pero no se pudo cerrar la adopción. Vuelva a intentarlo.";
+
+    // La primera semana el seguimiento es diario: es el periodo en el que se decide si la
+    // mascota se queda en el hogar. Después vienen ocho controles mensuales.
+    private static final int DIAS_PRIMERA_SEMANA = 7;
+    private static final int MESES_FASE_MENSUAL = 8;
+
+    // Pasada la fase mensual los controles son trimestrales; se dejan cuatro programados
+    private static final int MESES_FASE_PERIODICA = 3;
+    private static final int CONTROLES_FASE_PERIODICA = 4;
+
+    private static final String HORA_RECORDATORIO_POR_DEFECTO = "08:00";
+
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private final StorageReference storageReference = FirebaseStorage.getInstance().getReference("FotosMascotas");
     private EstadosCuentas estadoMascota;
@@ -67,6 +85,13 @@ public class ControladorSeguimiento {
         mapSeguimiento.put("idVoluntario", "");
         mapSeguimiento.put("nombreVoluntario", "");
         mapSeguimiento.put("listaMensajes", seguimiento.getListaMensajes());
+
+        // El plan de recordatorios se cuenta desde la adopción, que es justo cuando se crea
+        // el seguimiento. Se programan al asignar al voluntario, que es quien los recibe.
+        mapSeguimiento.put("fechaInicioSeguimiento", controladorUtilidades.obtenerFechaActual());
+        mapSeguimiento.put("faseSeguimiento", EstadosCuentas.SEGUIMIENTO_DIARIO.toString());
+        mapSeguimiento.put("horaSeguimiento", HORA_RECORDATORIO_POR_DEFECTO);
+        mapSeguimiento.put("recordatoriosProgramados", false);
 
         db.collection("Seguimientos").add(mapSeguimiento)
                 .addOnSuccessListener(documentReference -> {
@@ -140,6 +165,7 @@ public class ControladorSeguimiento {
                         seguimiento.setIdVoluntario(documentSnapshot.getString("idVoluntario"));
                         seguimiento.setNombreVoluntario(documentSnapshot.getString("nombreVoluntario"));
                         seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
+                        leerPlanSeguimiento(documentSnapshot, seguimiento);
 
                         if (seguimiento.getIdVoluntario().equalsIgnoreCase("") &&
                                 seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
@@ -172,6 +198,7 @@ public class ControladorSeguimiento {
                         seguimiento.setIdVoluntario(documentSnapshot.getString("idVoluntario"));
                         seguimiento.setNombreVoluntario(documentSnapshot.getString("nombreVoluntario"));
                         seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
+                        leerPlanSeguimiento(documentSnapshot, seguimiento);
 
                         if (seguimiento.getIdVoluntario().equalsIgnoreCase(idVoluntario) &&
                                 seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
@@ -206,33 +233,93 @@ public class ControladorSeguimiento {
                     controladorNotificaciones.eliminarNotificacionesVacunaAdoptante(
                             seguimiento.getIdMascota(), seguimiento.getIdAdoptante());
 
-                    // 3. El seguimiento se cierra dejando registrado el motivo
-                    Map<String, Object> mapCierre = new HashMap<>();
-                    mapCierre.put("estado", EstadosCuentas.RECHAZADA.toString());
-                    mapCierre.put("motivoRetiro", motivo);
+                    // Y los controles del plan de seguimiento tampoco tienen ya sentido
+                    controladorNotificaciones.eliminarNotificacionesSeguimiento(
+                            seguimiento.getId(), seguimiento.getIdVoluntario());
 
-                    db.collection("Seguimientos").document(seguimiento.getId())
-                            .update(mapCierre)
-                            .addOnSuccessListener(unused1 -> {
+                    // 3. Se cierra la adopción completada y su contrato. Va antes que el
+                    //    cierre del seguimiento: si algo falla aquí, el seguimiento sigue
+                    //    activo y el voluntario lo conserva en su lista para reintentarlo.
+                    cerrarAdopcionCompletada(seguimiento, new Callback<Void>() {
+                        @Override
+                        public void onComplete(Void result) {
+                            cerrarSeguimientoRetiro(seguimiento, motivo, callback);
+                        }
 
-                                // 4. Se avisa al adoptante, que de otro modo vería desaparecer
-                                //    la mascota de su perfil sin ninguna explicación
-                                controladorNotificaciones.enviarNotificacionMascotaRetirada(seguimiento, motivo);
-
-                                // 5. Se cierra también la adopción completada. Si se dejara en
-                                //    COMPLETADA y la mascota se adoptara de nuevo, volvería a
-                                //    aparecer en "Mis mascotas" del adoptante anterior.
-                                cerrarAdopcionCompletada(seguimiento, callback);
-                            })
-                            .addOnFailureListener(e -> {
-                                Log.e("FIREBASE", "Error al cerrar el seguimiento");
-                                callback.onError(e);
-                            });
+                        @Override
+                        public void onError(Exception e) {
+                            callback.onError(e);
+                        }
+                    });
                 })
                 .addOnFailureListener(e -> {
                     Log.e("FIREBASE", "Error al devolver la mascota al catálogo");
                     callback.onError(e);
                 });
+    }
+
+    // Último paso del retiro: el seguimiento queda cerrado con su motivo, ese motivo se deja
+    // dentro de la conversación y se avisa al adoptante.
+    private void cerrarSeguimientoRetiro(Seguimiento seguimiento, String motivo, Callback<Void> callback) {
+        Map<String, Object> mapCierre = new HashMap<>();
+        mapCierre.put("estado", EstadosCuentas.RECHAZADA.toString());
+        mapCierre.put("motivoRetiro", motivo);
+
+        db.collection("Seguimientos").document(seguimiento.getId())
+                .update(mapCierre)
+                .addOnSuccessListener(unused -> {
+
+                    // El motivo queda escrito en el chat: el adoptante entra, lo lee, y ya no
+                    // puede responder porque el seguimiento dejó de estar activo
+                    enviarMensajeRetiro(seguimiento, motivo);
+
+                    // Y se le avisa, que de otro modo vería desaparecer la mascota de su
+                    // perfil sin ninguna explicación
+                    controladorNotificaciones.enviarNotificacionMascotaRetirada(seguimiento, motivo);
+
+                    callback.onComplete(null);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FIREBASE", "Error al cerrar el seguimiento");
+                    callback.onError(e);
+                });
+    }
+
+    // Deja el motivo del retiro como un mensaje más del voluntario. No dispara la
+    // notificación de mensaje nuevo: el aviso del retiro se envía aparte y sería duplicarlo.
+    private void enviarMensajeRetiro(Seguimiento seguimiento, String motivo) {
+        if (seguimiento.getListaMensajes() == null || seguimiento.getListaMensajes().isEmpty()) {
+            Log.e("FIREBASE", "El seguimiento no tiene chat donde dejar el motivo del retiro");
+            return;
+        }
+
+        DatabaseReference mensajeRef = FirebaseDatabase.getInstance()
+                .getReference("chats")
+                .child(seguimiento.getListaMensajes())
+                .push();
+
+        String nombreMascota = seguimiento.getNombreMascota() != null
+                ? seguimiento.getNombreMascota()
+                : "la mascota";
+
+        String contenido = "Se ha retirado a " + nombreMascota + " del hogar y este seguimiento queda cerrado.";
+        if (motivo != null && !motivo.trim().isEmpty()) {
+            contenido += "\n\nMotivo: " + motivo.trim();
+        }
+        contenido += "\n\nYa no es posible responder en esta conversación.";
+
+        Mensaje mensajeRetiro = new Mensaje(
+                mensajeRef.getKey(),
+                seguimiento.getNombreVoluntario(),
+                seguimiento.getIdVoluntario(),
+                contenido,
+                seguimiento.getNombreAdoptante(),
+                seguimiento.getIdAdoptante(),
+                System.currentTimeMillis());
+
+        mensajeRef.setValue(mensajeRetiro)
+                .addOnFailureListener(e ->
+                        Log.e("FIREBASE", "Error al dejar el motivo del retiro en el chat"));
     }
 
     private void cerrarAdopcionCompletada(Seguimiento seguimiento, Callback<Void> callback) {
@@ -242,35 +329,342 @@ public class ControladorSeguimiento {
                 .whereEqualTo("estado", EstadosCuentas.COMPLETADA.toString())
                 .get()
                 .addOnSuccessListener(querySnapshot -> {
+                    ArrayList<Task<Void>> cierres = new ArrayList<>();
+
                     for (DocumentSnapshot documento : querySnapshot.getDocuments()) {
-                        documento.getReference().update("estado", EstadosCuentas.RECHAZADA.toString());
+                        cierres.add(documento.getReference()
+                                .update("estado", EstadosCuentas.RECHAZADA.toString()));
 
                         // El contrato firmado acredita una adopción que ya no existe, así que
                         // se anula. Si no, quedarían dos contratos firmados para la misma
                         // mascota cuando otra persona la adopte.
-                        anularContratoAdopcion(documento.getString("contratoAdopcion"));
+                        Task<Void> anulacion = anularContratoAdopcion(documento.getString("contratoAdopcion"));
+                        if (anulacion != null) {
+                            cierres.add(anulacion);
+                        }
                     }
-                    callback.onComplete(null);
+
+                    // Se espera a que todas terminen. Si alguna falla no se puede dar el retiro
+                    // por bueno: el adoptante conservaría la adopción y su contrato firmado.
+                    Tasks.whenAll(cierres)
+                            .addOnSuccessListener(unused -> callback.onComplete(null))
+                            .addOnFailureListener(e -> {
+                                Log.e("FIREBASE", "Error al cerrar la adopción completada");
+                                callback.onError(new Exception(ERROR_CIERRE_ADOPCION, e));
+                            });
                 })
                 .addOnFailureListener(e -> {
-                    // La mascota ya volvió al catálogo, que es lo esencial de la operación
-                    Log.e("FIREBASE", "Error al cerrar la adopción completada");
-                    callback.onComplete(null);
+                    Log.e("FIREBASE", "Error al consultar la adopción completada");
+                    callback.onError(new Exception(ERROR_CIERRE_ADOPCION, e));
                 });
     }
 
     // Marca el contrato como anulado. No se borra: es el respaldo documental de que la
-    // adopción existió.
-    private void anularContratoAdopcion(String idContrato) {
+    // adopción existió. Devuelve la tarea para poder esperarla, o null si no hay contrato.
+    private Task<Void> anularContratoAdopcion(String idContrato) {
         if (idContrato == null || idContrato.isEmpty()) {
             Log.e("FIREBASE", "La adopción no tiene un contrato asociado que anular");
+            return null;
+        }
+
+        return db.collection("ContratosAdopciones").document(idContrato)
+                .update("estado", EstadosCuentas.ANULADO.toString());
+    }
+
+    // ============================================================
+    // Plan de recordatorios del seguimiento
+    // ============================================================
+
+    // Un recordatorio del plan: la fecha en la que toca y el texto que verá el voluntario
+    public static class RecordatorioSeguimiento {
+        private final String fecha;
+        private final String titulo;
+        private final String cuerpo;
+
+        public RecordatorioSeguimiento(String fecha, String titulo, String cuerpo) {
+            this.fecha = fecha;
+            this.titulo = titulo;
+            this.cuerpo = cuerpo;
+        }
+
+        public String getFecha() {
+            return fecha;
+        }
+
+        public String getTitulo() {
+            return titulo;
+        }
+
+        public String getCuerpo() {
+            return cuerpo;
+        }
+    }
+
+    // Programa el plan completo de la adopción: la primera semana día por día, después los
+    // ocho controles mensuales y por último los trimestrales. Se llama al asignar el
+    // voluntario, que es quien los recibe.
+    public void programarPlanSeguimiento(Seguimiento seguimiento, Callback<Void> callback) {
+        if (seguimiento.getFechaInicioSeguimiento() == null
+                || seguimiento.getFechaInicioSeguimiento().isEmpty()) {
+            seguimiento.setFechaInicioSeguimiento(controladorUtilidades.obtenerFechaActual());
+        }
+
+        if (seguimiento.getHoraSeguimiento() == null || seguimiento.getHoraSeguimiento().isEmpty()) {
+            seguimiento.setHoraSeguimiento(HORA_RECORDATORIO_POR_DEFECTO);
+        }
+
+        // Se reprograma desde cero: primero se borra lo que hubiera para no duplicar
+        controladorNotificaciones.eliminarNotificacionesSeguimiento(
+                seguimiento.getId(),
+                seguimiento.getIdVoluntario(),
+                () -> {
+                    ArrayList<RecordatorioSeguimiento> recordatorios = calcularRecordatoriosIniciales(seguimiento);
+                    recordatorios.addAll(calcularRecordatoriosPeriodicos(seguimiento));
+                    programarRecordatorios(seguimiento, recordatorios);
+
+                    Map<String, Object> mapPlan = new HashMap<>();
+                    mapPlan.put("fechaInicioSeguimiento", seguimiento.getFechaInicioSeguimiento());
+                    mapPlan.put("horaSeguimiento", seguimiento.getHoraSeguimiento());
+                    mapPlan.put("faseSeguimiento", EstadosCuentas.SEGUIMIENTO_DIARIO.toString());
+                    mapPlan.put("recordatoriosProgramados", true);
+
+                    db.collection("Seguimientos").document(seguimiento.getId())
+                            .update(mapPlan)
+                            .addOnSuccessListener(unused -> {
+                                seguimiento.setFaseSeguimiento(EstadosCuentas.SEGUIMIENTO_DIARIO.toString());
+                                seguimiento.setRecordatoriosProgramados(true);
+
+                                if (callback != null) {
+                                    callback.onComplete(null);
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                Log.e("FIREBASE", "Error al guardar el plan de seguimiento");
+                                if (callback != null) {
+                                    callback.onError(e);
+                                }
+                            });
+                });
+    }
+
+    // Libera al adoptante: se cancelan los recordatorios y el chat queda solo de lectura.
+    public void finalizarSeguimiento(Seguimiento seguimiento, Callback<Void> callback) {
+        Map<String, Object> mapCierre = new HashMap<>();
+        mapCierre.put("estado", EstadosCuentas.COMPLETADA.toString());
+        mapCierre.put("faseSeguimiento", EstadosCuentas.SEGUIMIENTO_FINALIZADO.toString());
+
+        db.collection("Seguimientos").document(seguimiento.getId())
+                .update(mapCierre)
+                .addOnSuccessListener(unused -> {
+                    controladorNotificaciones.eliminarNotificacionesSeguimiento(
+                            seguimiento.getId(), seguimiento.getIdVoluntario());
+
+                    enviarMensajeCierreSeguimiento(seguimiento);
+                    controladorNotificaciones.enviarNotificacionSeguimientoFinalizado(seguimiento);
+
+                    callback.onComplete(null);
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("FIREBASE", "Error al finalizar el seguimiento");
+                    callback.onError(e);
+                });
+    }
+
+    // Primera semana un control por día, y después ocho controles mensuales
+    public ArrayList<RecordatorioSeguimiento> calcularRecordatoriosIniciales(Seguimiento seguimiento) {
+        ArrayList<RecordatorioSeguimiento> recordatorios = new ArrayList<>();
+
+        String inicio = seguimiento.getFechaInicioSeguimiento();
+        if (inicio == null || inicio.isEmpty()) {
+            return recordatorios;
+        }
+
+        String mascota = seguimiento.getNombreMascota() != null ? seguimiento.getNombreMascota() : "la mascota";
+        String adoptante = seguimiento.getNombreAdoptante() != null ? seguimiento.getNombreAdoptante() : "el adoptante";
+
+        // La primera semana no se salta ningún día: es la ventana en la que se decide si la
+        // mascota se queda en el hogar o hay que retirarla
+        for (int dia = 1; dia <= DIAS_PRIMERA_SEMANA; dia++) {
+            recordatorios.add(new RecordatorioSeguimiento(
+                    controladorUtilidades.sumarDiasAFecha(inicio, dia),
+                    "Seguimiento diario de " + mascota,
+                    "Día " + dia + " de " + DIAS_PRIMERA_SEMANA + " en el hogar de " + adoptante + ". "
+                            + "Converse con el adoptante y verifique cómo va la adaptación."));
+        }
+
+        // Los controles mensuales se cuentan desde que termina la primera semana
+        String finPrimeraSemana = controladorUtilidades.sumarDiasAFecha(inicio, DIAS_PRIMERA_SEMANA);
+
+        for (int mes = 1; mes <= MESES_FASE_MENSUAL; mes++) {
+            String cuerpo = "Control del mes " + mes + " de " + MESES_FASE_MENSUAL + " con " + adoptante + ".";
+
+            if (mes == MESES_FASE_MENSUAL) {
+                cuerpo += " Es el último control mensual: a partir de ahora los controles son "
+                        + "cada " + MESES_FASE_PERIODICA + " meses, o puede liberar al adoptante.";
+            }
+
+            recordatorios.add(new RecordatorioSeguimiento(
+                    controladorUtilidades.sumarMesesAFecha(finPrimeraSemana, mes),
+                    "Seguimiento mensual de " + mascota,
+                    cuerpo));
+        }
+
+        return recordatorios;
+    }
+
+    // Controles cada tres meses una vez pasada la fase mensual
+    public ArrayList<RecordatorioSeguimiento> calcularRecordatoriosPeriodicos(Seguimiento seguimiento) {
+        ArrayList<RecordatorioSeguimiento> recordatorios = new ArrayList<>();
+
+        String inicio = seguimiento.getFechaInicioSeguimiento();
+        if (inicio == null || inicio.isEmpty()) {
+            return recordatorios;
+        }
+
+        String mascota = seguimiento.getNombreMascota() != null ? seguimiento.getNombreMascota() : "la mascota";
+        String adoptante = seguimiento.getNombreAdoptante() != null ? seguimiento.getNombreAdoptante() : "el adoptante";
+
+        // Se arranca donde terminó la fase mensual
+        String finFaseMensual = controladorUtilidades.sumarMesesAFecha(
+                controladorUtilidades.sumarDiasAFecha(inicio, DIAS_PRIMERA_SEMANA),
+                MESES_FASE_MENSUAL);
+
+        for (int control = 1; control <= CONTROLES_FASE_PERIODICA; control++) {
+            recordatorios.add(new RecordatorioSeguimiento(
+                    controladorUtilidades.sumarMesesAFecha(finFaseMensual,
+                            MESES_FASE_PERIODICA * control),
+                    "Seguimiento de " + mascota,
+                    "Control trimestral con " + adoptante + " (control " + control + " de "
+                            + CONTROLES_FASE_PERIODICA + "). "
+                            + "Si la mascota y el adoptante están bien, puede finalizar el seguimiento."));
+        }
+
+        return recordatorios;
+    }
+
+    // La fase no se guarda al día en Firestore: se deduce de la fecha de inicio, así nunca
+    // queda desfasada por no haber nadie que la actualice cuando cambia.
+    public String describirFaseSeguimiento(Seguimiento seguimiento) {
+        if (EstadosCuentas.SEGUIMIENTO_FINALIZADO.toString().equalsIgnoreCase(seguimiento.getFaseSeguimiento())) {
+            return "Seguimiento finalizado";
+        }
+
+        String inicio = seguimiento.getFechaInicioSeguimiento();
+        if (inicio == null || inicio.isEmpty()) {
+            return "Seguimiento sin programar";
+        }
+
+        String finPrimeraSemana = controladorUtilidades.sumarDiasAFecha(inicio, DIAS_PRIMERA_SEMANA);
+        if (controladorUtilidades.esFechaFutura(finPrimeraSemana)) {
+            return "Seguimiento diario";
+        }
+
+        String finFaseMensual = controladorUtilidades.sumarMesesAFecha(finPrimeraSemana, MESES_FASE_MENSUAL);
+        if (controladorUtilidades.esFechaFutura(finFaseMensual)) {
+            return "Seguimiento mensual";
+        }
+
+        return "Seguimiento cada " + MESES_FASE_PERIODICA + " meses";
+    }
+
+    // Primera fecha del plan que todavía no pasó, para mostrarla en el chat del voluntario
+    public String obtenerProximoSeguimiento(Seguimiento seguimiento) {
+        ArrayList<RecordatorioSeguimiento> recordatorios = calcularRecordatoriosIniciales(seguimiento);
+        recordatorios.addAll(calcularRecordatoriosPeriodicos(seguimiento));
+
+        for (RecordatorioSeguimiento recordatorio : recordatorios) {
+            if (recordatorio.getFecha() != null && controladorUtilidades.esFechaFutura(recordatorio.getFecha())) {
+                return recordatorio.getFecha();
+            }
+        }
+
+        return null;
+    }
+
+    // Las fechas que ya pasaron no se programan: el servidor las dispararía de inmediato
+    private void programarRecordatorios(Seguimiento seguimiento, ArrayList<RecordatorioSeguimiento> recordatorios) {
+        String hora = seguimiento.getHoraSeguimiento() != null && !seguimiento.getHoraSeguimiento().isEmpty()
+                ? seguimiento.getHoraSeguimiento()
+                : HORA_RECORDATORIO_POR_DEFECTO;
+
+        for (RecordatorioSeguimiento recordatorio : recordatorios) {
+            if (recordatorio.getFecha() == null || !controladorUtilidades.esFechaFutura(recordatorio.getFecha())) {
+                continue;
+            }
+
+            controladorNotificaciones.programarRecordatorioSeguimiento(
+                    seguimiento.getIdVoluntario(),
+                    seguimiento.getId(),
+                    recordatorio.getFecha(),
+                    hora,
+                    recordatorio.getTitulo(),
+                    recordatorio.getCuerpo());
+        }
+    }
+
+    // Deja constancia del cierre en la conversación, igual que se hace con el retiro
+    private void enviarMensajeCierreSeguimiento(Seguimiento seguimiento) {
+        if (seguimiento.getListaMensajes() == null || seguimiento.getListaMensajes().isEmpty()) {
+            Log.e("FIREBASE", "El seguimiento no tiene chat donde anunciar el cierre");
             return;
         }
 
-        db.collection("ContratosAdopciones").document(idContrato)
-                .update("estado", EstadosCuentas.ANULADO.toString())
+        DatabaseReference mensajeRef = FirebaseDatabase.getInstance()
+                .getReference("chats")
+                .child(seguimiento.getListaMensajes())
+                .push();
+
+        String nombreMascota = seguimiento.getNombreMascota() != null
+                ? seguimiento.getNombreMascota()
+                : "la mascota";
+
+        String contenido = "El seguimiento de " + nombreMascota + " ha finalizado. "
+                + "Gracias por acompañar todo el proceso.\n\n"
+                + "Esta conversación queda como constancia y ya no admite mensajes nuevos.";
+
+        Mensaje mensajeCierre = new Mensaje(
+                mensajeRef.getKey(),
+                seguimiento.getNombreVoluntario(),
+                seguimiento.getIdVoluntario(),
+                contenido,
+                seguimiento.getNombreAdoptante(),
+                seguimiento.getIdAdoptante(),
+                System.currentTimeMillis());
+
+        mensajeRef.setValue(mensajeCierre)
                 .addOnFailureListener(e ->
-                        Log.e("FIREBASE", "Error al anular el contrato de adopción"));
+                        Log.e("FIREBASE", "Error al anunciar el cierre del seguimiento en el chat"));
+    }
+
+    // Los campos del plan se leen igual en las tres listas de seguimientos
+    private void leerPlanSeguimiento(DocumentSnapshot documentSnapshot, Seguimiento seguimiento) {
+        seguimiento.setFechaInicioSeguimiento(documentSnapshot.getString("fechaInicioSeguimiento"));
+        seguimiento.setFaseSeguimiento(documentSnapshot.getString("faseSeguimiento"));
+        seguimiento.setHoraSeguimiento(documentSnapshot.getString("horaSeguimiento"));
+
+        // Los seguimientos creados antes del plan no traen este campo
+        Boolean programados = documentSnapshot.getBoolean("recordatoriosProgramados");
+        seguimiento.setRecordatoriosProgramados(programados != null && programados);
+    }
+
+    // Escucha el estado del seguimiento mientras el chat está abierto. Si el voluntario
+    // retira la mascota en ese momento, la pantalla se entera sin tener que volver a entrar.
+    public ListenerRegistration escucharEstadoSeguimiento(String idSeguimiento, Callback<String> callback) {
+        if (idSeguimiento == null || idSeguimiento.isEmpty()) {
+            return null;
+        }
+
+        return db.collection("Seguimientos").document(idSeguimiento)
+                .addSnapshotListener((documentSnapshot, error) -> {
+                    if (error != null) {
+                        callback.onError(error);
+                        return;
+                    }
+
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        callback.onComplete(documentSnapshot.getString("estado"));
+                    }
+                });
     }
 
     // Marca que el usuario está viendo el chat, para no notificarle los mensajes que
@@ -338,12 +732,19 @@ public class ControladorSeguimiento {
                         seguimiento.setIdVoluntario(documentSnapshot.getString("idVoluntario"));
                         seguimiento.setNombreVoluntario(documentSnapshot.getString("nombreVoluntario"));
                         seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
+                        leerPlanSeguimiento(documentSnapshot, seguimiento);
 
                         // Solo se listan los seguimientos del adoptante que ya tienen un voluntario
-                        // asignado, porque sin voluntario no hay con quién conversar
+                        // asignado, porque sin voluntario no hay con quién conversar. Los
+                        // cerrados también se listan: el adoptante entra a leer el motivo del
+                        // retiro o el aviso de cierre, aunque ya no pueda responder.
+                        boolean estadoVisible = seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())
+                                || seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.RECHAZADA.toString())
+                                || seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.COMPLETADA.toString());
+
                         if (seguimiento.getIdAdoptante().equalsIgnoreCase(idAdoptante) &&
                                 !seguimiento.getIdVoluntario().isEmpty() &&
-                                seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                                estadoVisible) {
                             listaSeguimientos.add(seguimiento);
                         }
                     }
@@ -370,6 +771,14 @@ public class ControladorSeguimiento {
                             seguimiento.setIdVoluntario(idVoluntario);
                             seguimiento.setNombreVoluntario(nombreVoluntario);
 
+                            // El plan de recordatorios necesita los nombres y la fecha de inicio
+                            seguimiento.setIdAdoptante(documentSnapshot.getString("idAdoptante"));
+                            seguimiento.setNombreAdoptante(documentSnapshot.getString("nombreAdoptante"));
+                            seguimiento.setIdMascota(documentSnapshot.getString("idMascota"));
+                            seguimiento.setNombreMascota(documentSnapshot.getString("nombreMascota"));
+                            seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
+                            leerPlanSeguimiento(documentSnapshot, seguimiento);
+
                             Map<String, Object> mapSeguimiento = new HashMap<>();
                             mapSeguimiento.put("idVoluntario", seguimiento.getIdVoluntario());
                             mapSeguimiento.put("nombreVoluntario", seguimiento.getNombreVoluntario());
@@ -377,6 +786,10 @@ public class ControladorSeguimiento {
                             db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                     .addOnSuccessListener(unused -> {
                                         Toast.makeText(context, "Seguimiento asignado correctamente.", Toast.LENGTH_SHORT).show();
+
+                                        // Ya hay a quién avisar, así que se programan los recordatorios
+                                        programarPlanSeguimiento(seguimiento, null);
+
                                         obtenerSeguimientosDisponibles(new Callback<ArrayList<Seguimiento>>() {
                                             @Override
                                             public void onComplete(ArrayList<Seguimiento> result) {
@@ -421,6 +834,14 @@ public class ControladorSeguimiento {
                             seguimiento.setIdVoluntario(idVoluntario);
                             seguimiento.setNombreVoluntario(nombreVoluntario);
 
+                            // El plan de recordatorios necesita los nombres y la fecha de inicio
+                            seguimiento.setIdAdoptante(documentSnapshot.getString("idAdoptante"));
+                            seguimiento.setNombreAdoptante(documentSnapshot.getString("nombreAdoptante"));
+                            seguimiento.setIdMascota(documentSnapshot.getString("idMascota"));
+                            seguimiento.setNombreMascota(documentSnapshot.getString("nombreMascota"));
+                            seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
+                            leerPlanSeguimiento(documentSnapshot, seguimiento);
+
                             Map<String, Object> mapSeguimiento = new HashMap<>();
                             mapSeguimiento.put("idVoluntario", seguimiento.getIdVoluntario());
                             mapSeguimiento.put("nombreVoluntario", seguimiento.getNombreVoluntario());
@@ -429,6 +850,14 @@ public class ControladorSeguimiento {
                             db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                     .addOnSuccessListener(unused -> {
                                         Toast.makeText(context, "Seguimiento reasignado correctamente.", Toast.LENGTH_SHORT).show();
+
+                                        // Los recordatorios del voluntario anterior ya no le
+                                        // corresponden: se cancelan y el plan se rehace para el nuevo
+                                        controladorNotificaciones.eliminarNotificacionesSeguimiento(
+                                                idSeguimiento,
+                                                idVoluntarioOriginal,
+                                                () -> programarPlanSeguimiento(seguimiento, null));
+
                                         obtenerSeguimientosVoluntario(idVoluntarioOriginal, new CallbackSeguimientosVol<ArrayList<Seguimiento>>() {
                                             @Override
                                             public void onComplete(ArrayList<Seguimiento> result) {

@@ -43,6 +43,7 @@ import com.example.tic_pv.Adaptadores.ListaMensajesAdaptador;
 import com.example.tic_pv.Controlador.ControladorNotificaciones;
 import com.example.tic_pv.Controlador.ControladorSeguimiento;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
+import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Mensaje;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.R;
@@ -129,6 +130,10 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
 
         // Retirar la mascota es irreversible desde la app, así que se pide el motivo antes
         binding.lLRetirarMascota.setOnClickListener(v -> mostrarDialogRetirarMascota());
+
+        // Plan de recordatorios: cuándo toca el próximo control y cómo sigue el seguimiento
+        mostrarPlanSeguimiento();
+        binding.lLGestionarPlanSeguimiento.setOnClickListener(v -> mostrarDialogPlanSeguimiento());
 
         // Al abrirse el teclado el RecyclerView se encoge, así que volvemos al último mensaje
         binding.recyclerViewChatSeguiVol.addOnLayoutChangeListener(
@@ -342,6 +347,110 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
 
     }
 
+    // Resume el plan en la barra del encabezado: en qué fase está y cuándo toca el próximo
+    private void mostrarPlanSeguimiento() {
+        if (!seguimiento.isRecordatoriosProgramados()) {
+            binding.tVPlanSeguimiento.setText("Recordatorios sin programar");
+            return;
+        }
+
+        String proximo = controladorSeguimiento.obtenerProximoSeguimiento(seguimiento);
+        String descripcion = controladorSeguimiento.describirFaseSeguimiento(seguimiento);
+
+        if (proximo != null) {
+            binding.tVPlanSeguimiento.setText(descripcion + " · Próximo control: " + proximo);
+        } else {
+            // Se acabaron los controles programados: toca decidir cómo sigue
+            binding.tVPlanSeguimiento.setText(descripcion + " · Sin controles pendientes");
+        }
+    }
+
+    // Desde aquí el voluntario programa el plan si todavía no existe, o libera al adoptante.
+    private void mostrarDialogPlanSeguimiento() {
+        Dialog dialogPlan = new Dialog(this);
+        dialogPlan.setContentView(R.layout.dialog_plan_seguimiento);
+        Objects.requireNonNull(dialogPlan.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tVDetalle = dialogPlan.findViewById(R.id.tVDetallePlanSeguimiento);
+        ImageView btnSalir = dialogPlan.findViewById(R.id.iVSalirPlanSeguimiento);
+        LinearLayout btnProgramar = dialogPlan.findViewById(R.id.lLProgramarPlanSeguimiento);
+        LinearLayout btnFinalizar = dialogPlan.findViewById(R.id.lLFinalizarSeguimiento);
+
+        tVDetalle.setText(detallarPlanSeguimiento());
+
+        // Programar solo tiene sentido si el plan todavía no se creó
+        btnProgramar.setVisibility(seguimiento.isRecordatoriosProgramados() ? View.GONE : View.VISIBLE);
+
+        btnSalir.setOnClickListener(v -> dialogPlan.dismiss());
+
+        btnProgramar.setOnClickListener(v -> {
+            btnProgramar.setEnabled(false);
+            controladorSeguimiento.programarPlanSeguimiento(seguimiento, new ControladorSeguimiento.Callback<Void>() {
+                @Override
+                public void onComplete(Void result) {
+                    dialogPlan.dismiss();
+                    mostrarPlanSeguimiento();
+                    Toast.makeText(SeguimientoVoluntarioChatActivity.this,
+                            "Recordatorios programados", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    btnProgramar.setEnabled(true);
+                    Toast.makeText(SeguimientoVoluntarioChatActivity.this,
+                            "No se pudieron programar los recordatorios", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
+
+        // Finalizar cierra el chat para los dos, así que se confirma antes
+        btnFinalizar.setOnClickListener(v -> controladorUtilidades.crearAlertaConfirmacion(
+                "Finalizar el seguimiento",
+                "Se liberará a " + seguimiento.getNombreAdoptante() + " del seguimiento de "
+                        + seguimiento.getNombreMascota() + ". No se enviarán más recordatorios y "
+                        + "el chat quedará solo de lectura.",
+                this,
+                () -> finalizarSeguimiento(dialogPlan),
+                null).show());
+
+        dialogPlan.show();
+    }
+
+    private String detallarPlanSeguimiento() {
+        String plan = "El plan es diario durante la primera semana, mensual durante ocho meses "
+                + "y después trimestral.";
+
+        if (!seguimiento.isRecordatoriosProgramados()) {
+            return "Este seguimiento todavía no tiene recordatorios programados.\n\n" + plan;
+        }
+
+        String proximo = controladorSeguimiento.obtenerProximoSeguimiento(seguimiento);
+
+        return "Inicio: " + seguimiento.getFechaInicioSeguimiento() + "\n"
+                + controladorSeguimiento.describirFaseSeguimiento(seguimiento) + "\n"
+                + (proximo != null ? "Próximo control: " + proximo : "Sin controles pendientes")
+                + "\n\n" + plan;
+    }
+
+    private void finalizarSeguimiento(Dialog dialogPlan) {
+        controladorSeguimiento.finalizarSeguimiento(seguimiento, new ControladorSeguimiento.Callback<Void>() {
+            @Override
+            public void onComplete(Void result) {
+                dialogPlan.dismiss();
+                Toast.makeText(SeguimientoVoluntarioChatActivity.this,
+                        "Seguimiento finalizado", Toast.LENGTH_LONG).show();
+                // El seguimiento quedó cerrado, así que ya no tiene sentido seguir en el chat
+                finish();
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(SeguimientoVoluntarioChatActivity.this,
+                        "No se pudo finalizar el seguimiento", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     // Antes de retirar se exige un motivo: queda registrado y se le comunica al adoptante
     private void mostrarDialogRetirarMascota() {
         Dialog dialogRetiro = new Dialog(this);
@@ -403,8 +512,15 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
             public void onError(Exception e) {
                 dialogRetiro.dismiss();
                 binding.lLRetirarMascota.setEnabled(true);
+
+                // El retiro toca varias colecciones, así que el controlador explica en qué
+                // punto quedó. Si no trae explicación, se usa el mensaje genérico.
+                String detalle = e.getMessage() != null && !e.getMessage().isEmpty()
+                        ? e.getMessage()
+                        : "No se pudo retirar la mascota";
+
                 Toast.makeText(SeguimientoVoluntarioChatActivity.this,
-                        "No se pudo retirar la mascota", Toast.LENGTH_SHORT).show();
+                        detalle, Toast.LENGTH_LONG).show();
             }
         });
     }

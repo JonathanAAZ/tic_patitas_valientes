@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +41,7 @@ import com.example.tic_pv.Adaptadores.DeslizarParaResponderCallback;
 import com.example.tic_pv.Controlador.ControladorNotificaciones;
 import com.example.tic_pv.Controlador.ControladorSeguimiento;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
+import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Mensaje;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.R;
@@ -51,6 +53,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.ListenerRegistration;
 
 import org.checkerframework.checker.nullness.qual.NonNull;
 
@@ -80,6 +83,11 @@ public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
     private ProgressBar barraProgresoSubirMultimedia;
     // Mensaje al que se está respondiendo, null si es un mensaje normal
     private Mensaje mensajeRespondido;
+    // Gesto de deslizar para responder, se suelta cuando el seguimiento se cierra
+    private ItemTouchHelper deslizarParaResponder;
+    // Escucha del estado del seguimiento, para enterarse de un retiro en el momento
+    private ListenerRegistration escuchaEstadoSeguimiento;
+    private boolean seguimientoCerrado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +124,9 @@ public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
 
         // Deslizar un mensaje hacia la derecha lo cita para responderlo
         listaMensajesAdaptador.setOnResponderMensajeListener(this::mostrarPanelRespuesta);
-        new ItemTouchHelper(new DeslizarParaResponderCallback(binding.recyclerViewChatSeguiAdop, listaMensajesAdaptador))
-                .attachToRecyclerView(binding.recyclerViewChatSeguiAdop);
+        deslizarParaResponder = new ItemTouchHelper(
+                new DeslizarParaResponderCallback(binding.recyclerViewChatSeguiAdop, listaMensajesAdaptador));
+        deslizarParaResponder.attachToRecyclerView(binding.recyclerViewChatSeguiAdop);
 
         binding.iVCancelarRespuesta.setOnClickListener(v -> cancelarRespuesta());
 
@@ -316,6 +325,57 @@ public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
             }
             cancelarRespuesta();
         });
+
+        // Un seguimiento retirado llega ya cerrado desde la lista
+        aplicarEstadoSeguimiento(seguimiento.getEstado());
+
+        // Y si el voluntario lo cierra con el chat abierto, la barra de escritura se bloquea
+        // en el momento, sin necesidad de salir y volver a entrar
+        escuchaEstadoSeguimiento = controladorSeguimiento.escucharEstadoSeguimiento(seguimiento.getId(),
+                new ControladorSeguimiento.Callback<String>() {
+                    @Override
+                    public void onComplete(String estado) {
+                        seguimiento.setEstado(estado);
+                        aplicarEstadoSeguimiento(estado);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        Log.e("FIREBASE", "Error al escuchar el estado del seguimiento");
+                    }
+                });
+    }
+
+    // Solo un seguimiento activo admite mensajes nuevos. Cerrado se puede leer, pero no
+    // responder: la conversación queda como constancia del motivo del retiro.
+    private void aplicarEstadoSeguimiento(String estado) {
+        boolean activo = estado != null && estado.equalsIgnoreCase(EstadosCuentas.ACTIVO.toString());
+
+        if (activo || seguimientoCerrado) {
+            return;
+        }
+
+        seguimientoCerrado = true;
+
+        cancelarRespuesta();
+        binding.cardOpcionesAdjuntar.setVisibility(View.GONE);
+        binding.lLOpcionesMensajeria.setVisibility(View.GONE);
+        binding.lLSeguimientoCerrado.setVisibility(View.VISIBLE);
+
+        // Sin el ItemTouchHelper el gesto de responder deja de existir
+        if (deslizarParaResponder != null) {
+            deslizarParaResponder.attachToRecyclerView(null);
+        }
+
+        // El teclado puede estar abierto justo cuando llega el cierre
+        InputMethodManager teclado = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        if (teclado != null) {
+            teclado.hideSoftInputFromWindow(binding.main.getWindowToken(), 0);
+        }
+
+        if (dialogVisualizarMultimedia != null && dialogVisualizarMultimedia.isShowing()) {
+            dialogVisualizarMultimedia.dismiss();
+        }
     }
 
     // Muestra sobre el campo de texto el mensaje que se va a responder
@@ -349,6 +409,12 @@ public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
     // Envía un mensaje de texto al chat del seguimiento, con el adoptante como emisor
     private void enviarMensajeTexto(String contenidoMensaje) {
         if (contenidoMensaje.isEmpty()) {
+            return;
+        }
+
+        // El seguimiento pudo cerrarse con el mensaje ya escrito
+        if (seguimientoCerrado) {
+            Toast.makeText(this, "Este seguimiento está cerrado", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -413,6 +479,10 @@ public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
         super.onDestroy();
         if (listaMensajesAdaptador != null) {
             listaMensajesAdaptador.releaseAllPlayers();
+        }
+
+        if (escuchaEstadoSeguimiento != null) {
+            escuchaEstadoSeguimiento.remove();
         }
     }
 

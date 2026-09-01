@@ -449,22 +449,145 @@ public class ControladorNotificaciones {
                 });
     }
 
-    // Cancela la programación en el servidor para que el recordatorio no se dispare
-    private void eliminarNotificacionProgramada(String idNotificacion) {
+    // Cancela la programación en el servidor para que el recordatorio no se dispare.
+    // Devuelve la tarea para poder esperarla antes de programar recordatorios nuevos.
+    private Task<Void> eliminarNotificacionProgramada(String idNotificacion) {
         if (idNotificacion == null) {
+            return Tasks.forResult(null);
+        }
+
+        return bd.collection("NotificacionesProgramadas")
+                .whereEqualTo("idNotificacion", idNotificacion)
+                .get()
+                .continueWithTask(task -> {
+                    if (!task.isSuccessful()) {
+                        Log.e("FIREBASE", "Error al eliminar la notificación programada");
+                        return Tasks.forResult(null);
+                    }
+
+                    List<Task<Void>> borrados = new ArrayList<>();
+                    for (DocumentSnapshot documento : task.getResult().getDocuments()) {
+                        borrados.add(documento.getReference().delete());
+                    }
+
+                    return Tasks.whenAll(borrados);
+                });
+    }
+
+    // Programa en el servidor un recordatorio de seguimiento para el voluntario encargado.
+    // Los recordatorios del plan se generan en ControladorSeguimiento, que decide las fechas.
+    public void programarRecordatorioSeguimiento(String idVoluntario, String idSeguimiento,
+                                                 String fecha, String hora,
+                                                 String titulo, String cuerpo) {
+        if (idVoluntario == null || idVoluntario.isEmpty() || fecha == null) {
+            Log.e(TAG, "No hay voluntario o fecha para programar el recordatorio del seguimiento");
             return;
         }
 
-        bd.collection("NotificacionesProgramadas")
-                .whereEqualTo("idNotificacion", idNotificacion)
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    for (DocumentSnapshot documento : querySnapshot.getDocuments()) {
-                        documento.getReference().delete();
+        Notificacion recordatorio = new Notificacion();
+        recordatorio.setId(UUID.randomUUID().toString());
+        recordatorio.setTipoNotificacion(EstadosCuentas.NOTIFICACION_SEGUIMIENTO_PROGRAMADO.toString());
+        recordatorio.setIdRelacionado(idSeguimiento);
+        recordatorio.setTitulo(titulo);
+        recordatorio.setCuerpo(cuerpo);
+        recordatorio.setEstado(EstadosCuentas.NOTIFICACION_PROGRAMADA.toString());
+        recordatorio.setFechaNotificacion(fecha);
+        recordatorio.setHoraNotificacion(hora);
+
+        String fechaServidor = controladorUtilidades.convertirFechaAFormatoServidor(fecha, hora);
+        validarUsuarioProgramarNotificacion(idVoluntario, fechaServidor, recordatorio);
+    }
+
+    // Cancela los recordatorios pendientes de un seguimiento. Se usa al finalizarlo y al
+    // retirar la mascota: en los dos casos ya no hay nada que recordar.
+    public void eliminarNotificacionesSeguimiento(String idSeguimiento, String idVoluntario) {
+        eliminarNotificacionesSeguimiento(idSeguimiento, idVoluntario, null);
+    }
+
+    // alTerminar sirve para reprogramar recién cuando no queda ningún recordatorio viejo,
+    // porque si no se solaparían los del plan anterior con los del nuevo.
+    public void eliminarNotificacionesSeguimiento(String idSeguimiento, String idVoluntario, Runnable alTerminar) {
+        if (idSeguimiento == null || idSeguimiento.isEmpty()
+                || idVoluntario == null || idVoluntario.isEmpty()) {
+            if (alTerminar != null) {
+                alTerminar.run();
+            }
+            return;
+        }
+
+        // Cada recordatorio guarda el id del seguimiento en idRelacionado
+        FirebaseDatabase.getInstance().getReference("notificaciones").child(idVoluntario)
+                .orderByChild("idRelacionado")
+                .equalTo(idSeguimiento)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<Task<?>> pendientes = new ArrayList<>();
+
+                        for (DataSnapshot notificacion : snapshot.getChildren()) {
+                            pendientes.add(notificacion.getRef().removeValue());
+                            pendientes.add(eliminarNotificacionProgramada(notificacion.getKey()));
+                        }
+
+                        Tasks.whenAll(pendientes).addOnCompleteListener(task -> {
+                            if (alTerminar != null) {
+                                alTerminar.run();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.e("FIREBASE", "Error al leer los recordatorios del seguimiento");
+                        if (alTerminar != null) {
+                            alTerminar.run();
+                        }
+                    }
+                });
+    }
+
+    // Avisa al adoptante de que el seguimiento terminó y ya no hay que reportar nada
+    public void enviarNotificacionSeguimientoFinalizado(Seguimiento seguimiento) {
+        if (seguimiento.getIdAdoptante() == null || seguimiento.getIdAdoptante().isEmpty()) {
+            Log.e(TAG, "El seguimiento no tiene adoptante al que avisar del cierre");
+            return;
+        }
+
+        // Variable local en lugar del campo compartido, para que otra notificación en
+        // curso no sobrescriba estos datos antes de que responda Firestore
+        Notificacion notificacionCierre = new Notificacion();
+
+        String nombreMascota = seguimiento.getNombreMascota() != null
+                ? seguimiento.getNombreMascota()
+                : "su mascota";
+
+        notificacionCierre.setId(UUID.randomUUID().toString());
+        notificacionCierre.setTipoNotificacion(EstadosCuentas.NOTIFICACION_SEGUIMIENTO_FINALIZADO.toString());
+        notificacionCierre.setIdRelacionado(seguimiento.getId());
+        notificacionCierre.setTitulo("Seguimiento finalizado");
+        notificacionCierre.setCuerpo("El seguimiento de " + nombreMascota + " ha finalizado. "
+                + "Gracias por acompañar todo el proceso.\n\n"
+                + "Ya no recibirá controles periódicos ni podrá escribir en este chat. "
+                + "Si necesita ayuda, comuníquese con la agrupación.");
+        notificacionCierre.setEstado(EstadosCuentas.NOTIFICACION_ENVIADA.toString());
+        notificacionCierre.setIdUsuarioReceptor(seguimiento.getIdAdoptante());
+        notificacionCierre.establecerFechaHoraActual();
+
+        bd.collection("Cuentas").document(seguimiento.getIdAdoptante()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot.exists()) {
+                        String estado = documentSnapshot.getString("estado");
+                        String token = documentSnapshot.getString("dispositivo");
+
+                        if (estado != null && estado.equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                            enviarNotificacionServidor(token, notificacionCierre);
+                        } else {
+                            Log.e("ERROR_NOTIFICACION", "El adoptante no es un usuario activo");
+                        }
                     }
                 })
                 .addOnFailureListener(e ->
-                        Log.e("FIREBASE", "Error al eliminar la notificación programada"));
+                        Log.e("ERROR", "No se encontró la cuenta del adoptante para avisar del cierre"));
     }
 
     public void enviarNotificacionVacuna(HistorialMedico vacuna, Mascota mascota, String hora) {

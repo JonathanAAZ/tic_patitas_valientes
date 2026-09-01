@@ -1,6 +1,7 @@
 package com.example.tic_pv.Adaptadores;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,9 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tic_pv.Controlador.ControladorUtilidades;
+import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.SeguimientoAdoptanteChatActivity;
@@ -50,9 +53,27 @@ public class ListaSeguimientosAdoptanteAdaptador extends RecyclerView.Adapter<Li
         Seguimiento seguimiento = listaSeguimientos.get(position);
 
         // Los nombres ya vienen desnormalizados en el seguimiento
-        holder.tVEstado.setText(seguimiento.getEstado());
         holder.tVNombreVoluntario.setText(seguimiento.getNombreVoluntario());
         holder.tVNombreMascota.setText(seguimiento.getNombreMascota());
+
+        // Un seguimiento cerrado solo se puede leer, así que el botón lo anuncia
+        boolean cerrado = seguimiento.getEstado() == null
+                || !seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString());
+
+        if (cerrado) {
+            // Al adoptante no se le muestra RECHAZADA, que se lee como un reproche. Un
+            // seguimiento que llegó hasta el final sí se distingue del que se cortó.
+            boolean finalizado = EstadosCuentas.COMPLETADA.toString().equalsIgnoreCase(seguimiento.getEstado());
+            holder.tVEstado.setText(finalizado ? "Finalizado" : "Cerrado");
+            holder.tVResponderSeguimiento.setText("Ver conversación");
+            holder.btnResponderSeguimiento.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(holder.itemView.getContext(), R.color.blue_2)));
+        } else {
+            holder.tVEstado.setText(seguimiento.getEstado());
+            holder.tVResponderSeguimiento.setText("Responder seguimiento");
+            holder.btnResponderSeguimiento.setBackgroundTintList(ColorStateList.valueOf(
+                    ContextCompat.getColor(holder.itemView.getContext(), R.color.dark_green)));
+        }
 
         // Las fotos sí hay que consultarlas porque no se guardan en el seguimiento
         db.collection("Cuentas").document(seguimiento.getIdVoluntario()).get().addOnCompleteListener(task -> {
@@ -85,7 +106,7 @@ public class ListaSeguimientosAdoptanteAdaptador extends RecyclerView.Adapter<Li
 
     public class SeguimientoAdoptanteViewHolder extends RecyclerView.ViewHolder {
         CircleImageView cIVFotoPerfilVoluntario, cIVFotoMascota;
-        TextView tVNombreVoluntario, tVNombreMascota, tVEstado;
+        TextView tVNombreVoluntario, tVNombreMascota, tVEstado, tVResponderSeguimiento;
         LinearLayout btnResponderSeguimiento;
 
         public SeguimientoAdoptanteViewHolder(View itemView) {
@@ -96,6 +117,7 @@ public class ListaSeguimientosAdoptanteAdaptador extends RecyclerView.Adapter<Li
             tVNombreMascota = itemView.findViewById(R.id.tVNombreMascotaSeguiAdoptante);
             tVEstado = itemView.findViewById(R.id.tVEstadoSeguiAdoptante);
             btnResponderSeguimiento = itemView.findViewById(R.id.lLResponderSeguiAdoptante);
+            tVResponderSeguimiento = itemView.findViewById(R.id.tVResponderSeguiAdoptante);
 
             btnResponderSeguimiento.setOnClickListener(v -> {
                 Intent intent = new Intent(itemView.getContext(), SeguimientoAdoptanteChatActivity.class);

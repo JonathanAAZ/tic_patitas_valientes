@@ -629,6 +629,53 @@ public class ControladorUtilidades {
         return formato.format(Calendar.getInstance().getTime());
     }
 
+    // Suma días a una fecha dd/MM/yyyy y la devuelve en el mismo formato
+    public String sumarDiasAFecha(String fecha, int dias) {
+        return desplazarFecha(fecha, Calendar.DAY_OF_MONTH, dias);
+    }
+
+    // Suma meses a una fecha dd/MM/yyyy. Calendar ya ajusta los meses cortos: el 31 de enero
+    // más un mes cae el 28 (o 29) de febrero.
+    public String sumarMesesAFecha(String fecha, int meses) {
+        return desplazarFecha(fecha, Calendar.MONTH, meses);
+    }
+
+    private String desplazarFecha(String fecha, int campo, int cantidad) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            Calendar calendario = Calendar.getInstance();
+            calendario.setTime(Objects.requireNonNull(formato.parse(fecha)));
+            calendario.add(campo, cantidad);
+
+            return formato.format(calendario.getTime());
+        } catch (Exception e) {
+            Log.e("ERROR", "No se pudo desplazar la fecha " + fecha);
+            return null;
+        }
+    }
+
+    // Una fecha dd/MM/yyyy sirve para programar solo si todavía no pasó. Hoy cuenta como
+    // futura: un recordatorio del día sigue teniendo sentido.
+    public boolean esFechaFutura(String fecha) {
+        try {
+            SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+            Calendar limite = Calendar.getInstance();
+            limite.set(Calendar.HOUR_OF_DAY, 0);
+            limite.set(Calendar.MINUTE, 0);
+            limite.set(Calendar.SECOND, 0);
+            limite.set(Calendar.MILLISECOND, 0);
+
+            Calendar comparada = Calendar.getInstance();
+            comparada.setTime(Objects.requireNonNull(formato.parse(fecha)));
+
+            return !comparada.before(limite);
+        } catch (Exception e) {
+            Log.e("ERROR", "No se pudo comparar la fecha " + fecha);
+            return false;
+        }
+    }
+
     public void insertarImagenDesdeBDD(String url, ImageView imageView, Context context) {
         Glide.with(context)
                 .load(url)

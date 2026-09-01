@@ -19,6 +19,12 @@ public class Seguimiento implements Parcelable {
 
     private String listaMensajes;
 
+    // Plan de recordatorios: desde qué día se cuenta y si ya quedaron programados
+    private String fechaInicioSeguimiento;
+    private String faseSeguimiento;
+    private String horaSeguimiento;
+    private boolean recordatoriosProgramados;
+
     public Seguimiento(String estado, String idAdoptante, String idMascota, String listaMensajes) {
         this.estado = estado;
         this.idAdoptante = idAdoptante;
@@ -101,6 +107,38 @@ public class Seguimiento implements Parcelable {
         this.listaMensajes = listaPreguntas;
     }
 
+    public String getFechaInicioSeguimiento() {
+        return fechaInicioSeguimiento;
+    }
+
+    public void setFechaInicioSeguimiento(String fechaInicioSeguimiento) {
+        this.fechaInicioSeguimiento = fechaInicioSeguimiento;
+    }
+
+    public String getFaseSeguimiento() {
+        return faseSeguimiento;
+    }
+
+    public void setFaseSeguimiento(String faseSeguimiento) {
+        this.faseSeguimiento = faseSeguimiento;
+    }
+
+    public String getHoraSeguimiento() {
+        return horaSeguimiento;
+    }
+
+    public void setHoraSeguimiento(String horaSeguimiento) {
+        this.horaSeguimiento = horaSeguimiento;
+    }
+
+    public boolean isRecordatoriosProgramados() {
+        return recordatoriosProgramados;
+    }
+
+    public void setRecordatoriosProgramados(boolean recordatoriosProgramados) {
+        this.recordatoriosProgramados = recordatoriosProgramados;
+    }
+
     protected Seguimiento (Parcel in) {
         id = in.readString();
         estado = in.readString();
@@ -111,6 +149,10 @@ public class Seguimiento implements Parcelable {
         nombreMascota = in.readString();
         nombreVoluntario = in.readString();
         listaMensajes = in.readString();
+        fechaInicioSeguimiento = in.readString();
+        faseSeguimiento = in.readString();
+        horaSeguimiento = in.readString();
+        recordatoriosProgramados = in.readByte() != 0;
     }
     @Override
     public int describeContents() {
@@ -128,6 +170,10 @@ public class Seguimiento implements Parcelable {
         dest.writeString(nombreMascota);
         dest.writeString(nombreVoluntario);
         dest.writeString(listaMensajes);
+        dest.writeString(fechaInicioSeguimiento);
+        dest.writeString(faseSeguimiento);
+        dest.writeString(horaSeguimiento);
+        dest.writeByte((byte) (recordatoriosProgramados ? 1 : 0));
     }
     public static final Creator<Seguimiento> CREATOR = new Creator<Seguimiento>() {
         @Override
@@ -141,4 +187,3 @@ public class Seguimiento implements Parcelable {
         }
     };
 }
-
