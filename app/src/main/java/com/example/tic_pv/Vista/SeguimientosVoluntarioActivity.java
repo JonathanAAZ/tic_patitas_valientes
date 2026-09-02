@@ -66,7 +66,6 @@ public class SeguimientosVoluntarioActivity extends AppCompatActivity {
         binding.recyViewSeguiAsignados.setLayoutManager(new LinearLayoutManager(this));
 
 
-        presentarSeguimientosDisponibles();
 
         binding.lLBtnAsignarSeguimientos.setOnClickListener(v -> {
             controladorUtilidades.configurarColoresBotones(binding.lLBtnAsignarSeguimientos, binding.lLBtnSeguimientosAsig);
@@ -81,6 +80,20 @@ public class SeguimientosVoluntarioActivity extends AppCompatActivity {
             binding.rLAsignarSeguimientos.setVisibility(View.GONE);
             binding.rLSeguimientosAsignados.setVisibility(View.VISIBLE);
         });
+    }
+
+    // Se recarga al volver al frente: un seguimiento puede haberse asignado o
+    // cerrado mientras el administrador estaba en otra pantalla
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Se refresca la pestaña que está a la vista
+        if (binding.rLSeguimientosAsignados.getVisibility() == View.VISIBLE) {
+            presentarSeguimientosVoluntario();
+        } else {
+            presentarSeguimientosDisponibles();
+        }
     }
 
     private void presentarSeguimientosDisponibles() {

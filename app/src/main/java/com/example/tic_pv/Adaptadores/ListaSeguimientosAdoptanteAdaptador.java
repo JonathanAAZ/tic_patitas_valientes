@@ -12,8 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tic_pv.Controlador.ControladorSeguimiento;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
-import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Seguimiento;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.SeguimientoAdoptanteChatActivity;
@@ -28,6 +28,7 @@ public class ListaSeguimientosAdoptanteAdaptador extends RecyclerView.Adapter<Li
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<Seguimiento> listaSeguimientos;
     private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
+    private final ControladorSeguimiento controladorSeguimiento = new ControladorSeguimiento();
 
     public ArrayList<Seguimiento> getListaSeguimientos() {
         return listaSeguimientos;
@@ -57,23 +58,22 @@ public class ListaSeguimientosAdoptanteAdaptador extends RecyclerView.Adapter<Li
         holder.tVNombreMascota.setText(seguimiento.getNombreMascota());
 
         // Un seguimiento cerrado solo se puede leer, así que el botón lo anuncia
-        boolean cerrado = seguimiento.getEstado() == null
-                || !seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString());
+        holder.tVEstado.setText(controladorSeguimiento.describirEstadoSeguimiento(seguimiento.getEstado()));
 
-        if (cerrado) {
-            // Al adoptante no se le muestra RECHAZADA, que se lee como un reproche. Un
-            // seguimiento que llegó hasta el final sí se distingue del que se cortó.
-            boolean finalizado = EstadosCuentas.COMPLETADA.toString().equalsIgnoreCase(seguimiento.getEstado());
-            holder.tVEstado.setText(finalizado ? "Finalizado" : "Cerrado");
+        if (controladorSeguimiento.esSeguimientoCerrado(seguimiento.getEstado())) {
             holder.tVResponderSeguimiento.setText("Ver conversación");
             holder.btnResponderSeguimiento.setBackgroundTintList(ColorStateList.valueOf(
                     ContextCompat.getColor(holder.itemView.getContext(), R.color.blue_2)));
         } else {
-            holder.tVEstado.setText(seguimiento.getEstado());
             holder.tVResponderSeguimiento.setText("Responder seguimiento");
             holder.btnResponderSeguimiento.setBackgroundTintList(ColorStateList.valueOf(
                     ContextCompat.getColor(holder.itemView.getContext(), R.color.dark_green)));
         }
+
+        // El fallback se pinta ya: si la vista viene reciclada no se queda con la foto
+        // del ítem anterior mientras llega la consulta
+        holder.cIVFotoPerfilVoluntario.setImageResource(R.drawable.logo_patitas_valientes);
+        holder.cIVFotoMascota.setImageResource(R.drawable.logo_patitas_valientes);
 
         // Las fotos sí hay que consultarlas porque no se guardan en el seguimiento
         db.collection("Cuentas").document(seguimiento.getIdVoluntario()).get().addOnCompleteListener(task -> {

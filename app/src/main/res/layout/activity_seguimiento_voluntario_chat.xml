@@ -17,73 +17,82 @@
         android:layout_height="wrap_content"
         android:background="@color/yellow">
 
-        <ImageView
-            android:id="@+id/iVRegresarSeguimientoVoluntarioChat"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="5dp"
-            android:background="@drawable/ic_retroceder"
-            android:backgroundTint="@color/lila"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackgroundBorderless" />
-
-        <TextView
-            android:id="@+id/tVTituloSeguimientoVoluntarioChat"
+        <!-- Fila del titulo: se aisla para que el centrado vertical no arrastre
+             el titulo ni el boton Retirar hacia la barra del plan -->
+        <RelativeLayout
+            android:id="@+id/rLTituloSeguimientoVoluntarioChat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/lLRetirarMascota"
-            android:text="Chat de seguimiento"
-            android:textAlignment="center"
-            android:textColor="@color/lila"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <!-- Acción destructiva: va en el encabezado para no competir con Enviar -->
-        <LinearLayout
-            android:id="@+id/lLRetirarMascota"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/border"
-            android:backgroundTint="@color/red"
-            android:clickable="true"
-            android:focusable="true"
-            android:foreground="?android:attr/selectableItemBackground"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingStart="10dp"
-            android:paddingTop="6dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="6dp">
+            android:layout_height="wrap_content">
 
             <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:background="@drawable/ic_eliminar"
-                android:backgroundTint="@color/white"
-                android:contentDescription="Retirar mascota" />
+                android:id="@+id/iVRegresarSeguimientoVoluntarioChat"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/ic_retroceder"
+                android:backgroundTint="@color/lila"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackgroundBorderless" />
 
             <TextView
+                android:id="@+id/tVTituloSeguimientoVoluntarioChat"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/iVRegresarSeguimientoVoluntarioChat"
+                android:layout_toStartOf="@+id/lLRetirarMascota"
+                android:text="Chat de seguimiento"
+                android:textAlignment="center"
+                android:textColor="@color/lila"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <!-- Acción destructiva: va en el encabezado para no competir con Enviar -->
+            <LinearLayout
+                android:id="@+id/lLRetirarMascota"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:text="Retirar"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/border"
+                android:backgroundTint="@color/red"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingStart="10dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="6dp">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:background="@drawable/ic_eliminar"
+                    android:backgroundTint="@color/white"
+                    android:contentDescription="Retirar mascota" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:text="Retirar"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
 
         <!-- Estado del plan de recordatorios y acceso a gestionarlo -->
         <LinearLayout
             android:id="@+id/lLPlanSeguimiento"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tVTituloSeguimientoVoluntarioChat"
+            android:layout_below="@+id/rLTituloSeguimientoVoluntarioChat"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
@@ -330,6 +339,30 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <!-- Reemplaza a la barra de escritura cuando el seguimiento ya esta cerrado -->
+        <LinearLayout
+            android:id="@+id/lLSeguimientoCerrado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/border"
+            android:backgroundTint="@color/gray"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="14dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tVSeguimientoCerrado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Este seguimiento está cerrado. Ya no puede enviar mensajes."
+                android:textColor="@color/lila"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
     </LinearLayout>
 
     <!-- CardView con Preguntas Frecuentes (oculto por defecto) -->

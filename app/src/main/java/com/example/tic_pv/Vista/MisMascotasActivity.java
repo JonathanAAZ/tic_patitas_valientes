@@ -1,9 +1,9 @@
 package com.example.tic_pv.Vista;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +13,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tic_pv.Adaptadores.ListaMisMascotasAdaptador;
-import com.example.tic_pv.Controlador.ControladorAdopcion;
 import com.example.tic_pv.Controlador.ControladorMascota;
 import com.example.tic_pv.Controlador.SessionManager;
 import com.example.tic_pv.Modelo.Mascota;
-import com.example.tic_pv.R;
 import com.example.tic_pv.databinding.ActivityMisMascotasBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,9 +26,9 @@ import java.util.List;
 public class MisMascotasActivity extends AppCompatActivity {
 
     private ActivityMisMascotasBinding binding;
-    private ArrayList <Mascota> listaMisMascotas;
+    private ArrayList<Mascota> listaMisMascotas;
     private ListaMisMascotasAdaptador adaptadorMisMascotas;
-    private String rol;
+    private String rol, idUsuario;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private final FirebaseUser authUsuario = auth.getCurrentUser();
     private final ControladorMascota controladorMascota = new ControladorMascota();
@@ -39,8 +37,11 @@ public class MisMascotasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_mis_mascotas);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+        binding = ActivityMisMascotasBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
@@ -48,10 +49,7 @@ public class MisMascotasActivity extends AppCompatActivity {
 
         SessionManager sessionManager = new SessionManager(this);
 
-        binding = ActivityMisMascotasBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
-        String idUsuario = authUsuario.getUid();
+        idUsuario = authUsuario.getUid();
         rol = sessionManager.getUserRole();
         listaMisMascotas = new ArrayList<>();
         binding.recyViewMisMascotas.setLayoutManager(new LinearLayoutManager(this));
@@ -59,23 +57,30 @@ public class MisMascotasActivity extends AppCompatActivity {
         if (rol.equalsIgnoreCase("Adoptante")) {
             binding.tVMisMascotas.setText("Mis mascotas");
             binding.tVSubtituloMisMascotas.setText("Visualiza y gestiona el historial médico de tus mascotas.");
-            // Obtener la lista de mascotas del usuario
+        } else if (rol.equalsIgnoreCase("Voluntario")) {
+            binding.tVMisMascotas.setText("Lista de mascotas");
+            binding.tVSubtituloMisMascotas.setText("Visualiza y gestiona el historial médico de las mascotas registradas en el sistema.");
+        } else {
+            Toast.makeText(this, "Su rol no tiene acceso a esta sección", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+    }
+
+    // Se recarga al volver al frente: una mascota puede haberse adoptado o retirado
+    // mientras el usuario estaba en otra pantalla
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarMascotas();
+    }
+
+    private void cargarMascotas() {
+        if (rol.equalsIgnoreCase("Adoptante")) {
+            // Solo las mascotas que ya están en el hogar del adoptante
             controladorMascota.obtenerListaMisMascotas(idUsuario, new ControladorMascota.Callback<List<Mascota>>() {
                 @Override
                 public void onComplete(List<Mascota> result) {
-                    listaMisMascotas.clear();
-                    listaMisMascotas.addAll(result);
-
-                    adaptadorMisMascotas = new ListaMisMascotasAdaptador(listaMisMascotas);
-                    binding.recyViewMisMascotas.setAdapter(adaptadorMisMascotas);
-
-                    if (listaMisMascotas.size() <= 0) {
-                        binding.tVNoHayMascotas.setVisibility(View.VISIBLE);
-                        binding.recyViewMisMascotas.setVisibility(View.GONE);
-                    } else {
-                        binding.tVNoHayMascotas.setVisibility(View.GONE);
-                        binding.recyViewMisMascotas.setVisibility(View.VISIBLE);
-                    }
+                    presentarMascotas(result);
                 }
 
                 @Override
@@ -84,24 +89,11 @@ public class MisMascotasActivity extends AppCompatActivity {
                 }
             });
         } else if (rol.equalsIgnoreCase("Voluntario")) {
-            binding.tVMisMascotas.setText("Lista de mascotas");
-            binding.tVSubtituloMisMascotas.setText("Visualiza y gestiona el historial médico de las mascotas registradas en el sistema.");
+            // El voluntario gestiona el historial médico de todas
             controladorMascota.obtenerListaMascotas(new ControladorMascota.Callback<List<Mascota>>() {
                 @Override
                 public void onComplete(List<Mascota> result) {
-                    listaMisMascotas.clear();
-                    listaMisMascotas.addAll(result);
-
-                    adaptadorMisMascotas = new ListaMisMascotasAdaptador(listaMisMascotas);
-                    binding.recyViewMisMascotas.setAdapter(adaptadorMisMascotas);
-
-                    if (listaMisMascotas.size() <= 0) {
-                        binding.tVNoHayMascotas.setVisibility(View.VISIBLE);
-                        binding.recyViewMisMascotas.setVisibility(View.GONE);
-                    } else {
-                        binding.tVNoHayMascotas.setVisibility(View.GONE);
-                        binding.recyViewMisMascotas.setVisibility(View.VISIBLE);
-                    }
+                    presentarMascotas(result);
                 }
 
                 @Override
@@ -112,12 +104,19 @@ public class MisMascotasActivity extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    @Override
-    protected void onResume() {
-        if (adaptadorMisMascotas != null) {
-            adaptadorMisMascotas.notifyDataSetChanged();
+    private void presentarMascotas(List<Mascota> result) {
+        listaMisMascotas.clear();
+        listaMisMascotas.addAll(result);
+
+        adaptadorMisMascotas = new ListaMisMascotasAdaptador(listaMisMascotas);
+        binding.recyViewMisMascotas.setAdapter(adaptadorMisMascotas);
+
+        if (listaMisMascotas.isEmpty()) {
+            binding.tVNoHayMascotas.setVisibility(View.VISIBLE);
+            binding.recyViewMisMascotas.setVisibility(View.GONE);
+        } else {
+            binding.tVNoHayMascotas.setVisibility(View.GONE);
+            binding.recyViewMisMascotas.setVisibility(View.VISIBLE);
         }
-        super.onResume();
     }
 }

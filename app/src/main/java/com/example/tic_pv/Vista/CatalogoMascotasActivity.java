@@ -45,15 +45,14 @@ public class CatalogoMascotasActivity extends AppCompatActivity implements Searc
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_catalogo_mascotas);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+        binding = ActivityCatalogoMascotasBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        binding = ActivityCatalogoMascotasBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         //Crear la lista de mascotas en adopcion
         catalogoMascotas = new CatalogoMascotas();
@@ -95,26 +94,6 @@ public class CatalogoMascotasActivity extends AppCompatActivity implements Searc
             requisitosDialog.show();
         });
 
-
-        //Obtener las mascotas que no han sido adoptadas desde la BDD
-        catalogoMascotas.obtenerListaMascotasAdopcion(this, new CatalogoMascotas.Callback<List<Mascota>>() {
-            @Override
-            public void onComplete(List<Mascota> result) {
-                catalogoMascotas.getListaAnimalesAdopcion().clear();
-                catalogoMascotas.getListaAnimalesAdopcion().addAll(result);
-//                listaMascotas.clear();
-//                listaMascotas.addAll(result);
-
-                listaMascotasAdopcAdaptador = new CatalogoMascotaAdopcionAdaptador(catalogoMascotas.getListaAnimalesAdopcion());
-                binding.recyViewCatalogoAdopcion.setAdapter(listaMascotasAdopcAdaptador);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                Toast.makeText(CatalogoMascotasActivity.this, "Error al obtener la mascotas desde la base de datos", Toast.LENGTH_SHORT).show();
-            }
-        });
-
         configurarFiltros(binding.tVCachorros);
         configurarFiltros(binding.tVAdultos);
         configurarFiltros(binding.tVCaninos);
@@ -127,6 +106,38 @@ public class CatalogoMascotasActivity extends AppCompatActivity implements Searc
         binding.searchViewCatalogoMascotas.setOnQueryTextListener(this);
     }
 
+    // Se recarga al volver al frente: una mascota puede haberse adoptado o retirado del
+    // catálogo mientras el usuario estaba en otra pantalla
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarMascotasAdopcion();
+    }
+
+    private void cargarMascotasAdopcion() {
+        catalogoMascotas.obtenerListaMascotasAdopcion(this, new CatalogoMascotas.Callback<List<Mascota>>() {
+            @Override
+            public void onComplete(List<Mascota> result) {
+                catalogoMascotas.getListaAnimalesAdopcion().clear();
+                catalogoMascotas.getListaAnimalesAdopcion().addAll(result);
+
+                listaMascotasAdopcAdaptador = new CatalogoMascotaAdopcionAdaptador(catalogoMascotas.getListaAnimalesAdopcion());
+                binding.recyViewCatalogoAdopcion.setAdapter(listaMascotasAdopcAdaptador);
+
+                if (catalogoMascotas.getListaAnimalesAdopcion().isEmpty()) {
+                    binding.tVNoHayResultados.setVisibility(View.VISIBLE);
+                } else {
+                    binding.tVNoHayResultados.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Toast.makeText(CatalogoMascotasActivity.this, "Error al obtener la mascotas desde la base de datos", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
@@ -134,8 +145,12 @@ public class CatalogoMascotasActivity extends AppCompatActivity implements Searc
 
     @Override
     public boolean onQueryTextChange(String newText) {
-//        binding.gLMostrarFiltrosCatalogoMascotas.setVisibility(View.GONE);
-        listaMascotasAdopcAdaptador.filtrar( "Nombre", newText, binding.tVNoHayResultados);
+        // El adaptador todavía no existe mientras la primera consulta está en curso
+        if (listaMascotasAdopcAdaptador == null) {
+            return false;
+        }
+
+        listaMascotasAdopcAdaptador.filtrar("Nombre", newText, binding.tVNoHayResultados);
         return false;
     }
 
@@ -143,9 +158,12 @@ public class CatalogoMascotasActivity extends AppCompatActivity implements Searc
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (listaMascotasAdopcAdaptador == null) {
+                    return;
+                }
+
                 ocultarTeclado();
                 listaMascotasAdopcAdaptador.filtrar(tv.getText().toString(), tv.getText().toString(), binding.tVNoHayResultados);
-//                Toast.makeText(getContext(), "FILTRO SELECCIONADO " + tv.getText().toString(), Toast.LENGTH_SHORT).show();
             }
         });
     }

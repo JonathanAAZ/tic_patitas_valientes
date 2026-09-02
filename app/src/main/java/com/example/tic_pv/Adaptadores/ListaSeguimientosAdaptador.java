@@ -59,35 +59,43 @@ public class ListaSeguimientosAdaptador extends RecyclerView.Adapter<ListaSeguim
     @NonNull
     @Override
     public SeguimientoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_item_seguimientos, null, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_item_seguimientos, parent, false);
         return new SeguimientoViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull SeguimientoViewHolder holder, int position) {
+        Seguimiento seguimiento = listaSeguimientos.get(position);
 
-        db.collection("Cuentas").document(listaSeguimientos.get(position).getIdAdoptante()).get().addOnCompleteListener(task -> {
+        // Los nombres ya vienen desnormalizados en el seguimiento
+        holder.tVNombreAdoptante.setText(seguimiento.getNombreAdoptante());
+        holder.tVMascotaAdoptante.setText(seguimiento.getNombreMascota());
+
+        if (seguimiento.getIdVoluntario().isEmpty()) {
+            holder.btnAsignar.setVisibility(View.VISIBLE);
+            holder.btnQuitar.setVisibility(View.GONE);
+        } else {
+            holder.btnAsignar.setVisibility(View.GONE);
+            // Un seguimiento cerrado ya no se reasigna: no queda nada que dar seguimiento
+            holder.btnQuitar.setVisibility(
+                    controladorSeguimiento.esSeguimientoCerrado(seguimiento.getEstado())
+                            ? View.GONE : View.VISIBLE);
+        }
+
+        // El fallback se pinta ya: si la vista viene reciclada no se queda con la foto
+        // del ítem anterior mientras llega la consulta
+        holder.cVFotoAdoptante.setImageResource(R.drawable.logo_patitas_valientes);
+
+        db.collection("Cuentas").document(seguimiento.getIdAdoptante()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DocumentSnapshot document = task.getResult();
                 if (document.exists()) {
                     controladorUtilidades.insertarImagenDesdeBDD(document.getString("fotoPerfil"),
                             holder.cVFotoAdoptante,
                             holder.itemView.getContext());
-
-                    holder.tVNombreAdoptante.setText(listaSeguimientos.get(position).getNombreAdoptante());
-                    holder.tVMascotaAdoptante.setText(listaSeguimientos.get(position).getNombreMascota());
-
-                    if (listaSeguimientos.get(position).getIdVoluntario().isEmpty()) {
-                        holder.btnAsignar.setVisibility(View.VISIBLE);
-                        holder.btnQuitar.setVisibility(View.GONE);
-                    } else {
-                        holder.btnAsignar.setVisibility(View.GONE);
-                        holder.btnQuitar.setVisibility(View.VISIBLE);
-                    }
                 }
             }
         });
-
     }
 
     @Override

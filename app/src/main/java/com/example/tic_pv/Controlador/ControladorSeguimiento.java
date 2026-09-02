@@ -200,8 +200,11 @@ public class ControladorSeguimiento {
                         seguimiento.setListaMensajes(documentSnapshot.getString("listaMensajes"));
                         leerPlanSeguimiento(documentSnapshot, seguimiento);
 
-                        if (seguimiento.getIdVoluntario().equalsIgnoreCase(idVoluntario) &&
-                                seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())) {
+                        // Los cerrados también se listan: el voluntario entra a releer la
+                        // conversación, aunque el chat ya no admita mensajes ni acciones.
+                        if (idVoluntario != null
+                                && idVoluntario.equalsIgnoreCase(seguimiento.getIdVoluntario())
+                                && esEstadoVisibleEnListas(seguimiento.getEstado())) {
                             listaSeguimientos.add(seguimiento);
                         }
                     }
@@ -211,6 +214,32 @@ public class ControladorSeguimiento {
                 }
             }
         });
+    }
+
+    // Un seguimiento deja de admitir acciones en cuanto sale de ACTIVO, sea porque se
+    // retiró la mascota (RECHAZADA) o porque se liberó al adoptante (COMPLETADA).
+    public boolean esSeguimientoCerrado(String estado) {
+        return estado == null || !estado.equalsIgnoreCase(EstadosCuentas.ACTIVO.toString());
+    }
+
+    // Los cerrados se siguen listando para poder releer la conversación
+    private boolean esEstadoVisibleEnListas(String estado) {
+        return estado != null
+                && (estado.equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())
+                || estado.equalsIgnoreCase(EstadosCuentas.RECHAZADA.toString())
+                || estado.equalsIgnoreCase(EstadosCuentas.COMPLETADA.toString()));
+    }
+
+    // A los usuarios no se les muestra RECHAZADA, que se lee como un reproche. Un
+    // seguimiento que llegó hasta el final sí se distingue del que se cortó.
+    public String describirEstadoSeguimiento(String estado) {
+        if (estado == null || estado.equalsIgnoreCase(EstadosCuentas.RECHAZADA.toString())) {
+            return "Cerrado";
+        }
+        if (estado.equalsIgnoreCase(EstadosCuentas.COMPLETADA.toString())) {
+            return "Finalizado";
+        }
+        return estado;
     }
 
     // Retira la mascota del adoptante: vuelve al catálogo de adopción, sale del perfil
@@ -738,13 +767,9 @@ public class ControladorSeguimiento {
                         // asignado, porque sin voluntario no hay con quién conversar. Los
                         // cerrados también se listan: el adoptante entra a leer el motivo del
                         // retiro o el aviso de cierre, aunque ya no pueda responder.
-                        boolean estadoVisible = seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.ACTIVO.toString())
-                                || seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.RECHAZADA.toString())
-                                || seguimiento.getEstado().equalsIgnoreCase(EstadosCuentas.COMPLETADA.toString());
-
                         if (seguimiento.getIdAdoptante().equalsIgnoreCase(idAdoptante) &&
                                 !seguimiento.getIdVoluntario().isEmpty() &&
-                                estadoVisible) {
+                                esEstadoVisibleEnListas(seguimiento.getEstado())) {
                             listaSeguimientos.add(seguimiento);
                         }
                     }

@@ -14,8 +14,6 @@ import android.widget.Toast;
 import com.example.tic_pv.Adaptadores.SolicitudesPendientesAdaptador;
 import com.example.tic_pv.Controlador.ControladorAdopcion;
 import com.example.tic_pv.Modelo.Adopcion;
-import com.example.tic_pv.Modelo.EstadosCuentas;
-import com.example.tic_pv.R;
 import com.example.tic_pv.databinding.FragmentSolicitudesAdopcionPendientesBinding;
 
 import java.util.ArrayList;
@@ -29,11 +27,6 @@ public class SolicitudesAdopcionPendientesFragment extends Fragment {
     private SolicitudesPendientesAdaptador solicitudesPendientesAdaptador;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentSolicitudesAdopcionPendientesBinding.inflate(inflater, container, false);
@@ -43,9 +36,25 @@ public class SolicitudesAdopcionPendientesFragment extends Fragment {
 
         binding.recyViewSolicitudesPendientes.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        return view;
+    }
+
+    // Se recarga al volver al frente: una solicitud puede haberse aceptado o rechazado
+    // desde la pantalla de detalle
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarSolicitudesPendientes();
+    }
+
+    private void cargarSolicitudesPendientes() {
         controladorAdopcion.obtenerListaSolicitudesPendientes(requireContext(), new ControladorAdopcion.Callback<List<Adopcion>>() {
             @Override
             public void onComplete(List<Adopcion> result) {
+                if (binding == null) {
+                    return;
+                }
+
                 solicitudesPendientes.clear();
                 solicitudesPendientes.addAll(result);
 
@@ -68,8 +77,11 @@ public class SolicitudesAdopcionPendientesFragment extends Fragment {
                 Toast.makeText(requireContext(), "No se pudo obtener la lista de solicitudes pendientes", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-
-        return view;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

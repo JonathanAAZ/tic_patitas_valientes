@@ -16,7 +16,6 @@ import com.example.tic_pv.Adaptadores.ListaVacunasAdaptador;
 import com.example.tic_pv.Controlador.ControladorHistorialMedico;
 import com.example.tic_pv.Modelo.Desparasitacion;
 import com.example.tic_pv.Modelo.HistorialMedico;
-import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.AgregarHistorialMedicoActivity;
 import com.example.tic_pv.databinding.FragmentHistorialMedicoBinding;
 
@@ -41,9 +40,8 @@ public class HistorialMedicoFragment extends Fragment {
         binding = FragmentHistorialMedicoBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
 
-        assert getArguments() != null;
-        idMascota = getArguments().getString("idMascota");
-        isVacuna = getArguments().getBoolean("isVacuna");
+        idMascota = requireArguments().getString("idMascota");
+        isVacuna = requireArguments().getBoolean("isVacuna");
 
         listaVacunas = new ArrayList<>();
         listaDesparasitaciones = new ArrayList<>();
@@ -51,91 +49,20 @@ public class HistorialMedicoFragment extends Fragment {
         binding.recyViewListaVacunas.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.recyViewListaDesparasitaciones.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        binding.shimmerRecyListaVacunas.startShimmer();
-        binding.shimmerRecyListaDesparasitacion.startShimmer();
-
+        // Solo se muestra la sección que corresponde al botón con el que se entró
         if (isVacuna) {
-            binding.shimmerRecyListaVacunas.setVisibility(View.VISIBLE);
-            binding.shimmerRecyListaDesparasitacion.setVisibility(View.GONE);
-
-
-            binding.shimmerRecyListaVacunas.setVisibility(View.VISIBLE);
-
             binding.lLAgregarVacuna.setVisibility(View.VISIBLE);
             binding.recyViewListaVacunas.setVisibility(View.VISIBLE);
 
             binding.lLAgregarDesparasitacion.setVisibility(View.GONE);
             binding.recyViewListaDesparasitaciones.setVisibility(View.GONE);
-
-            // Configurar Recycler View de vacunas
-            controladorHistorialMedico.obtenerListaVacunas(idMascota, new ControladorHistorialMedico.Callback<List<HistorialMedico>>() {
-                @Override
-                public void onComplete(List<HistorialMedico> result) {
-                    listaVacunas.clear();
-                    listaVacunas.addAll(result);
-
-                    listaVacunasAdaptador = new ListaVacunasAdaptador(listaVacunas, idMascota);
-                    binding.recyViewListaVacunas.setAdapter(listaVacunasAdaptador);
-
-                    binding.shimmerRecyListaVacunas.stopShimmer();
-                    binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
-                    binding.recyViewListaVacunas.setVisibility(View.VISIBLE);
-
-                    if (listaVacunas.isEmpty()) {
-                        binding.tVNoHayResultadosListaVacunas.setVisibility(View.VISIBLE);
-                    }
-
-                }
-
-                @Override
-                public void onError(Exception e) {
-                    Log.e("ERROR", "Error al obtener la lista de vacunas");
-                }
-            });
-
         } else {
-            binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
-            binding.shimmerRecyListaDesparasitacion.setVisibility(View.VISIBLE);
-
-
-            binding.shimmerRecyListaDesparasitacion.setVisibility(View.VISIBLE);
-
             binding.lLAgregarVacuna.setVisibility(View.GONE);
             binding.recyViewListaVacunas.setVisibility(View.GONE);
 
             binding.lLAgregarDesparasitacion.setVisibility(View.VISIBLE);
             binding.recyViewListaDesparasitaciones.setVisibility(View.VISIBLE);
-
-            // Configurar Recycler View de desparasitaciones
-            controladorHistorialMedico.obtenerListaDesparasitaciones(idMascota, new ControladorHistorialMedico.Callback<List<Desparasitacion>>() {
-                @Override
-                public void onComplete(List<Desparasitacion> result) {
-
-                    listaDesparasitaciones.clear();
-                    listaDesparasitaciones.addAll(result);
-
-                    listaDesparasitacionesAdaptador = new ListaDesparasitacionesAdaptador(listaDesparasitaciones, idMascota);
-                    binding.recyViewListaDesparasitaciones.setAdapter(listaDesparasitacionesAdaptador);
-
-                    binding.shimmerRecyListaDesparasitacion.stopShimmer();
-                    binding.shimmerRecyListaDesparasitacion.setVisibility(View.GONE);
-                    binding.recyViewListaDesparasitaciones.setVisibility(View.VISIBLE);
-
-                    if (listaDesparasitaciones.isEmpty()) {
-                        binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                @Override
-                public void onError(Exception e) {
-
-                }
-            });
         }
-
-
-
-
 
         // Configurar botones para ver Vacunas o Desparasitaciones
         binding.lLAgregarVacuna.setOnClickListener(v -> {
@@ -149,10 +76,101 @@ public class HistorialMedicoFragment extends Fragment {
         return view;
     }
 
+    // Se recarga al volver al frente: es lo que hace aparecer la vacuna o la
+    // desparasitación que se acaba de registrar
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isVacuna) {
+            cargarVacunas();
+        } else {
+            cargarDesparasitaciones();
+        }
+    }
+
+    private void cargarVacunas() {
+        binding.shimmerRecyListaVacunas.setVisibility(View.VISIBLE);
+        binding.shimmerRecyListaDesparasitacion.setVisibility(View.GONE);
+        binding.shimmerRecyListaVacunas.startShimmer();
+
+        controladorHistorialMedico.obtenerListaVacunas(idMascota, new ControladorHistorialMedico.Callback<List<HistorialMedico>>() {
+            @Override
+            public void onComplete(List<HistorialMedico> result) {
+                if (binding == null) {
+                    return;
+                }
+
+                listaVacunas.clear();
+                listaVacunas.addAll(result);
+
+                listaVacunasAdaptador = new ListaVacunasAdaptador(listaVacunas, idMascota);
+                binding.recyViewListaVacunas.setAdapter(listaVacunasAdaptador);
+
+                binding.shimmerRecyListaVacunas.stopShimmer();
+                binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
+                binding.recyViewListaVacunas.setVisibility(View.VISIBLE);
+
+                if (listaVacunas.isEmpty()) {
+                    binding.tVNoHayResultadosListaVacunas.setVisibility(View.VISIBLE);
+                } else {
+                    binding.tVNoHayResultadosListaVacunas.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("ERROR", "Error al obtener la lista de vacunas");
+            }
+        });
+    }
+
+    private void cargarDesparasitaciones() {
+        binding.shimmerRecyListaVacunas.setVisibility(View.GONE);
+        binding.shimmerRecyListaDesparasitacion.setVisibility(View.VISIBLE);
+        binding.shimmerRecyListaDesparasitacion.startShimmer();
+
+        controladorHistorialMedico.obtenerListaDesparasitaciones(idMascota, new ControladorHistorialMedico.Callback<List<Desparasitacion>>() {
+            @Override
+            public void onComplete(List<Desparasitacion> result) {
+                if (binding == null) {
+                    return;
+                }
+
+                listaDesparasitaciones.clear();
+                listaDesparasitaciones.addAll(result);
+
+                listaDesparasitacionesAdaptador = new ListaDesparasitacionesAdaptador(listaDesparasitaciones, idMascota);
+                binding.recyViewListaDesparasitaciones.setAdapter(listaDesparasitacionesAdaptador);
+
+                binding.shimmerRecyListaDesparasitacion.stopShimmer();
+                binding.shimmerRecyListaDesparasitacion.setVisibility(View.GONE);
+                binding.recyViewListaDesparasitaciones.setVisibility(View.VISIBLE);
+
+                if (listaDesparasitaciones.isEmpty()) {
+                    binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.VISIBLE);
+                } else {
+                    binding.tVNoHayResultadosListaDesparasitaciones.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+                Log.e("ERROR", "Error al obtener la lista de desparasitaciones");
+            }
+        });
+    }
+
     private void iniciarActivityAgregarVacuna(View view) {
         Intent intent = new Intent(view.getContext(), AgregarHistorialMedicoActivity.class);
         intent.putExtra("idMascota", idMascota);
         intent.putExtra("isVacuna", isVacuna);
         startActivity(intent);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

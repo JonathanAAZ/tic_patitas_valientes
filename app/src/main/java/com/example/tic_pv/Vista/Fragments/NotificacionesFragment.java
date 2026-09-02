@@ -13,10 +13,7 @@ import android.view.ViewGroup;
 import com.example.tic_pv.Adaptadores.ListaNotificacionesAdaptador;
 import com.example.tic_pv.Controlador.ControladorNotificaciones;
 import com.example.tic_pv.Modelo.Notificacion;
-import com.example.tic_pv.R;
 import com.example.tic_pv.databinding.FragmentNotificacionesBinding;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,25 +36,38 @@ public class NotificacionesFragment extends Fragment {
         listaNotificaciones = new ArrayList<>();
 
         //Obtener el id del usuario
-        assert getArguments() != null;
-        idCuenta = getArguments().getString("idCuenta");
-        Log.d("ID CUENTA", "id cuenta" + idCuenta);
+        idCuenta = requireArguments().getString("idCuenta");
 
         binding.recyViewListaNotificaciones.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        return view;
+    }
+
+    // Se recarga al volver al frente para no mostrar notificaciones ya atendidas
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarNotificaciones();
+    }
+
+    private void cargarNotificaciones() {
         controladorNotificaciones.obtenerListaNotificaciones(idCuenta, new ControladorNotificaciones.CallBackGenerico<List<Notificacion>>() {
             @Override
             public void onComplete(List<Notificacion> result) {
+                if (binding == null) {
+                    return;
+                }
+
                 listaNotificaciones.clear();
                 listaNotificaciones.addAll(result);
 
                 listaNotificacionesAdaptador = new ListaNotificacionesAdaptador(listaNotificaciones);
                 binding.recyViewListaNotificaciones.setAdapter(listaNotificacionesAdaptador);
 
-                if (listaNotificacionesAdaptador.getItemCount() <= 0) {
+                if (listaNotificaciones.isEmpty()) {
                     binding.tVNoHayResultadosNotificaciones.setVisibility(View.VISIBLE);
                     binding.recyViewListaNotificaciones.setVisibility(View.GONE);
-                }else {
+                } else {
                     binding.tVNoHayResultadosNotificaciones.setVisibility(View.GONE);
                     binding.recyViewListaNotificaciones.setVisibility(View.VISIBLE);
                 }
@@ -68,7 +78,11 @@ public class NotificacionesFragment extends Fragment {
                 Log.e("ERROR", "Error al obtener las notificaciones");
             }
         });
+    }
 
-        return view;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

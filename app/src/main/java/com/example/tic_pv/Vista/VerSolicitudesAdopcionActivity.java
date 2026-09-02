@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.example.tic_pv.Adaptadores.SolicitudesEnviadasAdaptador;
 import com.example.tic_pv.Controlador.ControladorAdopcion;
 import com.example.tic_pv.Modelo.Adopcion;
-import com.example.tic_pv.R;
 import com.example.tic_pv.databinding.ActivityVerSolicitudesAdopcionBinding;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,28 +29,37 @@ public class VerSolicitudesAdopcionActivity extends AppCompatActivity {
     private SolicitudesEnviadasAdaptador solicitudesEnviadasAdaptador;
     private ControladorAdopcion controladorAdopcion = new ControladorAdopcion();
     private FirebaseAuth auth = FirebaseAuth.getInstance();
-    private FirebaseUser usuarioActual =auth.getCurrentUser();
+    private FirebaseUser usuarioActual = auth.getCurrentUser();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_ver_solicitudes_adopcion);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+        binding = ActivityVerSolicitudesAdopcionBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        binding = ActivityVerSolicitudesAdopcionBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
-
         listaSolicitudesEnviadas = new ArrayList<>();
 
         binding.rVSolicitudesAdopcionEnviadas.setLayoutManager(new LinearLayoutManager(this));
+    }
 
-        String idCuenta = usuarioActual.getUid();
+    // Se recarga al volver al frente: la solicitud pudo aceptarse o rechazarse mientras
+    // el usuario estaba en otra pantalla
+    @Override
+    protected void onResume() {
+        super.onResume();
+        cargarSolicitudesEnviadas();
+    }
 
-        controladorAdopcion.obtenerListaSolicitudesEnviadas(idCuenta, new ControladorAdopcion.Callback<List<Adopcion>>() {
+    private void cargarSolicitudesEnviadas() {
+        controladorAdopcion.obtenerListaSolicitudesEnviadas(usuarioActual.getUid(), new ControladorAdopcion.Callback<List<Adopcion>>() {
             @Override
             public void onComplete(List<Adopcion> result) {
                 listaSolicitudesEnviadas.clear();
@@ -60,22 +68,19 @@ public class VerSolicitudesAdopcionActivity extends AppCompatActivity {
                 solicitudesEnviadasAdaptador = new SolicitudesEnviadasAdaptador(listaSolicitudesEnviadas);
                 binding.rVSolicitudesAdopcionEnviadas.setAdapter(solicitudesEnviadasAdaptador);
 
-                if (solicitudesEnviadasAdaptador.getItemCount() <= 0) {
+                if (listaSolicitudesEnviadas.isEmpty()) {
                     binding.tVNoHayResultadosSolcitudesEnviadas.setVisibility(View.VISIBLE);
                 } else {
                     binding.tVNoHayResultadosSolcitudesEnviadas.setVisibility(View.GONE);
                 }
 
-                Log.d("CANTIDAD DE OBJETOS", "Cantidad: " + solicitudesEnviadasAdaptador.getItemCount());
+                Log.d("CANTIDAD DE OBJETOS", "Cantidad: " + listaSolicitudesEnviadas.size());
             }
 
             @Override
             public void onError(Exception e) {
-//                binding.tVNoHayResultadosSolcitudesEnviadas.setText("No se pudieron obtener las solicitudes enviadas");
                 Toast.makeText(VerSolicitudesAdopcionActivity.this, "No se pudieron obtener las solicitudes enviadas", Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
 }

@@ -145,6 +145,7 @@
                         android:background="@drawable/ic_editar"/>
 
                     <TextView
+                        android:id="@+id/tVResponderSeguiVoluntario"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"

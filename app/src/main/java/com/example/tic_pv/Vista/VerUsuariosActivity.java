@@ -68,7 +68,6 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
         listaArrayUsuarios = new ArrayList<>();
         listaArrayCuentas = new ArrayList<>();
 
-        obtenerListaUsuarios();
 
 //        btnAgregarVoluntario.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -89,11 +88,12 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
         searchView.setOnQueryTextListener(this);
     }
 
+    // Se recarga al volver al frente: un usuario puede haberse creado, activado o
+    // desactivado mientras el administrador estaba en otra pantalla
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        finish();
-        startActivity(getIntent());
+    protected void onResume() {
+        super.onResume();
+        obtenerListaUsuarios();
     }
 
 //    public void obtenerListaUsuarios() {
@@ -249,6 +249,11 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        // El adaptador todavía no existe mientras la primera consulta está en curso
+        if (adaptadorListaUsuarios == null) {
+            return false;
+        }
+
         adaptadorListaUsuarios.filtrar(newText);
         return false;
     }

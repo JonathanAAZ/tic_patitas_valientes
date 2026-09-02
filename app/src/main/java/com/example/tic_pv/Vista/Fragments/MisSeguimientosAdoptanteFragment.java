@@ -26,11 +26,6 @@ public class MisSeguimientosAdoptanteFragment extends Fragment {
     private final ControladorSeguimiento controladorSeguimiento = new ControladorSeguimiento();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -42,11 +37,29 @@ public class MisSeguimientosAdoptanteFragment extends Fragment {
         binding.recyViewListaMisSeguimientosAdoptante.setLayoutManager(new LinearLayoutManager(getContext()));
 
         idAdoptante = requireArguments().getString("idAdoptante");
+
+        return view;
+    }
+
+    // Se recarga cada vez que la pantalla vuelve al frente: al regresar del chat el
+    // seguimiento puede haber quedado cerrado y la lista tiene que reflejarlo
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarSeguimientos();
+    }
+
+    private void cargarSeguimientos() {
         controladorSeguimiento.obtenerSeguimientosAdoptante(idAdoptante, new ControladorSeguimiento.CallbackSeguimientosVol<ArrayList<Seguimiento>>() {
             @Override
             public void onComplete(ArrayList<Seguimiento> result) {
+                if (binding == null) {
+                    return;
+                }
+
                 listaSeguimientos.clear();
                 listaSeguimientos.addAll(result);
+
                 listaSeguimientosAdoptanteAdaptador = new ListaSeguimientosAdoptanteAdaptador(listaSeguimientos);
                 binding.recyViewListaMisSeguimientosAdoptante.setAdapter(listaSeguimientosAdoptanteAdaptador);
 
@@ -63,8 +76,11 @@ public class MisSeguimientosAdoptanteFragment extends Fragment {
                 Log.e("FIREBASE", "Error al obtener la lista de seguimientos.");
             }
         });
+    }
 
-        // Inflate the layout for this fragment
-        return view;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }
