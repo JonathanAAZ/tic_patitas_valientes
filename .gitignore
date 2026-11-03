@@ -14,4 +14,7 @@
 .externalNativeBuild
 .cxx
 local.properties
-.claude/
+# Se ignora el contenido de .claude/, no la carpeta: con ".claude/" git no entra en el
+# directorio y la excepción de abajo nunca se aplicaría.
+.claude/*
+!.claude/skills/
