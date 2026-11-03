@@ -104,6 +104,17 @@ requisitos. Un retiro posterior lleva la adopción de `COMPLETADA` a `RECHAZADA`
 Ciclo del seguimiento: nace `ACTIVO` sin voluntario, pasa a `ACTIVO` con voluntario al
 asignarlo, y cierra en `COMPLETADA` (finalizar) o `RECHAZADA` (retirar).
 
+## Redacción de los mensajes
+
+Cuando una historia cita un mensaje —`[Cuenta creada con éxito]`, `[Cédula no válida]`—
+contrástalo con la convención de la sección «Mensajes al usuario» de `CLAUDE.md`, que es la
+autoridad: usted siempre, `No se pudo` + infinitivo para los fallos, participio corto para
+los éxitos, imperativo para lo que el usuario debe corregir, y nada de lenguaje de
+desarrollador ni adverbios de relleno. Un mensaje por resultado.
+
+Si el texto de la historia se ajusta mejor a esa convención que el del código, el que cambia
+es el código: dilo así en el plan de cambios.
+
 ## Vocabulario de la casa
 
 Usa estas palabras; si la historia usa otras para lo mismo, conviene alinearla.

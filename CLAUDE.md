@@ -457,6 +457,48 @@ String idEmisor = enviaVoluntario ? seguimiento.getIdVoluntario()
 
 ---
 
+## Mensajes al usuario — OBLIGATORIO
+
+Todo texto que el usuario lee va en **usted**, nunca en tú. El tuteo aparecía mezclado
+(«inténtalo», «Ingresa los datos») y se nota como descuido.
+
+Hay cuatro tipos de mensaje y cada uno tiene su forma y su sitio:
+
+| Tipo | Dónde | Forma | Ejemplo |
+|---|---|---|---|
+| Error de un campo | `setError` del campo | Imperativo: qué hacer | `Ingrese un número de cédula válido` |
+| Error del formulario | `Toast` | Imperativo | `Complete todos los campos solicitados` |
+| Fallo de una operación | `Toast` | `No se pudo` + infinitivo | `No se pudo crear la cuenta` |
+| Éxito | `Toast` | Participio corto | `Cuenta creada` · `Recordatorios programados` |
+
+Un error de campo concreto va en `setError`, no en un `Toast`: el `Toast` tapa el formulario
+y no señala dónde está el problema.
+
+Para algo irreversible —retirar una mascota, desactivar una cuenta, finalizar un
+seguimiento— se confirma antes con `controladorUtilidades.crearAlertaConfirmacion`, y el
+texto explica la consecuencia, no solo pregunta.
+
+### Lo que no entra en un mensaje
+
+- **Lenguaje de desarrollador.** Nada de `DB`, `BD`, «documento», «query», «token», `null`,
+  ni nombres de clase o de colección. «No se encontró el documento» no le dice nada a nadie:
+  es `No se pudo obtener la información de la cuenta`.
+- **Cadenas de prueba.** `CUENTA CREADA PRUEBA` y `ID DISPOSITIVO…` llegaron a estar en
+  pantalla. Para depurar está `Log.d` y `System.out.println`, que no los ve el usuario.
+- **Adverbios de relleno.** «correctamente», «exitosamente», «satisfactoriamente». `Cuenta
+  creada` ya dice que se creó.
+- **Datos que permitan enumerar cuentas** donde se pueda evitar. En el inicio de sesión el
+  mensaje es uno solo y no revela si falló el correo o la contraseña.
+
+### Un mensaje por resultado
+
+Dos avisos de éxito para la misma operación confunden, y es fácil que aparezcan cuando varias
+escrituras asíncronas reportan por separado. El mensaje va **dentro del callback** que
+confirma el último paso, no antes de lanzarlo: si se pone antes, se anuncia un éxito que
+todavía puede fallar.
+
+---
+
 ## Nombres
 
 | Elemento | Convención | Ejemplo |
@@ -507,6 +549,7 @@ El id de la raíz del layout es `main` (es lo que espera el listener de insets).
 - [ ] ¿Los campos Java de esos botones se declaran `LinearLayout`, no `Button`?
 - [ ] ¿Las pantallas de foto ofrecen tomar **y** subir, con el formato único?
 - [ ] ¿Las ramificaciones por rol tienen `else`?
+- [ ] ¿Los mensajes van en usted, sin lenguaje de desarrollador y uno por resultado?
 - [ ] ¿El acceso a Firestore está en un controlador, y fuera de `onBindViewHolder`?
 - [ ] ¿Las imágenes tienen fallback para el reciclado?
 - [ ] ¿Se liberan los players de video?
