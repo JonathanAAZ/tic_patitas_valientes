@@ -290,7 +290,6 @@ public class CrearCuentaActivity extends AppCompatActivity {
                             nuevaCuenta = new CuentaUsuario("Por seleccionar", textCorreo, textClave, "Adoptante", EstadosCuentas.ACTIVO.toString(), idDispositivo[0]);
 
                             barraProgreso.setVisibility(View.VISIBLE);
-                            Toast.makeText(CrearCuentaActivity.this, "ID DISPOSITIVO" + nuevaCuenta.getIdDispositivo(), Toast.LENGTH_SHORT).show();
                             enviarObjetos(nuevoUsuario, nuevaCuenta);
                         }
                     });
@@ -301,7 +300,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
                     v.setEnabled(true);
                     procesando = false;
 //                    barraProgreso.setVisibility(View.GONE);
-                    Toast.makeText(CrearCuentaActivity.this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearCuentaActivity.this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -331,7 +330,7 @@ public class CrearCuentaActivity extends AppCompatActivity {
                     procesando = false;
 
                     if (enUso) {
-                        Toast.makeText(CrearCuentaActivity.this, "El correo ingresado ya se encuentra registrado en la aplicación", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CrearCuentaActivity.this, "Ya existe una cuenta vinculada a este correo electrónico", Toast.LENGTH_SHORT).show();
                         barraProgreso.setVisibility(View.GONE);
                         btnSiguienteReg.setEnabled(true);
                     } else {

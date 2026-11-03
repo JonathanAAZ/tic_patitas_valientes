@@ -125,8 +125,6 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
         storageReference = FirebaseStorage.getInstance().getReference("FotosPerfil");
 //        dbRef = FirebaseDatabase.getInstance().getReference();
 
-        Toast.makeText(this, "Ingresa los datos personales", Toast.LENGTH_LONG).show();
-
         nombreVoluntario = findViewById(R.id.etNombreVoluntario);
         correoVoluntario = findViewById(R.id.etCorreoVoluntario);
         cedulaVoluntario = findViewById(R.id.etCedulaVoluntario);
@@ -245,7 +243,7 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
                 } else {
                     v.setEnabled(true);
                     btnGuardarVoluntario.setEnabled(true);
-                    Toast.makeText(CrearVoluntarioActivity.this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearVoluntarioActivity.this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
                 }
 
 //                if (TextUtils.isEmpty(textNombre)) {
@@ -304,8 +302,6 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
         String correoString = cuenta.getCorreo();
         String claveString = cuenta.getClave();
 
-        Toast.makeText(this, "CUENTA CREADA PRUEBA", Toast.LENGTH_SHORT).show();
-
         authVoluntario.createUserWithEmailAndPassword(correoString, claveString).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -340,33 +336,33 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
                             mFirestore.collection("Cuentas").document(cuenta.getIdCuenta()).set(mapCuentas).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Toast.makeText(CrearVoluntarioActivity.this, "Se creó la cuenta correctamente", Toast.LENGTH_LONG).show();
+                                    // El aviso de éxito se da al final de la cadena, en
+                                    // crearVoluntarioDB: la cuenta no está completa hasta que
+                                    // también se escriben el domicilio y el usuario.
                                     crearVoluntarioDB(cuenta.getIdCuenta(), voluntario);
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(CrearVoluntarioActivity.this, "No se creó la cuenta en DB", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(CrearVoluntarioActivity.this, "No se pudo crear la cuenta", Toast.LENGTH_LONG).show();
                                     System.out.println("Error crear cuentas en DB" + e);
                                 }
                             });
-
-                            Toast.makeText(CrearVoluntarioActivity.this, "Cuenta creada correctamente", Toast.LENGTH_SHORT).show();
 
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CrearVoluntarioActivity.this, "No se pudo obtener la imagen predeterminada", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(CrearVoluntarioActivity.this, "No se pudo asignar la foto de perfil predeterminada", Toast.LENGTH_SHORT).show();
                         }
                     });
                 } else {
                     Exception excepcion = task.getException();
                     if (excepcion instanceof FirebaseAuthUserCollisionException) {
-                        Toast.makeText(CrearVoluntarioActivity.this, "El correo ingresado ya se encuentran registrado en la aplicación", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CrearVoluntarioActivity.this, "Ya existe una cuenta vinculada a este correo electrónico", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(CrearVoluntarioActivity.this, "Error al registrar al voluntario", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CrearVoluntarioActivity.this, "No se pudo crear la cuenta del voluntario", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -418,13 +414,16 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
                 mFirestore.collection("Usuarios").add(mapUsuarios).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-//                        documentReference.update("id", documentReference.getId());
-                        Toast.makeText(CrearVoluntarioActivity.this, "Se creó el usuario en DB", Toast.LENGTH_LONG).show();
+                        // Último paso de la cadena: aquí la cuenta ya está completa en Auth,
+                        // Cuentas, Domicilios y Usuarios, así que es el único punto donde se
+                        // puede anunciar el éxito y cerrar la pantalla.
+                        Toast.makeText(CrearVoluntarioActivity.this, "Cuenta creada", Toast.LENGTH_LONG).show();
+                        irAListaDeUsuarios();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CrearVoluntarioActivity.this, "No se creó el usuario en DB", Toast.LENGTH_LONG).show();
+                        Toast.makeText(CrearVoluntarioActivity.this, "No se pudo guardar la información del voluntario", Toast.LENGTH_LONG).show();
                         System.out.println("Error crear usuarios en DB" + e);
                     }
                 });
@@ -433,10 +432,15 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 voluntario.setDomicilioUsuario("No se agregó el domicilio");
-                Toast.makeText(CrearVoluntarioActivity.this, "No se pudo agregar el domicilio a la BD", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CrearVoluntarioActivity.this, "No se pudo guardar el domicilio del voluntario", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    // Se llama solo cuando toda la cadena de escrituras terminó. Antes se navegaba aquí
+    // mismo, de forma sincrónica: la pantalla se cerraba sin esperar y los avisos de error
+    // aparecían ya sobre la lista de usuarios, sin posibilidad de reintentar.
+    private void irAListaDeUsuarios() {
         Intent i = new Intent(CrearVoluntarioActivity.this, VerUsuariosActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
@@ -464,9 +468,8 @@ public class CrearVoluntarioActivity extends AppCompatActivity {
                     Map<String, Object> cuentas = documentSnapshot.getData();
                     String rolCuenta = documentSnapshot.getString("rol");
                     rol[0] = rolCuenta;
-                    Toast.makeText(CrearVoluntarioActivity.this, "Este es el rol: " + rol[0], Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(CrearVoluntarioActivity.this, "No se encontró el documento", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CrearVoluntarioActivity.this, "No se pudo obtener la información de la cuenta", Toast.LENGTH_SHORT).show();
                 }
             }
         });

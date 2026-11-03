@@ -160,7 +160,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(correo)) {
                     ocultarTeclado(findViewById(android.R.id.content));
                     Toast.makeText(IniciarSesionActivity.this, "No se ha ingresado una dirección de correo electrónico", Toast.LENGTH_SHORT).show();
-                    textCorreoIS.setError("Ingrese una direccion de correo electrónico");
+                    textCorreoIS.setError("Ingrese una dirección de correo electrónico");
                     textCorreoIS.requestFocus();
                 } else if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
                     ocultarTeclado(findViewById(android.R.id.content));
@@ -208,7 +208,7 @@ public class IniciarSesionActivity extends AppCompatActivity {
                 } else {
                     // Manejo general de errores
                     ocultarTeclado(findViewById(android.R.id.content));
-                    Toast.makeText(IniciarSesionActivity.this, "Algo salió mal. Por favor, inténtalo de nuevo más tarde.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(IniciarSesionActivity.this, "No se pudo iniciar sesión. Inténtelo de nuevo más tarde.", Toast.LENGTH_SHORT).show();
                 }
                 barraProgresoIS.setVisibility(View.GONE);
             }
