@@ -338,7 +338,7 @@ public class SubirFotoPerfil extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SubirFotoPerfil.this, "No se agregó la foto de perfil", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SubirFotoPerfil.this, "No se pudo subir la foto de perfil", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
@@ -354,12 +354,10 @@ public class SubirFotoPerfil extends AppCompatActivity {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(SubirFotoPerfil.this, "No se pudo obtener la imagen predeterminada", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SubirFotoPerfil.this, "No se pudo asignar la foto de perfil predeterminada", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
-
-                    Toast.makeText(SubirFotoPerfil.this, "Cuenta creada correctamente", Toast.LENGTH_SHORT).show();
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -400,7 +398,7 @@ public class SubirFotoPerfil extends AppCompatActivity {
                     crearCuentaDB(urlFotoPerfil, id);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al actualizar el perfil: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No se pudo actualizar la foto del perfil", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -422,12 +420,11 @@ public class SubirFotoPerfil extends AppCompatActivity {
         mFirestore.collection("Cuentas").document(cuenta.getIdCuenta()).set(mapCuentas).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(SubirFotoPerfil.this, "Se creó la cuenta correctamente", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SubirFotoPerfil.this, "No se creó la cuenta en DB", Toast.LENGTH_LONG).show();
+                Toast.makeText(SubirFotoPerfil.this, "No se pudo crear la cuenta", Toast.LENGTH_LONG).show();
                 System.out.println("Error crear cuentas en DB" + e);
             }
         });
@@ -473,20 +470,21 @@ public class SubirFotoPerfil extends AppCompatActivity {
                 mFirestore.collection("Usuarios").add(mapUsuarios).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-//                        documentReference.update("id", documentReference.getId());
+                        // Último paso de la cadena: la cuenta ya está completa en Auth,
+                        // Cuentas, Domicilios y Usuarios. Es el único punto donde procede
+                        // anunciar el éxito, y va antes de navegar para que el aviso
+                        // pertenezca a esta pantalla y no a la siguiente.
+                        Toast.makeText(SubirFotoPerfil.this, "Cuenta creada", Toast.LENGTH_LONG).show();
 
-                        //Iniciar la nueva actividad luego de completar el registro
                         Intent i = new Intent(SubirFotoPerfil.this, IniciarSesionActivity.class);
                         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(i);
                         finish();
-
-                        Toast.makeText(SubirFotoPerfil.this, "Se creó el usuario en DB", Toast.LENGTH_LONG).show();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(SubirFotoPerfil.this, "No se creó el usuario en DB", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SubirFotoPerfil.this, "No se pudo guardar la información de la cuenta", Toast.LENGTH_LONG).show();
                         System.out.println("Error crear usuarios en DB" + e);
                     }
                 });
@@ -495,7 +493,7 @@ public class SubirFotoPerfil extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 usuario.setDomicilioUsuario("No se agregó el domicilio");
-                Toast.makeText(SubirFotoPerfil.this, "No se pudo agregar el domicilio a la BD", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubirFotoPerfil.this, "No se pudo guardar el domicilio", Toast.LENGTH_SHORT).show();
             }
         });
     }
