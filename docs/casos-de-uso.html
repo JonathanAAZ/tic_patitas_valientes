@@ -1,0 +1,1981 @@
+<title>Casos de Uso de Patitas Valientes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  /* Paleta tomada de app/src/main/res/values/colors.xml */
+  --lila:      #593f6f;
+  --celeste:   #279fd1;
+  --verde:     #006400;
+  --amarillo:  #ffda5b;
+  --rojo:      #C10808;
+
+  /* Neutros con sesgo violeta hacia el lila de la app */
+  --ground:    #FAF8FC;
+  --surface:   #FFFFFF;
+  --surface-2: #F3EFF7;
+  --ink:       #221B29;
+  --ink-2:     #4A4053;
+  --ink-3:     #746A7E;
+  --rule:      #E3DCEA;
+  --rule-soft: #EFEAF4;
+
+  --admin:     var(--lila);
+  --vol:       var(--verde);
+  --ado:       var(--celeste);
+  --sistema:   #8A6400;
+
+  --admin-bg:  #F0EBF6;
+  --vol-bg:    #E6F0E6;
+  --ado-bg:    #E2F1FA;
+  --sistema-bg:#FBF2D9;
+
+  --shadow: 0 1px 2px rgba(34, 27, 41, .06);
+
+  --display: "Newsreader", Georgia, "Times New Roman", serif;
+  --body: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+
+  --measure: 68ch;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --lila:      #B79AD6;
+    --celeste:   #4FB6E6;
+    --verde:     #5FBB68;
+    --amarillo:  #FFDA5B;
+    --rojo:      #F0736F;
+
+    --ground:    #15111A;
+    --surface:   #1D1824;
+    --surface-2: #251F2E;
+    --ink:       #EEEAF2;
+    --ink-2:     #C6BDD0;
+    --ink-3:     #9B90A7;
+    --rule:      #342C3E;
+    --rule-soft: #2A2333;
+
+    --admin:     var(--lila);
+    --vol:       var(--verde);
+    --ado:       var(--celeste);
+    --sistema:   #E0BE5A;
+
+    --admin-bg:  #2C2338;
+    --vol-bg:    #1E2C20;
+    --ado-bg:    #16303D;
+    --sistema-bg:#332A16;
+
+    --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+  }
+}
+
+:root[data-theme="dark"] {
+  --lila:      #B79AD6;
+  --celeste:   #4FB6E6;
+  --verde:     #5FBB68;
+  --amarillo:  #FFDA5B;
+  --rojo:      #F0736F;
+
+  --ground:    #15111A;
+  --surface:   #1D1824;
+  --surface-2: #251F2E;
+  --ink:       #EEEAF2;
+  --ink-2:     #C6BDD0;
+  --ink-3:     #9B90A7;
+  --rule:      #342C3E;
+  --rule-soft: #2A2333;
+
+  --admin:     var(--lila);
+  --vol:       var(--verde);
+  --ado:       var(--celeste);
+  --sistema:   #E0BE5A;
+
+  --admin-bg:  #2C2338;
+  --vol-bg:    #1E2C20;
+  --ado-bg:    #16303D;
+  --sistema-bg:#332A16;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, .4);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ---------- Estructura ---------- */
+
+.shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 28px 96px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: 208px minmax(0, 1fr);
+  gap: 52px;
+  align-items: start;
+}
+
+@media (max-width: 940px) {
+  .cols { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rail { position: static; margin-bottom: 40px; }
+}
+
+/* ---------- Portada ---------- */
+
+.portada {
+  padding: 64px 0 34px;
+  border-bottom: 2px solid var(--ink);
+  margin-bottom: 40px;
+}
+
+.eyebrow {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 18px;
+}
+
+h1 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(40px, 6.5vw, 68px);
+  line-height: 1.02;
+  letter-spacing: -.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 .sub {
+  display: block;
+  font-size: clamp(19px, 2.4vw, 25px);
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink-3);
+  letter-spacing: 0;
+  margin-top: 10px;
+}
+
+.resumen {
+  max-width: var(--measure);
+  margin: 26px 0 0;
+  font-size: 17.5px;
+  color: var(--ink-2);
+}
+
+.ficha {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 30px;
+  border-top: 1px solid var(--rule);
+}
+
+.ficha div {
+  flex: 1 1 150px;
+  padding: 14px 20px 0 0;
+}
+
+.ficha dt {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  margin: 0 0 4px;
+}
+
+.ficha dd {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Rail ---------- */
+
+.rail {
+  position: sticky;
+  top: 24px;
+  font-size: 13.5px;
+}
+
+.rail h2 {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  margin: 0 0 12px;
+}
+
+.rail ul { list-style: none; margin: 0 0 26px; padding: 0; display: flex; flex-direction: column; gap: 1px; }
+
+.rail a {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  padding: 5px 8px 5px 11px;
+  color: var(--ink-2);
+  text-decoration: none;
+  border-left: 3px solid var(--rule);
+  border-radius: 0 3px 3px 0;
+  transition: background .12s ease, color .12s ease;
+}
+
+.rail a:hover, .rail a:focus-visible { background: var(--surface-2); color: var(--ink); }
+.rail a .n { font-family: var(--mono); font-size: 11px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+
+.rail a.is-admin { border-left-color: var(--admin); }
+.rail a.is-vol   { border-left-color: var(--vol); }
+.rail a.is-ado   { border-left-color: var(--ado); }
+.rail a.is-gen   { border-left-color: var(--ink-3); }
+
+/* ---------- Tipografía de sección ---------- */
+
+section { scroll-margin-top: 20px; }
+
+h2.sec {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 31px;
+  letter-spacing: -.015em;
+  margin: 0 0 4px;
+  text-wrap: balance;
+}
+
+.sec-head {
+  margin: 58px 0 26px;
+  padding-left: 16px;
+  border-left: 4px solid var(--rule);
+}
+
+.sec-head.admin { border-left-color: var(--admin); }
+.sec-head.vol   { border-left-color: var(--vol); }
+.sec-head.ado   { border-left-color: var(--ado); }
+.sec-head.gen   { border-left-color: var(--ink-3); }
+
+.sec-head p {
+  margin: 0;
+  max-width: var(--measure);
+  color: var(--ink-2);
+  font-size: 15.5px;
+}
+
+h3.blk {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 22px;
+  margin: 46px 0 14px;
+  letter-spacing: -.01em;
+}
+
+p { max-width: var(--measure); }
+
+code, .mono { font-family: var(--mono); font-size: .855em; }
+
+code {
+  background: var(--surface-2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--ink-2);
+  word-break: break-word;
+}
+
+.estado {
+  font-family: var(--mono);
+  font-size: .8em;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--surface-2);
+  border: 1px solid var(--rule);
+  color: var(--ink-2);
+  white-space: nowrap;
+}
+
+/* ---------- Tabla de actores ---------- */
+
+.tabla-wrap { overflow-x: auto; margin: 22px 0 0; }
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-size: 14.5px;
+}
+
+thead th {
+  text-align: left;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  font-weight: 500;
+  padding: 0 14px 8px 0;
+  border-bottom: 1px solid var(--ink);
+}
+
+tbody td {
+  padding: 13px 14px 13px 0;
+  border-bottom: 1px solid var(--rule-soft);
+  vertical-align: top;
+  color: var(--ink-2);
+}
+
+tbody tr td:first-child { color: var(--ink); font-weight: 600; white-space: nowrap; }
+
+td.si { color: var(--ink); font-weight: 600; }
+td.no { color: var(--ink-3); }
+
+/* ---------- Chip de actor ---------- */
+
+.chip {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 100px;
+  white-space: nowrap;
+}
+
+.chip.admin   { background: var(--admin-bg);   color: var(--admin); }
+.chip.vol     { background: var(--vol-bg);     color: var(--vol); }
+.chip.ado     { background: var(--ado-bg);     color: var(--ado); }
+.chip.sistema { background: var(--sistema-bg); color: var(--sistema); }
+
+/* ---------- Registro de caso de uso ---------- */
+
+.cu {
+  padding: 26px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.cu:first-of-type { border-top: 1px solid var(--ink); }
+
+.cu-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.cu-id {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .04em;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+  flex: 0 0 auto;
+  width: 84px;
+}
+
+.cu-head h4 {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.25;
+  margin: 0;
+  flex: 1 1 320px;
+  letter-spacing: -.008em;
+  text-wrap: balance;
+}
+
+.cu-body {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 10px 14px;
+  margin: 0;
+  align-items: baseline;
+}
+
+@media (max-width: 620px) {
+  .cu-body { grid-template-columns: minmax(0, 1fr); gap: 3px; }
+  .cu-body dt { margin-top: 10px; }
+  .cu-id { width: auto; }
+}
+
+.cu-body dt {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+  padding-top: 3px;
+}
+
+.cu-body dd {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink-2);
+  max-width: var(--measure);
+}
+
+.cu-body ol, .cu-body ul {
+  margin: 0;
+  padding-left: 1.15em;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cu-body ol { counter-reset: paso; list-style: none; padding-left: 0; }
+
+.cu-body ol li {
+  counter-increment: paso;
+  padding-left: 26px;
+  position: relative;
+}
+
+.cu-body ol li::before {
+  content: counter(paso);
+  position: absolute;
+  left: 0;
+  top: .1em;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.cu-body dd.impl { font-family: var(--mono); font-size: 12.5px; color: var(--ink-3); line-height: 1.7; }
+.cu-body dd.impl code { background: none; padding: 0; font-size: 1em; }
+
+/* ---------- Figuras ---------- */
+
+figure {
+  margin: 30px 0 0;
+  padding: 24px 22px 18px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.svg-scroll { overflow-x: auto; }
+figure svg { display: block; min-width: 520px; width: 100%; height: auto; }
+
+figcaption {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: var(--measure);
+}
+
+figcaption b { color: var(--ink-2); font-weight: 600; }
+
+.svg-box   { fill: var(--surface-2); stroke: var(--rule); stroke-width: 1; }
+.svg-box-k { fill: var(--surface-2); stroke: var(--ink-3); stroke-width: 1.4; }
+.svg-label { font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 500; fill: var(--ink); letter-spacing: .03em; }
+.svg-note  { font-family: "Public Sans", sans-serif; font-size: 11px; fill: var(--ink-3); }
+.svg-note-em { font-family: "Public Sans", sans-serif; font-size: 11px; fill: var(--ink-2); font-weight: 600; }
+.svg-line  { stroke: var(--ink-3); stroke-width: 1.3; fill: none; }
+.svg-line-soft { stroke: var(--rule); stroke-width: 1.3; fill: none; stroke-dasharray: 4 3; }
+
+/* ---------- Nota ---------- */
+
+.nota {
+  margin: 26px 0 0;
+  padding: 16px 18px;
+  background: var(--surface-2);
+  border-left: 3px solid var(--ink-3);
+  border-radius: 0 5px 5px 0;
+  font-size: 14.5px;
+  color: var(--ink-2);
+  max-width: var(--measure);
+}
+
+.nota strong { color: var(--ink); font-weight: 600; }
+.nota :is(p):first-child { margin-top: 0; }
+.nota :is(p):last-child { margin-bottom: 0; }
+
+.hallazgos { list-style: none; padding: 0; margin: 22px 0 0; display: flex; flex-direction: column; gap: 0; }
+
+.hallazgos li {
+  padding: 16px 0;
+  border-top: 1px solid var(--rule-soft);
+  font-size: 14.5px;
+  color: var(--ink-2);
+  max-width: var(--measure);
+}
+
+.hallazgos li strong { display: block; color: var(--ink); font-weight: 600; margin-bottom: 3px; font-size: 15px; }
+
+footer.pie {
+  margin-top: 72px;
+  padding-top: 22px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px;
+  color: var(--ink-3);
+  max-width: var(--measure);
+}
+
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--celeste); outline-offset: 2px; border-radius: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ---------- Relaciones UML ---------- */
+
+.rel {
+  font-family: var(--mono);
+  font-size: .86em;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+td .td-nombre {
+  display: block;
+  white-space: normal;
+  font-weight: 400;
+  color: var(--ink-2);
+  font-size: 13.5px;
+  line-height: 1.35;
+  margin-top: 1px;
+}
+
+td.incl {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.9;
+  color: var(--ink-3);
+}
+
+tbody tr.grupo td {
+  padding: 24px 0 7px;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-3);
+  white-space: normal;
+}
+
+tbody tr.grupo:first-child td { padding-top: 8px; }
+
+.uc-ext ellipse { fill: var(--surface-2); stroke: var(--rule); stroke-width: 1.2; }
+.uc-sub ellipse { fill: var(--surface-2); stroke: var(--rule); stroke-width: 1.2; stroke-dasharray: 5 3; }
+.uc-base { fill: var(--vol-bg); stroke: var(--vol); stroke-width: 1.6; }
+
+.svg-uc-id { font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 700; fill: var(--ink-3); letter-spacing: .04em; }
+.svg-uc-nm { font-family: "Public Sans", sans-serif; font-size: 11px; fill: var(--ink); }
+.svg-dep { stroke: var(--ink-3); stroke-width: 1.2; fill: none; stroke-dasharray: 5 4; }
+</style>
+
+<div class="shell">
+
+  <header class="portada">
+    <p class="eyebrow">Especificación funcional · Patitas Valientes</p>
+    <h1>Casos de uso
+      <span class="sub">Administrador, voluntario y adoptante</span>
+    </h1>
+    <p class="resumen">
+      Catálogo de los 37 casos de uso que la aplicación implementa hoy, derivados del código
+      fuente, con sus relaciones &laquo;include&raquo; y &laquo;extend&raquo;: cada ficha nombra la
+      pantalla que lo resuelve y los estados que escribe en Firestore. Lo que no está en el
+      código no está en este documento.
+    </p>
+    <dl class="ficha">
+      <div><dt>Actores</dt><dd>3 primarios · 1 secundario</dd></div>
+      <div><dt>Casos de uso</dt><dd>37 + 5 subfunciones</dd></div>
+      <div><dt>Rama</dt><dd class="mono">master · 0a15d96</dd></div>
+      <div><dt>Fecha</dt><dd>9 de septiembre de 2026</dd></div>
+    </dl>
+  </header>
+
+  <div class="cols">
+
+    <nav class="rail" aria-label="Índice de casos de uso">
+      <h2>Índice</h2>
+      <ul>
+        <li><a href="#actores" class="is-gen">Actores <span class="n"></span></a></li>
+        <li><a href="#ciclos" class="is-gen">Ciclos de estado <span class="n"></span></a></li>
+        <li><a href="#generales" class="is-gen">Comunes <span class="n">4</span></a></li>
+        <li><a href="#administrador" class="is-admin">Administrador <span class="n">14</span></a></li>
+        <li><a href="#voluntario" class="is-vol">Voluntario <span class="n">9</span></a></li>
+        <li><a href="#adoptante" class="is-ado">Adoptante <span class="n">10</span></a></li>
+        <li><a href="#relaciones" class="is-gen">Relaciones <span class="n">18</span></a></li>
+        <li><a href="#matriz" class="is-gen">Matriz <span class="n"></span></a></li>
+        <li><a href="#hallazgos" class="is-gen">Observaciones <span class="n">5</span></a></li>
+      </ul>
+    </nav>
+
+    <main>
+
+      <!-- ================= ACTORES ================= -->
+      <section id="actores">
+        <div class="sec-head gen">
+          <h2 class="sec">Actores</h2>
+          <p>
+            El rol se guarda en <code>Cuentas.rol</code> y se compara siempre con
+            <code>equalsIgnoreCase</code>. La sesión lo lee con
+            <code>SessionManager.getUserRole()</code>.
+          </p>
+        </div>
+
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Actor</th>
+                <th>Origen de la cuenta</th>
+                <th>Responsabilidad en el sistema</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="chip admin">Administrador</span></td>
+                <td>Provisionada fuera de la app</td>
+                <td>Mantiene el catálogo de mascotas y las cuentas, arbitra cada solicitud de adopción y reparte los seguimientos entre los voluntarios.</td>
+              </tr>
+              <tr>
+                <td><span class="chip vol">Voluntario</span></td>
+                <td>Creada por el administrador</td>
+                <td>Registra el historial médico de las mascotas y lleva el seguimiento posterior a la adopción, incluida la decisión de retirar a la mascota.</td>
+              </tr>
+              <tr>
+                <td><span class="chip ado">Adoptante</span></td>
+                <td>Autorregistro desde la app</td>
+                <td>Solicita adopciones, entrega los requisitos, firma el contrato y responde el seguimiento de su mascota.</td>
+              </tr>
+              <tr>
+                <td><span class="chip sistema">Servidor</span></td>
+                <td>Servicio Node en Render</td>
+                <td>Actor secundario. Guarda las notificaciones programadas y las dispara en su fecha; ningún caso de uso lo inicia directamente.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="nota">
+          <p>
+            <strong>Precondición transversal.</strong> Todos los casos de uso exigen una sesión
+            iniciada con la cuenta en estado <span class="estado">ACTIVO</span>.
+            <code>IniciarSesionActivity</code> corta el acceso antes de resolver el rol, así que
+            desactivar una cuenta deja fuera al usuario sin borrar nada de su historial.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= CICLOS ================= -->
+      <section id="ciclos">
+        <div class="sec-head gen">
+          <h2 class="sec">Ciclos de estado</h2>
+          <p>
+            Los casos de uso de adopción y seguimiento se entienden mejor sobre las dos máquinas
+            de estados que gobiernan las colecciones <code>Adopciones</code> y
+            <code>Seguimientos</code>.
+          </p>
+        </div>
+
+        <figure>
+          <div class="svg-scroll">
+            <svg viewBox="0 0 660 340" role="img" aria-labelledby="t-adop">
+              <title id="t-adop">Ciclo de estados de una adopción, de PENDIENTE a COMPLETADA con salida a RECHAZADA</title>
+              <defs>
+                <marker id="flecha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M 0 1 L 9 5 L 0 9 z" fill="currentColor" />
+                </marker>
+              </defs>
+
+              <!-- Estados del carril principal -->
+              <rect class="svg-box" x="150" y="8"   width="190" height="42" rx="6" />
+              <text class="svg-label" x="245" y="34" text-anchor="middle">PENDIENTE</text>
+
+              <rect class="svg-box" x="150" y="106" width="190" height="42" rx="6" />
+              <text class="svg-label" x="245" y="132" text-anchor="middle">ACEPTADA</text>
+
+              <rect class="svg-box" x="150" y="204" width="190" height="42" rx="6" />
+              <text class="svg-label" x="245" y="230" text-anchor="middle">EN_REVISION</text>
+
+              <rect class="svg-box-k" x="150" y="288" width="190" height="42" rx="6" />
+              <text class="svg-label" x="245" y="314" text-anchor="middle">COMPLETADA</text>
+
+              <!-- Estado terminal -->
+              <rect class="svg-box" x="470" y="106" width="176" height="42" rx="6" />
+              <text class="svg-label" x="558" y="132" text-anchor="middle">RECHAZADA</text>
+
+              <!-- Carril principal -->
+              <g color="var(--ink-3)">
+                <path class="svg-line" d="M 245 50 L 245 100" marker-end="url(#flecha)" />
+                <path class="svg-line" d="M 245 148 L 245 198" marker-end="url(#flecha)" />
+                <path class="svg-line" d="M 245 246 L 245 282" marker-end="url(#flecha)" />
+                <!-- rechazo -->
+                <path class="svg-line" d="M 340 29 C 420 29, 430 60, 470 112" marker-end="url(#flecha)" />
+                <!-- reenvío de requisitos -->
+                <path class="svg-line-soft" d="M 150 225 C 96 225, 96 129, 150 129" marker-end="url(#flecha)" />
+              </g>
+
+              <text class="svg-note" x="256" y="79">el administrador acepta la solicitud</text>
+              <text class="svg-note" x="256" y="177">el adoptante firma el contrato</text>
+              <text class="svg-note" x="256" y="270">el administrador aprueba los requisitos</text>
+              <text class="svg-note" x="352" y="66">rechaza, con motivo</text>
+              <text class="svg-note" x="132" y="180" text-anchor="end">devolver</text>
+              <text class="svg-note" x="132" y="194" text-anchor="end">requisitos</text>
+              <text class="svg-note-em" x="352" y="313">crea el Seguimiento</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>Ciclo de la adopción.</b> El paso a <span class="estado">ACEPTADA</span> crea el
+            contrato en <span class="estado">NO_FIRMADO</span>; la firma lo pasa a
+            <span class="estado">FIRMADO</span> y la adopción a
+            <span class="estado">EN_REVISION</span>. Terminar la adopción crea el seguimiento.
+            Un retiro posterior devuelve la adopción a
+            <span class="estado">RECHAZADA</span> y marca el contrato como
+            <span class="estado">ANULADO</span>, sin borrarlo.
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="svg-scroll">
+            <svg viewBox="0 0 660 262" role="img" aria-labelledby="t-seg">
+              <title id="t-seg">Ciclo de estados de un seguimiento: activo sin voluntario, activo asignado, y cierre por finalización o retiro</title>
+
+              <rect class="svg-box" x="16" y="14" width="212" height="42" rx="6" />
+              <text class="svg-label" x="122" y="34" text-anchor="middle">ACTIVO</text>
+              <text class="svg-note" x="122" y="48" text-anchor="middle">sin voluntario asignado</text>
+
+              <rect class="svg-box-k" x="16" y="118" width="212" height="42" rx="6" />
+              <text class="svg-label" x="122" y="138" text-anchor="middle">ACTIVO</text>
+              <text class="svg-note" x="122" y="152" text-anchor="middle">con voluntario y plan</text>
+
+              <rect class="svg-box" x="418" y="70" width="212" height="42" rx="6" />
+              <text class="svg-label" x="524" y="90" text-anchor="middle">COMPLETADA</text>
+              <text class="svg-note" x="524" y="104" text-anchor="middle">se libera al adoptante</text>
+
+              <rect class="svg-box" x="418" y="176" width="212" height="42" rx="6" />
+              <text class="svg-label" x="524" y="196" text-anchor="middle">RECHAZADA</text>
+              <text class="svg-note" x="524" y="210" text-anchor="middle">se retira la mascota</text>
+
+              <g color="var(--ink-3)">
+                <path class="svg-line" d="M 122 56 L 122 112" marker-end="url(#flecha)" />
+                <path class="svg-line" d="M 228 132 C 320 132, 330 96, 412 92" marker-end="url(#flecha)" />
+                <path class="svg-line" d="M 228 146 C 320 146, 330 190, 412 196" marker-end="url(#flecha)" />
+              </g>
+
+              <text class="svg-note" x="134" y="88">el administrador asigna</text>
+              <text class="svg-note" x="134" y="102">un voluntario</text>
+              <text class="svg-note" x="252" y="112">finalizar</text>
+              <text class="svg-note" x="252" y="176">retirar</text>
+              <text class="svg-note-em" x="16" y="248">En ambos cierres el chat queda de solo lectura y se cancelan los recordatorios pendientes.</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>Ciclo del seguimiento.</b> Nace <span class="estado">ACTIVO</span> con
+            <code>idVoluntario</code> vacío al terminar la adopción; solo entonces aparece en la
+            bandeja de asignación del administrador. Al usuario final nunca se le muestra la
+            palabra <span class="estado">RECHAZADA</span>: la lista traduce los estados cerrados
+            a «Cerrado» y «Finalizado».
+          </figcaption>
+        </figure>
+
+        <figure>
+          <div class="svg-scroll">
+            <svg viewBox="0 0 660 128" role="img" aria-labelledby="t-plan">
+              <title id="t-plan">Fases del plan de recordatorios: siete controles diarios, ocho mensuales y cuatro trimestrales</title>
+
+              <rect x="0"   y="42" width="150" height="26" rx="3" fill="var(--ado-bg)" stroke="var(--rule)" stroke-width="1" />
+              <rect x="150" y="42" width="286" height="26" fill="var(--admin-bg)" stroke="var(--rule)" stroke-width="1" />
+              <rect x="436" y="42" width="222" height="26" rx="3" fill="var(--vol-bg)" stroke="var(--rule)" stroke-width="1" />
+
+              <text class="svg-note-em" x="75"  y="34" text-anchor="middle">7 controles diarios</text>
+              <text class="svg-note-em" x="293" y="34" text-anchor="middle">8 controles mensuales</text>
+              <text class="svg-note-em" x="547" y="34" text-anchor="middle">4 controles trimestrales</text>
+
+              <text class="svg-label" x="75"  y="60" text-anchor="middle" style="font-size:11px">día 1 – 7</text>
+              <text class="svg-label" x="293" y="60" text-anchor="middle" style="font-size:11px">mes 1 – 8</text>
+              <text class="svg-label" x="547" y="60" text-anchor="middle" style="font-size:11px">mes 11 – 20</text>
+
+              <g color="var(--ink-3)">
+                <path class="svg-line" d="M 0 74 L 0 82" />
+                <path class="svg-line" d="M 150 74 L 150 82" />
+                <path class="svg-line" d="M 436 74 L 436 82" />
+                <path class="svg-line" d="M 658 74 L 658 82" />
+              </g>
+
+              <text class="svg-note" x="0"   y="96">adopción</text>
+              <text class="svg-note" x="150" y="96" text-anchor="middle">fin de la 1.ª semana</text>
+              <text class="svg-note" x="436" y="96" text-anchor="middle">fin de la fase mensual</text>
+              <text class="svg-note" x="658" y="96" text-anchor="end">último control programado</text>
+
+              <text class="svg-note" x="0" y="120">Escala no lineal. Todos los recordatorios se programan a las 08:00 y llegan al voluntario asignado.</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>Plan de recordatorios.</b> Los 19 recordatorios se calculan y se programan de una
+            sola vez, contados desde <code>fechaInicioSeguimiento</code>. La fase que se muestra
+            en el chat no se guarda: se deduce de esa fecha, así nunca queda desfasada.
+          </figcaption>
+        </figure>
+      </section>
+
+      <!-- ================= COMUNES ================= -->
+      <section id="generales">
+        <div class="sec-head gen">
+          <h2 class="sec">Casos de uso comunes</h2>
+          <p>Disponibles para los tres roles desde el menú inferior.</p>
+        </div>
+
+        <article class="cu">
+          <div class="cu-head">
+            <span class="cu-id">CU-G01</span>
+            <h4>Iniciar sesión</h4>
+          </div>
+          <dl class="cu-body">
+            <dt>Actor</dt>
+            <dd><span class="chip admin">Administrador</span> <span class="chip vol">Voluntario</span> <span class="chip ado">Adoptante</span></dd>
+            <dt>Precondición</dt>
+            <dd>Existe una cuenta registrada con ese correo.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El usuario ingresa correo y contraseña.</li>
+                <li>El sistema autentica contra Firebase Auth y lee <code>Cuentas/{uid}</code>.</li>
+                <li>Si el estado es <span class="estado">ACTIVO</span>, registra el token FCM del dispositivo y libera ese token de cualquier otra cuenta que lo tuviera.</li>
+                <li>Abre el menú del rol correspondiente.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>Si la cuenta está <span class="estado">INACTIVO</span>, no se abre ninguna sesión y el usuario queda en la pantalla de acceso.</dd>
+            <dt>Postcond.</dt>
+            <dd>Un dispositivo queda asociado a una sola cuenta, de modo que las notificaciones no se cruzan entre usuarios que compartan el teléfono.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>IniciarSesionActivity</code> → <code>BottomNavigationMenu</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head">
+            <span class="cu-id">CU-G02</span>
+            <h4>Consultar y editar el perfil</h4>
+          </div>
+          <dl class="cu-body">
+            <dt>Actor</dt>
+            <dd><span class="chip admin">Administrador</span> <span class="chip vol">Voluntario</span> <span class="chip ado">Adoptante</span></dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El usuario abre la pestaña Perfil y ve sus datos personales, su domicilio y su rol.</li>
+                <li>Puede editar la información personal, el domicilio o la foto de perfil, cada uno en su propia pantalla.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>La foto admite las dos vías obligatorias del proyecto: tomar una foto con la cámara o subir una desde la galería.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>PerfilFragment</code> · <code>EditarInformacionPerfilActivity</code> · <code>EditarDomicilioActivity</code> · <code>EditarFotoPerfilActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head">
+            <span class="cu-id">CU-G03</span>
+            <h4>Cambiar la contraseña</h4>
+          </div>
+          <dl class="cu-body">
+            <dt>Actor</dt>
+            <dd><span class="chip admin">Administrador</span> <span class="chip vol">Voluntario</span> <span class="chip ado">Adoptante</span></dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El usuario ingresa la contraseña nueva y su confirmación.</li>
+                <li>El sistema la actualiza en Firebase Auth y refleja el cambio en <code>Cuentas</code>.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>CambiarClaveActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head">
+            <span class="cu-id">CU-G04</span>
+            <h4>Consultar las notificaciones recibidas</h4>
+          </div>
+          <dl class="cu-body">
+            <dt>Actor</dt>
+            <dd><span class="chip admin">Administrador</span> <span class="chip vol">Voluntario</span> <span class="chip ado">Adoptante</span></dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El usuario abre la pestaña Notificaciones.</li>
+                <li>El sistema lista lo almacenado en <code>notificaciones/{idUsuario}</code> de Realtime Database.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>La lista se recarga cada vez que la pantalla vuelve al frente, de modo que una notificación atendida en otra pantalla no reaparece.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>NotificacionesFragment</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <!-- ================= ADMINISTRADOR ================= -->
+      <section id="administrador">
+        <div class="sec-head admin">
+          <h2 class="sec">Administrador</h2>
+          <p>
+            Catorce casos de uso repartidos en tres frentes: el catálogo de mascotas, las cuentas de
+            usuario y el arbitraje del proceso de adopción y sus seguimientos.
+          </p>
+        </div>
+
+        <h3 class="blk">Catálogo de mascotas</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD01</span><h4>Registrar una mascota</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>La mascota no está registrada todavía.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador completa nombre, especie, sexo, edad y estado sanitario (vacunada, desparasitada, esterilizada).</li>
+                <li>Aporta la foto tomándola con la cámara o subiéndola desde la galería.</li>
+                <li>El sistema sube la foto a Cloudinary y guarda el documento en <code>Mascotas</code>.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>La mascota aparece en el catálogo público del adoptante mientras siga activa y sin adoptar.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>GestionarMascotaActivity</code> → <code>AgregarMascotaFragment</code> · <code>AgregarFotoMascotaFragment</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD02</span><h4>Editar la información de una mascota</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador abre la mascota desde la lista y modifica sus datos o su foto.</li>
+                <li>El sistema actualiza <code>Mascotas</code> y regresa a la lista, que se recarga.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>EditarMascotaActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD03</span><h4>Activar o desactivar una mascota</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador pulsa la acción sobre la fila de la mascota.</li>
+                <li>El sistema pide confirmación y alterna <code>estadoMascota</code> entre <span class="estado">ACTIVO</span> e <span class="estado">INACTIVO</span>.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Una mascota inactiva deja de ofrecerse en el catálogo sin perder su historial médico ni su ficha.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>ListaMascotasAdopcionAdaptador</code> → <code>ControladorMascota.actualizarEstadoMascota</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD04</span><h4>Consultar y filtrar la lista de mascotas</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador abre la lista de mascotas registradas.</li>
+                <li>Busca por nombre o aplica filtros: activas, inactivas, vacunadas, esterilizadas o desparasitadas.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>VerMascotasActivity</code> → <code>ListaMascotasAdopcionFragment</code></dd>
+          </dl>
+        </article>
+
+        <h3 class="blk">Cuentas de usuario</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD05</span><h4>Crear la cuenta de un voluntario</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El correo no está usado por otra cuenta.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador captura los datos del voluntario, con validación en tiempo real de cédula, correo y celular.</li>
+                <li>El sistema crea el usuario en Firebase Auth y el documento en <code>Cuentas</code> con rol <em>Voluntario</em> y estado <span class="estado">ACTIVO</span>.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>El voluntario ya puede recibir seguimientos asignados. Es la única vía de alta de un voluntario: no existe autorregistro con ese rol.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>CrearVoluntarioActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD06</span><h4>Consultar y buscar usuarios</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador abre la lista de usuarios, que cruza <code>Usuarios</code> con <code>Cuentas</code> y excluye a los administradores.</li>
+                <li>Busca por nombre o cédula y consulta la ficha completa de cualquiera.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>VerUsuariosActivity</code> · <code>VerInformacionPerfilActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD07</span><h4>Editar los datos de un usuario</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El administrador está viendo la ficha de un usuario que no es él mismo.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador pulsa el lápiz sobre la fila del usuario y abre su ficha completa.</li>
+                <li>Toca «Editar información» y corrige los datos personales: nombre, cédula, fecha de nacimiento, estado civil, ocupación, teléfono y redes sociales, con la misma validación en tiempo real de cédula y celular que en el alta.</li>
+                <li>Al guardar, el sistema actualiza <code>Usuarios/{id}</code> y encadena con la edición del domicilio de esa persona.</li>
+                <li>Guardado el domicilio, devuelve al administrador a la ficha del usuario.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>El mismo par de pantallas resuelve la edición del propio perfil (CU-G02). La diferencia la marca el indicador <code>enAdministracion</code>, que decide a dónde se regresa: a la ficha del usuario administrado o al menú de perfil.</dd>
+            <dt>Postcond.</dt>
+            <dd>Quedan fuera del alcance el rol, el correo, la contraseña y la foto de perfil: el administrador no los puede cambiar desde aquí.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>VerInformacionPerfilActivity</code> → <code>EditarInformacionPerfilActivity</code> → <code>EditarDomicilioActivity</code></dd>
+          </dl>
+        </article>
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD08</span><h4>Activar o desactivar una cuenta</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador pulsa la acción sobre la fila del usuario.</li>
+                <li>Confirma y el sistema alterna <code>Cuentas.estado</code>.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Una cuenta inactiva no puede iniciar sesión (CU-G01), pero conserva sus adopciones y seguimientos.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>ListaUsuariosAdaptador</code> → <code>ControladorUsuario.actualizarEstadoUsuario</code></dd>
+          </dl>
+        </article>
+
+        <h3 class="blk">Arbitraje de la adopción</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD09</span><h4>Revisar y aceptar una solicitud de adopción</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>Existe una solicitud en <span class="estado">PENDIENTE</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador abre la solicitud y revisa los datos del adoptante, su domicilio, el tipo de vivienda y el cerramiento.</li>
+                <li>Amplía las fotos de cédula y de servicios básicos, y reproduce el video del hogar.</li>
+                <li>Confirma la aceptación.</li>
+                <li>El sistema pasa la adopción a <span class="estado">ACEPTADA</span> y crea el contrato en <code>ContratosAdopciones</code> con sus cláusulas y estado <span class="estado">NO_FIRMADO</span>.</li>
+                <li>Notifica al adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>El adoptante queda habilitado para firmar (CU-ADO05).</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>GestionarSolicitudesAdopcionActivity</code> → <code>ResponderSolicitudAdopcionActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD10</span><h4>Rechazar una solicitud de adopción</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>Existe una solicitud en <span class="estado">PENDIENTE</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador pulsa rechazar.</li>
+                <li>El sistema exige un motivo escrito; sin él no continúa.</li>
+                <li>Guarda el motivo en <code>observaciones</code>, pasa la adopción a <span class="estado">RECHAZADA</span> y notifica al adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>La solicitud aparece en la pestaña de rechazadas y la mascota sigue disponible en el catálogo.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>ResponderSolicitudAdopcionActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD11</span><h4>Aprobar los requisitos finales y terminar la adopción</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>La adopción está en <span class="estado">EN_REVISION</span>: el adoptante ya firmó y subió el video de compromiso.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador abre los últimos requisitos, revisa el contrato firmado y reproduce el video de compromiso.</li>
+                <li>Pulsa terminar la adopción.</li>
+                <li>El sistema pasa la adopción a <span class="estado">COMPLETADA</span>, marca la mascota como adoptada y crea el seguimiento con un chat vacío y sin voluntario.</li>
+                <li>Notifica al adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>Si el adoptante todavía no ha completado los requisitos, la app avisa y no abre la pantalla.</dd>
+            <dt>Postcond.</dt>
+            <dd>El seguimiento queda a la espera de asignación (CU-AD13) y su plan de recordatorios ya cuenta desde hoy.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>UltimosRequisitosActivity</code> → <code>ControladorAdopcion.terminarAdopcion</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD12</span><h4>Solicitar el reenvío de los requisitos finales</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>La adopción está en <span class="estado">EN_REVISION</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador encuentra un problema en la firma o en el video y pulsa solicitar nuevamente.</li>
+                <li>El sistema exige el motivo del reenvío.</li>
+                <li>Devuelve la adopción a <span class="estado">ACEPTADA</span> con ese motivo y notifica al adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>El adoptante vuelve a tener habilitada la pantalla de firma, ahora con la observación a la vista.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>UltimosRequisitosActivity</code> → <code>ControladorAdopcion.solicitarReenvioRequisitos</code></dd>
+          </dl>
+        </article>
+
+        <h3 class="blk">Reparto de seguimientos</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD13</span><h4>Asignar un seguimiento a un voluntario</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>Existe un seguimiento <span class="estado">ACTIVO</span> con <code>idVoluntario</code> vacío.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador elige un voluntario de la lista.</li>
+                <li>Ve los seguimientos disponibles y confirma la asignación de uno.</li>
+                <li>El sistema graba al voluntario en el seguimiento, programa los 19 recordatorios del plan y le envía la notificación de asignación.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>El seguimiento aparece en «Mis seguimientos» del voluntario y el chat con el adoptante queda abierto.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>GestionarSeguimientosActivity</code> → <code>SeguimientosVoluntarioActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-AD14</span><h4>Reasignar un seguimiento a otro voluntario</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">ACTIVO</span> y ya tiene voluntario. Los seguimientos cerrados no ofrecen esta acción.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El administrador pulsa quitar el seguimiento y elige al voluntario que lo recibirá.</li>
+                <li>El sistema cancela los recordatorios del voluntario anterior, graba al nuevo y le reprograma el plan completo.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Solo el voluntario actual recibe recordatorios; la conversación con el adoptante se conserva íntegra.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>ListaSeguimientosAdaptador</code> → <code>ControladorSeguimiento.reasignarSeguimientoVoluntario</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <!-- ================= VOLUNTARIO ================= -->
+      <section id="voluntario">
+        <div class="sec-head vol">
+          <h2 class="sec">Voluntario</h2>
+          <p>
+            Dos frentes: el historial médico de las mascotas del sistema y el seguimiento
+            posterior a la adopción, que es donde el rol concentra sus decisiones.
+          </p>
+        </div>
+
+        <h3 class="blk">Historial médico</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL01</span><h4>Consultar la lista de mascotas registradas</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre la lista, que incluye todas las mascotas del sistema, adoptadas o no.</li>
+                <li>Abre una ficha y ve su información, su historial médico y —si fue adoptada— el nombre del adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>MisMascotasActivity</code> · <code>VerMiMascotaActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL02</span><h4>Registrar una vacuna o una desparasitación</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre la pestaña de vacunas o de desparasitaciones de una mascota y pulsa agregar.</li>
+                <li>Captura el tipo, la fecha aplicada, la fecha próxima y la hora del recordatorio.</li>
+                <li>El sistema guarda el registro en <code>historial_medico/{idMascota}</code> y programa tres recordatorios en fechas consecutivas alrededor de la fecha próxima.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Los recordatorios llegan al voluntario que hizo el registro y también al adoptante, si la mascota ya tiene una adopción <span class="estado">COMPLETADA</span>.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>AgregarHistorialMedicoActivity</code> → <code>ControladorHistorialMedico</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL03</span><h4>Editar o eliminar un registro del historial médico</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre un registro existente y corrige sus datos, o lo elimina.</li>
+                <li>El sistema reprograma los recordatorios si cambió la fecha, o los elimina junto con el registro.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>No quedan recordatorios apuntando a un registro que ya no existe.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>EditarHistorialMedicoActivity</code></dd>
+          </dl>
+        </article>
+
+        <h3 class="blk">Seguimiento post-adopción</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL04</span><h4>Consultar sus seguimientos asignados</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre «Mis seguimientos».</li>
+                <li>Ve cada seguimiento con el adoptante, la mascota y su estado traducido: el estado real o «Cerrado» / «Finalizado».</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>La lista se recarga al volver a la pantalla, así que un seguimiento que acaba de cerrarse cambia de estado sin necesidad de salir de la app.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>MisSeguimientosActivity</code> → <code>MisSeguimientosVoluntarioFragment</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL05</span><h4>Conversar con el adoptante</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">ACTIVO</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre el chat del seguimiento.</li>
+                <li>Escribe un mensaje, o toca una de las catorce preguntas frecuentes para enviarla directamente.</li>
+                <li>Puede adjuntar fotos y videos, tomándolos con la cámara o subiéndolos desde la galería, y responder a un mensaje concreto deslizándolo.</li>
+                <li>El sistema publica en <code>chats/{listaMensajes}</code> y notifica al adoptante, salvo que este tenga el chat abierto.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoVoluntarioChatActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL06</span><h4>Programar el plan de recordatorios</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">ACTIVO</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre la barra del plan en el encabezado del chat, que resume la fase actual y el próximo control.</li>
+                <li>Si el plan no se programó al asignar el seguimiento, lo programa desde ahí.</li>
+                <li>El sistema cancela cualquier recordatorio previo, calcula los 19 controles y los deja programados a las 08:00, descartando las fechas ya pasadas.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>No hay recordatorios duplicados: la cancelación se completa antes de programar los nuevos.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoVoluntarioChatActivity</code> → <code>ControladorSeguimiento.programarPlanSeguimiento</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL07</span><h4>Retirar la mascota del adoptante</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">ACTIVO</span>. Es la decisión típica de la primera semana, cuando los controles son diarios.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario pulsa Retirar en el encabezado del chat.</li>
+                <li>El sistema advierte las consecuencias y exige un motivo escrito.</li>
+                <li>Devuelve la mascota al catálogo y la saca del perfil del adoptante.</li>
+                <li>Cancela los recordatorios de vacunas del adoptante y los del plan de seguimiento.</li>
+                <li>Cierra la adopción a <span class="estado">RECHAZADA</span> y marca el contrato como <span class="estado">ANULADO</span>.</li>
+                <li>Cierra el seguimiento con su motivo, lo publica como un mensaje más del chat y avisa al adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>Si el paso 5 falla, la operación se reporta como fallida y explica en qué punto quedó, para poder reintentarla. No se declara éxito con el proceso a medias.</dd>
+            <dt>Postcond.</dt>
+            <dd>La mascota vuelve a estar disponible para adopción y el chat queda de solo lectura para ambas partes, con el motivo dentro de la conversación.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoVoluntarioChatActivity</code> → <code>ControladorSeguimiento.retirarMascotaAdoptante</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL08</span><h4>Finalizar el seguimiento</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">ACTIVO</span> y el voluntario considera consolidada la adopción.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario abre el plan y pulsa finalizar.</li>
+                <li>El sistema pide confirmación explicando que se libera al adoptante y el chat quedará de solo lectura.</li>
+                <li>Pasa el seguimiento a <span class="estado">COMPLETADA</span>, cancela los recordatorios pendientes, deja constancia del cierre en la conversación y notifica al adoptante.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>No se envían más recordatorios ni mensajes. La mascota sigue siendo del adoptante: finalizar no es retirar.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoVoluntarioChatActivity</code> → <code>ControladorSeguimiento.finalizarSeguimiento</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-VOL09</span><h4>Consultar un seguimiento cerrado</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">RECHAZADA</span> o <span class="estado">COMPLETADA</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El voluntario lo abre desde la lista con el botón «Ver conversación».</li>
+                <li>El chat se abre de solo lectura: sin barra de escritura, sin gesto de responder y sin los botones de retirar ni de gestionar el plan.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>Si el cierre ocurre con el chat abierto —o desde otro dispositivo—, la pantalla se bloquea en el momento gracias al listener sobre el estado del seguimiento.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoVoluntarioChatActivity.aplicarEstadoSeguimiento</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <!-- ================= ADOPTANTE ================= -->
+      <section id="adoptante">
+        <div class="sec-head ado">
+          <h2 class="sec">Adoptante</h2>
+          <p>
+            El recorrido completo: del alta en la app al seguimiento de la mascota que ya vive en
+            su hogar.
+          </p>
+        </div>
+
+        <h3 class="blk">Alta y catálogo</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO01</span><h4>Crear una cuenta</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El correo no está registrado.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>La persona completa sus datos personales, con validación en tiempo real de cédula, correo y celular.</li>
+                <li>El sistema crea la cuenta con rol <em>Adoptante</em> y estado <span class="estado">ACTIVO</span>.</li>
+                <li>Continúa con el domicilio y termina con la foto de perfil.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Es el único rol con autorregistro. El domicilio queda cargado porque es parte de lo que se revisa en cada solicitud.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>CrearCuentaActivity</code> → <code>AgregarDomicilioActivity</code> → <code>SubirFotoPerfil</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO02</span><h4>Explorar el catálogo de mascotas</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre el catálogo, que muestra en dos columnas las mascotas activas y sin adoptar.</li>
+                <li>Busca por nombre o filtra por cachorro, adulto, canino, felino, macho, hembra, vacunado o esterilizado.</li>
+                <li>Puede consultar los requisitos de adopción antes de decidir.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>El catálogo se recarga al volver a la pantalla, de modo que una mascota adoptada por otra persona deja de aparecer.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>CatalogoMascotasActivity</code></dd>
+          </dl>
+        </article>
+
+        <h3 class="blk">Proceso de adopción</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO03</span><h4>Enviar una solicitud de adopción</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>La mascota está disponible en el catálogo.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre la mascota e inicia el proceso.</li>
+                <li>Aporta la foto frontal y posterior de su cédula y una planilla de servicios básicos, cada una por cámara o galería.</li>
+                <li>Graba el video del hogar donde vivirá la mascota.</li>
+                <li>Indica si el domicilio es propio o arrendado y si cuenta con cerramiento.</li>
+                <li>Confirma el envío; el sistema sube los archivos a Cloudinary, crea la adopción en <span class="estado">PENDIENTE</span> y notifica al administrador.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>La solicitud entra en la bandeja de pendientes (CU-AD09).</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>ProcesoAdopcionActivity</code> → <code>IniciarAdopcionFragment</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO04</span><h4>Consultar sus solicitudes enviadas</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre sus solicitudes y ve el estado de cada una.</li>
+                <li>Si fue rechazada o devuelta, lee el motivo que dejó el administrador.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>VerSolicitudesAdopcionActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO05</span><h4>Firmar el contrato y enviar los requisitos finales</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>La adopción está en <span class="estado">ACEPTADA</span>, sea por primera vez o tras un reenvío.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre la solicitud aceptada y lee las cláusulas del contrato.</li>
+                <li>Aporta la imagen de su firma, tomándola con la cámara o subiéndola, y la recorta.</li>
+                <li>Graba el video de compromiso.</li>
+                <li>Guarda; el sistema sube ambos archivos, pasa el contrato a <span class="estado">FIRMADO</span> y la adopción a <span class="estado">EN_REVISION</span>, y notifica al administrador.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Queda a la espera de la aprobación final (CU-AD11).</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>CompletarProcesoAdopcionActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO06</span><h4>Descargar el contrato en PDF</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante pulsa generar el PDF desde la pantalla del contrato.</li>
+                <li>El sistema compone el documento con las cláusulas y la firma, lo guarda en Descargas y lo abre.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>El adoptante conserva una copia del contrato fuera de la app.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>CompletarProcesoAdopcionActivity</code> → <code>ControladorContrato</code></dd>
+          </dl>
+        </article>
+
+        <h3 class="blk">Después de la adopción</h3>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO07</span><h4>Consultar sus mascotas adoptadas</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>Al menos una adopción en <span class="estado">COMPLETADA</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre «Mis mascotas» y ve las que están a su cargo.</li>
+                <li>Abre una ficha para ver su información y su historial médico.</li>
+              </ol>
+            </dd>
+            <dt>Alterno</dt>
+            <dd>Si el voluntario retira una mascota, esta desaparece de la lista la próxima vez que la pantalla vuelve al frente.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>MisMascotasActivity</code> · <code>VerMiMascotaActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO08</span><h4>Registrar y consultar el historial médico de su mascota</h4></div>
+          <dl class="cu-body">
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre la ficha de su mascota y consulta las vacunas y desparasitaciones registradas.</li>
+                <li>Puede agregar un registro nuevo con su fecha próxima y hora de recordatorio.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>Recibe los recordatorios de vacunación y desparasitación de su mascota en tres fechas consecutivas.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>HistorialMedicoFragment</code> · <code>AgregarHistorialMedicoActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO09</span><h4>Responder el seguimiento en el chat</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">ACTIVO</span> y ya tiene voluntario asignado. Sin voluntario no aparece en la lista: no habría con quién conversar.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante abre el chat desde «Mis seguimientos».</li>
+                <li>Responde las preguntas del voluntario, adjunta fotos o videos de la mascota y puede citar un mensaje concreto deslizándolo.</li>
+                <li>El sistema notifica al voluntario, salvo que este tenga el chat abierto.</li>
+              </ol>
+            </dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoAdoptanteChatActivity</code></dd>
+          </dl>
+        </article>
+
+        <article class="cu">
+          <div class="cu-head"><span class="cu-id">CU-ADO10</span><h4>Consultar un seguimiento cerrado</h4></div>
+          <dl class="cu-body">
+            <dt>Precondición</dt>
+            <dd>El seguimiento está <span class="estado">RECHAZADA</span> o <span class="estado">COMPLETADA</span>.</dd>
+            <dt>Flujo</dt>
+            <dd>
+              <ol>
+                <li>El adoptante lo abre desde la lista, que lo muestra como «Cerrado» o «Finalizado».</li>
+                <li>Lee la conversación completa, incluido el mensaje con el motivo del retiro o el aviso de cierre.</li>
+                <li>La barra de escritura está reemplazada por un aviso: el seguimiento ya no admite mensajes.</li>
+              </ol>
+            </dd>
+            <dt>Postcond.</dt>
+            <dd>El motivo del retiro sigue siendo consultable. El seguimiento se conserva como constancia de lo ocurrido.</dd>
+            <dt>Pantalla</dt>
+            <dd class="impl"><code>SeguimientoAdoptanteChatActivity.aplicarEstadoSeguimiento</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <!-- ================= RELACIONES ================= -->
+      <section id="relaciones">
+        <div class="sec-head gen">
+          <h2 class="sec">Relaciones entre casos de uso</h2>
+          <p>
+            Las dos relaciones de UML, derivadas de lo que el código comparte y de lo que
+            ejecuta bajo condición. <span class="rel">&laquo;include&raquo;</span> es
+            comportamiento que el caso base ejecuta siempre;
+            <span class="rel">&laquo;extend&raquo;</span> es comportamiento que se inserta en un
+            punto concreto del caso base solo si se cumple una condición, y sin el cual el caso
+            base sigue estando completo.
+          </p>
+        </div>
+
+        <h3 class="blk">Subfunciones incluidas</h3>
+        <p>
+          Cinco comportamientos que no son un objetivo en sí mismos para ningún actor, pero que
+          varios casos de uso ejecutan siempre. Se extraen como casos de subfunción para no
+          repetir sus pasos en cada ficha.
+        </p>
+
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Subfunción</th>
+                <th>Qué resuelve</th>
+                <th>Incluida por</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>CU-S01<br><span class="td-nombre">Aportar una imagen</span></td>
+                <td>Ofrece siempre las dos vías —tomar la foto con la cámara o subirla desde la galería—, pide el permiso que corresponde a la versión de Android y devuelve la <code>Uri</code>.</td>
+                <td class="incl">CU-AD01 · CU-AD02 · CU-G02 · CU-ADO01 · CU-ADO03 · CU-ADO05 · CU-VOL05 · CU-ADO09</td>
+              </tr>
+              <tr>
+                <td>CU-S02<br><span class="td-nombre">Grabar o subir un video</span></td>
+                <td>Lo mismo para video, con vista previa reproducible antes de enviarlo.</td>
+                <td class="incl">CU-ADO03 · CU-ADO05 · CU-VOL05 · CU-ADO09</td>
+              </tr>
+              <tr>
+                <td>CU-S03<br><span class="td-nombre">Notificar a un usuario</span></td>
+                <td>Guarda la notificación en <code>notificaciones/{idUsuario}</code> y envía el push por FCM al token registrado.</td>
+                <td class="incl">CU-AD09 · CU-AD10 · CU-AD11 · CU-AD12 · CU-AD13 · CU-VOL05 · CU-VOL07 · CU-VOL08 · CU-ADO03 · CU-ADO05 · CU-ADO09</td>
+              </tr>
+              <tr>
+                <td>CU-S04<br><span class="td-nombre">Programar un recordatorio</span></td>
+                <td>Escribe el aviso en <code>NotificacionesProgramadas</code> y lo registra en el servidor, que lo disparará en su fecha.</td>
+                <td class="incl">CU-VOL02 · CU-VOL06</td>
+              </tr>
+              <tr>
+                <td>CU-S05<br><span class="td-nombre">Cancelar los recordatorios</span></td>
+                <td>Borra los avisos pendientes y espera a que todos se hayan eliminado antes de devolver el control. Es lo que evita los duplicados al reprogramar.</td>
+                <td class="incl">CU-VOL03 · CU-VOL06 · CU-VOL07 · CU-VOL08 · CU-AD14</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="nota">
+          <p>
+            <strong>Una inclusión que cruza actores.</strong> CU-AD13 <span class="rel">&laquo;include&raquo;</span>
+            CU-VOL06: asignar el seguimiento programa el plan completo sin que el voluntario
+            intervenga. Por eso CU-VOL06 aparece además como extensión del chat: es la vía
+            manual, y solo se ofrece cuando el plan no quedó programado en la asignación.
+          </p>
+        </div>
+
+        <h3 class="blk">Extensiones</h3>
+        <p>
+          Trece extensiones, agrupadas por el motivo que las hace condicionales. La flecha de
+          UML va de la extensión al caso base.
+        </p>
+
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Extensión</th>
+                <th>Caso base</th>
+                <th>Punto de extensión</th>
+                <th>Condición</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="grupo"><td colspan="4">Acciones sobre una fila de la lista</td></tr>
+              <tr>
+                <td>CU-AD02<br><span class="td-nombre">Editar una mascota</span></td>
+                <td>CU-AD04</td>
+                <td>fila de la lista de mascotas</td>
+                <td>el administrador elige corregir la ficha</td>
+              </tr>
+              <tr>
+                <td>CU-AD03<br><span class="td-nombre">Activar o desactivar una mascota</span></td>
+                <td>CU-AD04</td>
+                <td>fila de la lista de mascotas</td>
+                <td>el administrador elige cambiar su disponibilidad</td>
+              </tr>
+              <tr>
+                <td>CU-AD07<br><span class="td-nombre">Editar los datos de un usuario</span></td>
+                <td>CU-AD06</td>
+                <td>fila de la lista de usuarios</td>
+                <td>el administrador elige corregir los datos</td>
+              </tr>
+              <tr>
+                <td>CU-AD08<br><span class="td-nombre">Activar o desactivar una cuenta</span></td>
+                <td>CU-AD06</td>
+                <td>fila de la lista de usuarios</td>
+                <td>el administrador elige cambiar el acceso</td>
+              </tr>
+
+              <tr class="grupo"><td colspan="4">Ramas de una decisión de revisión</td></tr>
+              <tr>
+                <td>CU-AD10<br><span class="td-nombre">Rechazar una solicitud</span></td>
+                <td>CU-AD09</td>
+                <td>decisión sobre la solicitud</td>
+                <td>los documentos o el domicilio no cumplen los requisitos</td>
+              </tr>
+              <tr>
+                <td>CU-AD12<br><span class="td-nombre">Solicitar el reenvío de requisitos</span></td>
+                <td>CU-AD11</td>
+                <td>revisión de los requisitos finales</td>
+                <td>la firma o el video de compromiso no son válidos</td>
+              </tr>
+
+              <tr class="grupo"><td colspan="4">Acciones abiertas desde el chat de seguimiento</td></tr>
+              <tr>
+                <td>CU-VOL06<br><span class="td-nombre">Programar el plan de recordatorios</span></td>
+                <td>CU-VOL05</td>
+                <td>barra del plan</td>
+                <td><code>recordatoriosProgramados</code> es falso</td>
+              </tr>
+              <tr>
+                <td>CU-VOL07<br><span class="td-nombre">Retirar la mascota</span></td>
+                <td>CU-VOL05</td>
+                <td>encabezado del chat</td>
+                <td>el voluntario concluye que la mascota no debe seguir en ese hogar</td>
+              </tr>
+              <tr>
+                <td>CU-VOL08<br><span class="td-nombre">Finalizar el seguimiento</span></td>
+                <td>CU-VOL05</td>
+                <td>barra del plan</td>
+                <td>el voluntario considera consolidada la adopción</td>
+              </tr>
+
+              <tr class="grupo"><td colspan="4">Modo de solo lectura</td></tr>
+              <tr>
+                <td>CU-VOL09<br><span class="td-nombre">Consultar un seguimiento cerrado</span></td>
+                <td>CU-VOL05</td>
+                <td>apertura del chat</td>
+                <td>el seguimiento ya no está <span class="estado">ACTIVO</span></td>
+              </tr>
+              <tr>
+                <td>CU-ADO10<br><span class="td-nombre">Consultar un seguimiento cerrado</span></td>
+                <td>CU-ADO09</td>
+                <td>apertura del chat</td>
+                <td>el seguimiento ya no está <span class="estado">ACTIVO</span></td>
+              </tr>
+
+              <tr class="grupo"><td colspan="4">Opcional para el usuario</td></tr>
+              <tr>
+                <td>CU-ADO06<br><span class="td-nombre">Descargar el contrato en PDF</span></td>
+                <td>CU-ADO05</td>
+                <td>pantalla del contrato</td>
+                <td>el adoptante quiere conservar una copia fuera de la app</td>
+              </tr>
+              <tr>
+                <td>CU-G03<br><span class="td-nombre">Cambiar la contraseña</span></td>
+                <td>CU-G02</td>
+                <td>pantalla de perfil</td>
+                <td>el usuario decide cambiarla; nunca sobre la cuenta de otro</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <figure>
+          <div class="svg-scroll">
+            <svg viewBox="0 0 660 296" role="img" aria-labelledby="t-rel">
+              <title id="t-rel">El chat de seguimiento del voluntario como caso base, con cuatro extensiones a la izquierda y tres subfunciones incluidas a la derecha</title>
+              <defs>
+                <marker id="flecha-uml" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto-start-reverse">
+                  <path d="M 1 1 L 11 6 L 1 11" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
+                </marker>
+              </defs>
+
+              <text class="svg-note-em" x="92" y="14" text-anchor="middle">&laquo;extend&raquo;</text>
+              <text class="svg-note-em" x="568" y="14" text-anchor="middle">&laquo;include&raquo;</text>
+
+              <g class="uc-ext">
+                <ellipse cx="92" cy="58"  rx="86" ry="25" />
+                <ellipse cx="92" cy="118" rx="86" ry="25" />
+                <ellipse cx="92" cy="178" rx="86" ry="25" />
+                <ellipse cx="92" cy="238" rx="86" ry="25" />
+              </g>
+              <text class="svg-uc-id" x="92" y="54"  text-anchor="middle">CU-VOL06</text>
+              <text class="svg-uc-nm" x="92" y="68"  text-anchor="middle">Programar el plan</text>
+              <text class="svg-uc-id" x="92" y="114" text-anchor="middle">CU-VOL07</text>
+              <text class="svg-uc-nm" x="92" y="128" text-anchor="middle">Retirar la mascota</text>
+              <text class="svg-uc-id" x="92" y="174" text-anchor="middle">CU-VOL08</text>
+              <text class="svg-uc-nm" x="92" y="188" text-anchor="middle">Finalizar el seguimiento</text>
+              <text class="svg-uc-id" x="92" y="234" text-anchor="middle">CU-VOL09</text>
+              <text class="svg-uc-nm" x="92" y="248" text-anchor="middle">Ver el chat cerrado</text>
+
+              <ellipse class="uc-base" cx="330" cy="148" rx="94" ry="36" />
+              <text class="svg-uc-id" x="330" y="142" text-anchor="middle">CU-VOL05</text>
+              <text class="svg-uc-nm" x="330" y="156" text-anchor="middle">Conversar con</text>
+              <text class="svg-uc-nm" x="330" y="169" text-anchor="middle">el adoptante</text>
+
+              <g class="uc-sub">
+                <ellipse cx="568" cy="100" rx="80" ry="23" />
+                <ellipse cx="568" cy="148" rx="80" ry="23" />
+                <ellipse cx="568" cy="196" rx="80" ry="23" />
+              </g>
+              <text class="svg-uc-id" x="568" y="96"  text-anchor="middle">CU-S01</text>
+              <text class="svg-uc-nm" x="568" y="110" text-anchor="middle">Aportar una imagen</text>
+              <text class="svg-uc-id" x="568" y="144" text-anchor="middle">CU-S02</text>
+              <text class="svg-uc-nm" x="568" y="158" text-anchor="middle">Grabar un video</text>
+              <text class="svg-uc-id" x="568" y="192" text-anchor="middle">CU-S03</text>
+              <text class="svg-uc-nm" x="568" y="206" text-anchor="middle">Notificar al adoptante</text>
+
+              <g color="var(--ink-3)">
+                <path class="svg-dep" d="M 178 62 C 216 72, 220 108, 250 130" marker-end="url(#flecha-uml)" />
+                <path class="svg-dep" d="M 178 120 C 206 124, 212 132, 238 140" marker-end="url(#flecha-uml)" />
+                <path class="svg-dep" d="M 178 176 C 206 172, 212 164, 238 156" marker-end="url(#flecha-uml)" />
+                <path class="svg-dep" d="M 178 234 C 216 224, 220 188, 250 166" marker-end="url(#flecha-uml)" />
+
+                <path class="svg-dep" d="M 412 132 C 442 118, 458 104, 484 101" marker-end="url(#flecha-uml)" />
+                <path class="svg-dep" d="M 424 148 L 484 148" marker-end="url(#flecha-uml)" />
+                <path class="svg-dep" d="M 412 164 C 442 178, 458 192, 484 195" marker-end="url(#flecha-uml)" />
+              </g>
+
+              <text class="svg-note" x="330" y="286" text-anchor="middle">La flecha va de la extensión al caso base, y del caso base a la subfunción que incluye.</text>
+            </svg>
+          </div>
+          <figcaption>
+            <b>El chat de seguimiento como caso base.</b> Es el punto del sistema donde más se
+            concentran ambas relaciones: cuatro acciones del voluntario se insertan en él bajo
+            condición, y tres subfunciones se ejecutan siempre que hay un mensaje con adjunto.
+            Las cuatro extensiones son excluyentes con la de solo lectura: CU-VOL09 desactiva
+            los botones que abren CU-VOL06, CU-VOL07 y CU-VOL08.
+          </figcaption>
+        </figure>
+
+        <div class="nota">
+          <p>
+            <strong>Qué no es una extensión.</strong> Los flujos alternos que cada ficha ya
+            describe —recargar la lista al volver al frente, o abortar el retiro si falla el
+            cierre de la adopción— son variaciones dentro del propio caso de uso, no casos
+            aparte: no tienen un objetivo distinto para el actor. Solo se promovió a
+            <span class="rel">&laquo;extend&raquo;</span> aquello que ya figura en el catálogo
+            como caso de uso por derecho propio.
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= MATRIZ ================= -->
+      <section id="matriz">
+        <div class="sec-head gen">
+          <h2 class="sec">Matriz de responsabilidades</h2>
+          <p>Qué rol puede actuar sobre cada entidad del dominio.</p>
+        </div>
+
+        <div class="tabla-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Entidad</th>
+                <th>Administrador</th>
+                <th>Voluntario</th>
+                <th>Adoptante</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Mascotas</td>
+                <td class="si">Crea, edita, activa</td>
+                <td class="no">Consulta</td>
+                <td class="no">Consulta el catálogo</td>
+              </tr>
+              <tr>
+                <td>Cuentas</td>
+                <td class="si">Crea voluntarios, edita, activa</td>
+                <td class="no">Edita solo la suya</td>
+                <td class="no">Se registra y edita la suya</td>
+              </tr>
+              <tr>
+                <td>Adopciones</td>
+                <td class="si">Acepta, rechaza, termina</td>
+                <td class="no">Cierra al retirar</td>
+                <td class="no">Inicia y firma</td>
+              </tr>
+              <tr>
+                <td>Contratos</td>
+                <td class="no">Revisa</td>
+                <td class="no">Anula al retirar</td>
+                <td class="si">Firma y descarga</td>
+              </tr>
+              <tr>
+                <td>Seguimientos</td>
+                <td class="si">Asigna y reasigna</td>
+                <td class="si">Conduce, retira, finaliza</td>
+                <td class="no">Responde</td>
+              </tr>
+              <tr>
+                <td>Historial médico</td>
+                <td class="no">Sin acceso</td>
+                <td class="si">Registra y edita</td>
+                <td class="si">Registra el de su mascota</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ================= OBSERVACIONES ================= -->
+      <section id="hallazgos">
+        <div class="sec-head gen">
+          <h2 class="sec">Observaciones sobre el código</h2>
+          <p>
+            Diferencias entre lo que el diseño parece suponer y lo que el código hace hoy. No son
+            casos de uso; son puntos a decidir antes de darlos por especificados.
+          </p>
+        </div>
+
+        <ul class="hallazgos">
+          <li>
+            <strong>El historial médico no está restringido por rol</strong>
+            El botón de agregar vacuna o desparasitación se muestra igual al voluntario y al
+            adoptante: <code>HistorialMedicoFragment</code> no consulta el rol. Si la intención es
+            que solo el voluntario registre atenciones médicas, falta la condición.
+          </li>
+          <li>
+            <strong>El administrador no interviene en el historial médico</strong>
+            No tiene acceso a «Mis mascotas» ni a la ficha con vacunas. Puede editar la mascota,
+            pero no ve su historial.
+          </li>
+          <li>
+            <strong>La decisión de retirar recae solo en el voluntario</strong>
+            El administrador no puede retirar una mascota ni cerrar un seguimiento; tampoco los ve
+            si no es a través de la lista de un voluntario concreto.
+          </li>
+          <li>
+            <strong><code>obtenerListaAdopcionesAceptadas</code> devuelve las rechazadas</strong>
+            El método filtra por <span class="estado">RECHAZADA</span>, que es lo que la pantalla
+            rotula «RECHAZADAS:». El comportamiento es correcto; el nombre del método induce a
+            error al leer el controlador.
+          </li>
+          <li>
+            <strong><code>VerSeguimientosVoluntarioActivity</code> es código muerto</strong>
+            Está declarada en el manifiesto pero ninguna pantalla la lanza. No corresponde a
+            ningún caso de uso.
+          </li>
+        </ul>
+      </section>
+
+      <footer class="pie">
+        Documento derivado del código de <span class="mono">tic_patitas_valientes</span>, rama
+        <span class="mono">master</span>, commit <span class="mono">0a15d96</span>. Cada ficha
+        nombra la Activity, el Fragment o el método de controlador que la implementa, para poder
+        contrastarla con la fuente.
+      </footer>
+
+    </main>
+  </div>
+</div>
