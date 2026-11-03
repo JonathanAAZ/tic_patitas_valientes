@@ -226,50 +226,52 @@ public class IniciarSesionActivity extends AppCompatActivity {
                     String rolCuenta = documentSnapshot.getString("rol");
                     String estadoCuenta = documentSnapshot.getString("estado");
 
-                    assert estadoCuenta != null;
-                    if (estadoCuenta.equals(EstadosCuentas.ACTIVO.toString())) {
+                    if (EstadosCuentas.ACTIVO.toString().equalsIgnoreCase(estadoCuenta)) {
 
-                        assert rolCuenta != null;
-                        if (rolCuenta.equals("Adoptante")) {
+                        // Las tres ramas de rol hacían lo mismo salvo el string, así que basta
+                        // comprobar que el rol sea uno de los tres que el menú sabe atender.
+                        boolean rolConocido = "Adoptante".equalsIgnoreCase(rolCuenta)
+                                || "Voluntario".equalsIgnoreCase(rolCuenta)
+                                || "Administrador".equalsIgnoreCase(rolCuenta);
+
+                        if (rolConocido) {
+                            sessionManager.saveUserRole(rolCuenta);
+                            controladorUsuario.actualizarTokenInicioSesion(idCuenta);
+
                             Intent i = new Intent(IniciarSesionActivity.this, BottomNavigationMenu.class);
                             i.putExtra("id", R.id.bMInicio);
                             i.putExtra("rol", rolCuenta);
                             startActivity(i);
-                            sessionManager.saveUserRole(rolCuenta);
-//                            finish();
                             barraProgresoIS.setVisibility(View.GONE);
-//                            pedirPermisosNotificaciones();
-                            controladorUsuario.actualizarTokenInicioSesion(idCuenta);
-                        } else if (rolCuenta.equals("Voluntario")) {
-                            Intent i = new Intent(IniciarSesionActivity.this, BottomNavigationMenu.class);
-                            i.putExtra("id", R.id.bMInicio);
-                            i.putExtra("rol", rolCuenta);
-                            startActivity(i);
-                            sessionManager.saveUserRole(rolCuenta);
-//                            finish();
+                        } else {
+                            // Sin un rol reconocible no hay pantalla a la que ir. Antes no había
+                            // else: la barra de progreso se quedaba girando sin ningún aviso.
+                            authIS.signOut();
+                            Toast.makeText(IniciarSesionActivity.this,
+                                    "Su cuenta no tiene un rol válido asignado. Comuníquese con el administrador.",
+                                    Toast.LENGTH_LONG).show();
                             barraProgresoIS.setVisibility(View.GONE);
-//                            pedirPermisosNotificaciones();
-                            controladorUsuario.actualizarTokenInicioSesion(idCuenta);
-                        } else if (rolCuenta.equals("Administrador")) {
-                            Intent i = new Intent(IniciarSesionActivity.this, BottomNavigationMenu.class);
-                            i.putExtra("id", R.id.bMInicio);
-                            i.putExtra("rol", rolCuenta);
-                            startActivity(i);
-                            sessionManager.saveUserRole(rolCuenta);
-//                            finish();
-                            barraProgresoIS.setVisibility(View.GONE);
-//                            pedirPermisosNotificaciones();
-                            controladorUsuario.actualizarTokenInicioSesion(idCuenta);
                         }
-//                        Toast.makeText(IniciarSesionActivity.this, "Inicio de sesión correcto", Toast.LENGTH_SHORT).show();
 
                     } else {
-                        Toast.makeText(IniciarSesionActivity.this, "No se pudo iniciar sesión", Toast.LENGTH_SHORT).show();
+                        // Firebase ya autenticó antes de que se consultara el estado, así que
+                        // hay que cerrar esa sesión: si no, getCurrentUser() sigue devolviendo
+                        // al usuario y el servicio de notificaciones le registra el token de
+                        // una cuenta a la que no se le dio acceso.
+                        authIS.signOut();
+                        Toast.makeText(IniciarSesionActivity.this,
+                                "Su cuenta está desactivada. Comuníquese con el administrador.",
+                                Toast.LENGTH_LONG).show();
                         barraProgresoIS.setVisibility(View.GONE);
                     }
 
                 } else {
-                    Toast.makeText(IniciarSesionActivity.this, "No se encontró el documento", Toast.LENGTH_SHORT).show();
+                    // Autenticó en Auth pero no tiene documento en Cuentas: no se puede
+                    // resolver el rol, así que tampoco se deja la sesión abierta.
+                    authIS.signOut();
+                    Toast.makeText(IniciarSesionActivity.this,
+                            "No se encontró la información de su cuenta. Comuníquese con el administrador.",
+                            Toast.LENGTH_LONG).show();
                     barraProgresoIS.setVisibility(View.GONE);
                 }
             }
