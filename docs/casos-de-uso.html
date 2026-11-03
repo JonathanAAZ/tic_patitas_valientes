@@ -609,8 +609,8 @@ tbody tr.grupo:first-child td { padding-top: 8px; }
     <dl class="ficha">
       <div><dt>Actores</dt><dd>3 primarios · 1 secundario</dd></div>
       <div><dt>Casos de uso</dt><dd>37 + 5 subfunciones</dd></div>
-      <div><dt>Rama</dt><dd class="mono">master · 0a15d96</dd></div>
-      <div><dt>Fecha</dt><dd>9 de septiembre de 2026</dd></div>
+      <div><dt>Rama</dt><dd class="mono">master · df8d3d7</dd></div>
+      <div><dt>Fecha</dt><dd>3 de noviembre de 2026</dd></div>
     </dl>
   </header>
 
@@ -867,7 +867,14 @@ tbody tr.grupo:first-child td { padding-top: 8px; }
               </ol>
             </dd>
             <dt>Alterno</dt>
-            <dd>Si la cuenta está <span class="estado">INACTIVO</span>, no se abre ninguna sesión y el usuario queda en la pantalla de acceso.</dd>
+            <dd>
+              <ul>
+                <li>Si la cuenta está <span class="estado">INACTIVO</span>, no se abre sesión y el mensaje indica que la cuenta está desactivada, no que las credenciales sean incorrectas.</li>
+                <li>Si el rol no es ninguno de los tres conocidos, tampoco se abre sesión y se avisa de que la cuenta no tiene un rol válido asignado.</li>
+                <li>Si las credenciales no son válidas, el mensaje es uno solo y no revela cuál de los dos datos falló, para no permitir averiguar qué correos están registrados.</li>
+              </ul>
+              En los dos primeros casos Firebase ya había autenticado, porque el estado se consulta después, así que la sesión de Auth se cierra: de otro modo el dispositivo seguiría registrando su token en una cuenta a la que no se dio acceso.
+            </dd>
             <dt>Postcond.</dt>
             <dd>Un dispositivo queda asociado a una sola cuenta, de modo que las notificaciones no se cruzan entre usuarios que compartan el teléfono.</dd>
             <dt>Pantalla</dt>
@@ -1031,10 +1038,14 @@ tbody tr.grupo:first-child td { padding-top: 8px; }
               <ol>
                 <li>El administrador captura los datos del voluntario, con validación en tiempo real de cédula, correo y celular.</li>
                 <li>El sistema crea el usuario en Firebase Auth y el documento en <code>Cuentas</code> con rol <em>Voluntario</em> y estado <span class="estado">ACTIVO</span>.</li>
+                <li>Escribe después un domicilio vacío en <code>Domicilios</code> y la ficha personal en <code>Usuarios</code>.</li>
+                <li>Solo cuando termina esa última escritura se avisa de que la cuenta quedó creada y se vuelve a la lista de usuarios.</li>
               </ol>
             </dd>
+            <dt>Alterno</dt>
+            <dd>Si falla cualquiera de las escrituras, la pantalla se mantiene abierta con el motivo y el administrador puede reintentar. La contraseña inicial del voluntario es su número de cédula, y no hay forma de cambiarla dentro de la aplicación.</dd>
             <dt>Postcond.</dt>
-            <dd>El voluntario ya puede recibir seguimientos asignados. Es la única vía de alta de un voluntario: no existe autorregistro con ese rol.</dd>
+            <dd>El voluntario ya puede recibir seguimientos asignados. Es la única vía de alta de un voluntario: no existe autorregistro con ese rol. La cuenta queda sin domicilio real ni foto de perfil, que el voluntario completa desde su perfil.</dd>
             <dt>Pantalla</dt>
             <dd class="impl"><code>CrearVoluntarioActivity</code></dd>
           </dl>
@@ -1971,7 +1982,7 @@ tbody tr.grupo:first-child td { padding-top: 8px; }
 
       <footer class="pie">
         Documento derivado del código de <span class="mono">tic_patitas_valientes</span>, rama
-        <span class="mono">master</span>, commit <span class="mono">0a15d96</span>. Cada ficha
+        <span class="mono">master</span>, commit <span class="mono">df8d3d7</span>. Cada ficha
         nombra la Activity, el Fragment o el método de controlador que la implementa, para poder
         contrastarla con la fuente.
       </footer>

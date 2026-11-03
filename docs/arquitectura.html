@@ -357,7 +357,7 @@ thead th:not(:first-child) { text-align: right; padding-right: 18px; }
       <div><dt>SDK</dt><dd>min 24 · target 34</dd></div>
       <div><dt>Notación</dt><dd>UML 2.5</dd></div>
       <div><dt>Servicios</dt><dd>4 externos</dd></div>
-      <div><dt>Rama</dt><dd class="mono">master · 0a15d96</dd></div>
+      <div><dt>Rama</dt><dd class="mono">master · df8d3d7</dd></div>
     </dl>
   </header>
 
@@ -1057,6 +1057,23 @@ thead th:not(:first-child) { text-align: right; padding-right: 18px; }
         <em>unsigned upload preset</em>, que no necesita secreto en el cliente.
       </li>
       <li>
+        <strong>Las contraseñas se guardan en claro en Firestore</strong>
+        <code>CrearVoluntarioActivity</code> escribe <code>mapCuentas.put("clave", …)</code> al
+        crear la cuenta, y <code>ControladorUsuario.actualizarClaveDB</code> hace lo mismo al
+        cambiarla. Firebase Auth ya las custodia con hash y esa copia no se usa para
+        autenticar: solo añade una vía de robo. Agrava que la contraseña inicial de un
+        voluntario sea su número de cédula, un dato semipúblico que además no puede cambiar
+        porque no existe el flujo de restablecimiento.
+      </li>
+      <li>
+        <strong>Las reglas de seguridad de Firestore no están versionadas</strong>
+        No hay ningún <code>firestore.rules</code> en el repositorio: viven solo en la consola
+        de Firebase. Son lo que decide si las colecciones <code>Cuentas</code> y
+        <code>Usuarios</code> se pueden leer sin autenticar, así que forman parte de la
+        arquitectura tanto como el código, y hoy no se pueden revisar en un diff ni desplegar
+        con el proyecto.
+      </li>
+      <li>
         <strong>La cadena tiene dos eslabones fuera del repositorio</strong>
         Los recordatorios solo salen si el servidor de Render responde y si el cron de
         <code>cron-job.org</code> sigue invocándolo. Si cualquiera de los dos se detiene, el
@@ -1103,7 +1120,7 @@ thead th:not(:first-child) { text-align: right; padding-right: 18px; }
 
   <footer class="pie">
     Derivado del código de <span class="mono">tic_patitas_valientes</span>, rama
-    <span class="mono">master</span>, commit <span class="mono">0a15d96</span>: dependencias
+    <span class="mono">master</span>, commit <span class="mono">df8d3d7</span>: dependencias
     leídas de <span class="mono">app/build.gradle</span>, colecciones y nodos contados sobre
     <span class="mono">app/src/main/java</span>, componentes y permisos del manifiesto.
     Complementa el catálogo de casos de uso del mismo proyecto.
