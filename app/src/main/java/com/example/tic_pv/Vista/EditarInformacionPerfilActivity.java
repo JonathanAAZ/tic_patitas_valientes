@@ -324,7 +324,7 @@ public class EditarInformacionPerfilActivity extends AppCompatActivity {
             barraProgresoEditarPerfil.setVisibility(View.GONE);
             procesando = false;
             btnGuardarCambiosPerfil.setEnabled(true);
-            Toast.makeText(this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
         }
 
 //        if (TextUtils.isEmpty(nombreUsuarioEditar)) {

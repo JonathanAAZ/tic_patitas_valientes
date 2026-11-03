@@ -356,7 +356,7 @@ public class AgregarDomicilioActivity extends AppCompatActivity {
                     barraProgreso.setVisibility(View.GONE);
                     v.setEnabled(true);
                     procesando = false;
-                    Toast.makeText(AgregarDomicilioActivity.this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AgregarDomicilioActivity.this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
                 }
 
 //                if (TextUtils.isEmpty(pais)) {

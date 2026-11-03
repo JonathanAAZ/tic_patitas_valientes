@@ -159,7 +159,7 @@ public class EditarHistorialMedicoActivity extends AppCompatActivity {
                         binding.barraProgresoEditarHistorial.setVisibility(View.GONE);
                         v.setEnabled(true);
                         procesando = false;
-                        Toast.makeText(EditarHistorialMedicoActivity.this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditarHistorialMedicoActivity.this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
                     }
 
                 });
@@ -225,7 +225,7 @@ public class EditarHistorialMedicoActivity extends AppCompatActivity {
                         binding.barraProgresoEditarHistorial.setVisibility(View.GONE);
                         v.setEnabled(true);
                         procesando = false;
-                        Toast.makeText(EditarHistorialMedicoActivity.this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(EditarHistorialMedicoActivity.this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
                     }
 
                 });

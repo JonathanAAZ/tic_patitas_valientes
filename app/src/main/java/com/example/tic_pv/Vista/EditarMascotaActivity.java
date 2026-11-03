@@ -415,7 +415,7 @@ public class EditarMascotaActivity extends AppCompatActivity {
 //            AgregarFotoMascotaFragment fragment = new AgregarFotoMascotaFragment();
 //            fragment.setArguments(bundle);
         } else {
-            Toast.makeText(this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
         }
 
 //        if (TextUtils.isEmpty(nombreMascota)) {

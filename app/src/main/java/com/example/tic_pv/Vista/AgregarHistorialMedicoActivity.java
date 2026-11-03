@@ -124,7 +124,7 @@ public class AgregarHistorialMedicoActivity extends AppCompatActivity {
                 binding.barraProgresoAgregarHistorial.setVisibility(View.GONE);
                 v.setEnabled(true);
                 procesando = false;
-                Toast.makeText(AgregarHistorialMedicoActivity.this, "Existen campos vacíos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AgregarHistorialMedicoActivity.this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
             }
 
         });
