@@ -314,7 +314,7 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
         mFirestore.collection("Cuentas").document(idCuenta).update(mapActualizarFoto).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(EditarFotoPerfilActivity.this, "Información guardada correctamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarFotoPerfilActivity.this, "Foto de perfil actualizada", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(EditarFotoPerfilActivity.this, BottomNavigationMenu.class);
 //                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

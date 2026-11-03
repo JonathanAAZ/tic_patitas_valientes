@@ -386,7 +386,7 @@ public class EditarInformacionPerfilActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 procesando = false;
-                Toast.makeText(EditarInformacionPerfilActivity.this, "Error al cargar la informacion en la BD", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarInformacionPerfilActivity.this, "No se pudo guardar la información del perfil", Toast.LENGTH_SHORT).show();
                 btnGuardarCambiosPerfil.setEnabled(true);
             }
         });

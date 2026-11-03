@@ -110,7 +110,7 @@ public class ControladorHistorialMedico {
                     i.putExtra("idMascota", mascota.getId());
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(i);
-                    Toast.makeText(context, "Información de vacuna guardada correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Vacuna registrada", Toast.LENGTH_SHORT).show();
                     barraProgreso.setVisibility(View.GONE);
 
                     // PRUEBA
@@ -138,7 +138,7 @@ public class ControladorHistorialMedico {
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);
             barra.setVisibility(View.GONE);
-            Toast.makeText(context, "Se ha actualizado la información correctamente.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Vacuna actualizada", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             Log.e("FIREBASE-REALTIME", "No fue posible actualizar la información de la vacuna.");
         });
@@ -270,7 +270,7 @@ public class ControladorHistorialMedico {
                     i.putExtra("idMascota", mascota.getId());
                     i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(i);
-                    Toast.makeText(context, "Información de desparasitación guardada correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Desparasitación registrada", Toast.LENGTH_SHORT).show();
                     barraProgreso.setVisibility(View.GONE);
 
                     controladorNotificaciones.enviarNotificacionDesparasitacion(desparasitacion, mascota, desparasitacion.getHoraRecordatorio());
@@ -299,7 +299,7 @@ public class ControladorHistorialMedico {
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             context.startActivity(i);
             barra.setVisibility(View.GONE);
-            Toast.makeText(context, "Se ha actualizado la información correctamente.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Desparasitación actualizada", Toast.LENGTH_SHORT).show();
         }).addOnFailureListener(e -> {
             Log.e("FIREBASE-REALTIME", "No fue posible actualizar la información de la vacuna.");
         });

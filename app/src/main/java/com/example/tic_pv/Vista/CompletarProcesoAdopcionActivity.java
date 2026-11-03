@@ -695,7 +695,7 @@ public class CompletarProcesoAdopcionActivity extends AppCompatActivity {
                 // Volver al hilo principal para ocultar la barra de progreso y mostrar mensaje
                 runOnUiThread(() -> {
                     binding.lLBarraProgresoCompletarAdopcion.setVisibility(View.GONE);
-                    Toast.makeText(this, "PDF guardado exitosamente", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Contrato guardado en Descargas", Toast.LENGTH_LONG).show();
                     controladorContrato.abrirPDFGenerado(uriPdfGenerado, archivoPDF, this);
                 });
 

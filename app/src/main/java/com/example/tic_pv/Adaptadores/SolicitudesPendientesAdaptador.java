@@ -105,10 +105,10 @@ public class SolicitudesPendientesAdaptador extends RecyclerView.Adapter<Solicit
 
                     }
                 } else {
-                    Toast.makeText(holder.itemView.getContext(), "No se encontraron documentos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(holder.itemView.getContext(), "No se encontró la información de la solicitud", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(holder.itemView.getContext(), "Error al obtener los documentos", Toast.LENGTH_LONG).show();
+                Toast.makeText(holder.itemView.getContext(), "No se pudo obtener la información de la solicitud", Toast.LENGTH_LONG).show();
             }
         });
 

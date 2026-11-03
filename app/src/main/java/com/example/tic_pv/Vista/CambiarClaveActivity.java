@@ -238,7 +238,7 @@ public class CambiarClaveActivity extends AppCompatActivity {
                                                     },
                                                     null).show();
                                         } else {
-                                            Toast.makeText(CambiarClaveActivity.this, "Ingrese correctamente la información", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(CambiarClaveActivity.this, "Revise la información ingresada", Toast.LENGTH_SHORT).show();
                                         }
 
 //                                        if (TextUtils.isEmpty(claveNueva)) {

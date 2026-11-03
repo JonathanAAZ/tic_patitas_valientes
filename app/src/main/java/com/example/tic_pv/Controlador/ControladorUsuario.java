@@ -128,7 +128,7 @@ public class ControladorUsuario {
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "Error al actualizar el estado en la BD", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "No se pudo actualizar el estado de la cuenta", Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
@@ -158,7 +158,7 @@ public class ControladorUsuario {
                                     .addOnFailureListener(new OnFailureListener() {
                                         @Override
                                         public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(context, "Error al actualizar usuario en la BD", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "No se pudo actualizar la información del usuario", Toast.LENGTH_SHORT).show();
                                         }
                                     });
 
@@ -168,7 +168,7 @@ public class ControladorUsuario {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Toast.makeText(context, "Error al actualizar domicilio en la BD", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "No se pudo actualizar el domicilio", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                             }

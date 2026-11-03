@@ -100,7 +100,7 @@ public class ControladorMascota {
                         });
                     })
                     .addOnFailureListener(e -> {
-                        Toast.makeText(context, "Error al subir la foto: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "No se pudo subir la foto de la mascota", Toast.LENGTH_SHORT).show();
                     });
         } else {
             barraProgreso.setVisibility(View.GONE);
@@ -128,7 +128,7 @@ public class ControladorMascota {
 
         db.collection("Mascotas").add(mapMascotas)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(context, "La mascota ha sido creada correctamente", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Mascota registrada", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(context, VerMascotasActivity.class); // Especifica la nueva actividad
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     context.startActivity(intent); // Abre la nueva actividad
@@ -136,7 +136,7 @@ public class ControladorMascota {
 
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Error al crear la mascota: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No se pudo registrar la mascota", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -289,7 +289,7 @@ public class ControladorMascota {
         db.collection("Mascotas").document(mascota.getId()).update(mapActualizacionesMascota).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(context, "La información ha sido guardada correctamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Mascota actualizada", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, VerMascotasActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 context.startActivity(i);

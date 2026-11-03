@@ -236,10 +236,10 @@ public class IniciarAdopcionFragment extends Fragment {
 
                     }
                 } else {
-                    Toast.makeText(getContext(), "No se encontraron documentos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No se encontró su información de perfil", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getContext(), "Error al obtener los documentos", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "No se pudo obtener su información de perfil", Toast.LENGTH_LONG).show();
             }
         });
 

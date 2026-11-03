@@ -114,7 +114,7 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
 //                    obtenerCuentas();
 //
 //                } else {
-//                    Toast.makeText(VerUsuariosActivity.this, "Error al obtener documentos", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(VerUsuariosActivity.this, "No se pudo obtener la lista de usuarios", Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        });
@@ -137,7 +137,7 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
 //                    sincronizarUsuariosCuentas();
 //
 //                } else {
-//                    Toast.makeText(VerUsuariosActivity.this, "Error al obtener documentos", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(VerUsuariosActivity.this, "No se pudo obtener la lista de usuarios", Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        });
@@ -163,7 +163,7 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
                     obtenerCuentas();
 
                 } else {
-                    Toast.makeText(VerUsuariosActivity.this, "Error al obtener documentos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerUsuariosActivity.this, "No se pudo obtener la lista de usuarios", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -189,7 +189,7 @@ public class VerUsuariosActivity extends AppCompatActivity implements SearchView
                     sincronizarUsuariosCuentas();
 
                 } else {
-                    Toast.makeText(VerUsuariosActivity.this, "Error al obtener documentos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VerUsuariosActivity.this, "No se pudo obtener la lista de usuarios", Toast.LENGTH_SHORT).show();
                 }
             }
         });

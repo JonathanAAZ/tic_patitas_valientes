@@ -100,7 +100,7 @@ public class PerfilFragment extends Fragment {
 //                    System.out.println("ESTA ES LA URL DE LA FOTO: " + fotoPerfilID);
 //
 //                } else {
-//                    Toast.makeText(VerInformacionPerfilActivity.this, "No se encontró el documento", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(VerInformacionPerfilActivity.this, "No se pudo obtener la información de la cuenta", Toast.LENGTH_SHORT).show();
 //                }
 //            }
 //        });
@@ -122,7 +122,7 @@ public class PerfilFragment extends Fragment {
                 System.out.println("ESTA ES LA URL DE LA FOTO: " + fotoPerfilID);
                 binding.barraProgresoVI.setVisibility(View.GONE);
             } else {
-                Toast.makeText(getContext(), "No se encontró el documento", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "No se pudo obtener la información del domicilio", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -186,10 +186,10 @@ public class PerfilFragment extends Fragment {
 
                     }
                 } else {
-                    Toast.makeText(getContext(), "No se encontraron documentos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No se encontró la información del perfil", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(getContext(), "Error al obtener los documentos", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "No se pudo obtener la información del perfil", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -213,7 +213,7 @@ public class PerfilFragment extends Fragment {
                     binding.tvVerBarrio.setText(barrioUsuario);
                     binding.tvVerCalles.setText(callesUsuario);
                 } else {
-                    Toast.makeText(getContext(), "No se encontró el documento", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "No se pudo obtener la información del domicilio", Toast.LENGTH_SHORT).show();
                 }
             }
         });

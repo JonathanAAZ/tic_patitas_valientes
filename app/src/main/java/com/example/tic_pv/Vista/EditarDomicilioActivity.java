@@ -349,7 +349,7 @@ public class EditarDomicilioActivity extends AppCompatActivity {
         dbUsuarios.collection("Domicilios").document(idDom).update(mapAct).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(EditarDomicilioActivity.this, "Información guardada correctamente", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarDomicilioActivity.this, "Domicilio actualizado", Toast.LENGTH_SHORT).show();
 
                 if (enAdministracion) {
                     Intent i = new Intent(EditarDomicilioActivity.this, VerInformacionPerfilActivity.class);
@@ -370,7 +370,7 @@ public class EditarDomicilioActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditarDomicilioActivity.this, "Error al guardar la información en la BD", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarDomicilioActivity.this, "No se pudo guardar el domicilio", Toast.LENGTH_SHORT).show();
             }
         });
     }

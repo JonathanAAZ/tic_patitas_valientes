@@ -380,7 +380,7 @@ public class ControladorAdopcion {
                     });
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Error al subir la foto: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No se pudo subir la foto", Toast.LENGTH_SHORT).show();
                 });
 
 //        MediaManager.get().upload(firmaAdoptante)
@@ -492,7 +492,7 @@ public class ControladorAdopcion {
                 update("estado", EstadosCuentas.COMPLETADA.toString()).addOnSuccessListener(command -> {
                     db.collection("Mascotas").document(adopcion.getMascotaAdopcion())
                             .update("mascotaAdoptada", true).addOnSuccessListener(command1 -> {
-                                Toast.makeText(context, "El proceso de adopción ha sido completado satisfactoriamente.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Adopción completada", Toast.LENGTH_SHORT).show();
                                 barra.setVisibility(View.GONE);
 
                                 controladorSeguimiento.crearSeguimiento(adopcion.getAdoptante(), adopcion.getMascotaAdopcion());

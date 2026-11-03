@@ -810,7 +810,7 @@ public class ControladorSeguimiento {
 
                             db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                     .addOnSuccessListener(unused -> {
-                                        Toast.makeText(context, "Seguimiento asignado correctamente.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Seguimiento asignado", Toast.LENGTH_SHORT).show();
 
                                         // Ya hay a quién avisar, así que se programan los recordatorios
                                         programarPlanSeguimiento(seguimiento, null);
@@ -874,7 +874,7 @@ public class ControladorSeguimiento {
 
                             db.collection("Seguimientos").document(idSeguimiento).update(mapSeguimiento)
                                     .addOnSuccessListener(unused -> {
-                                        Toast.makeText(context, "Seguimiento reasignado correctamente.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Seguimiento reasignado", Toast.LENGTH_SHORT).show();
 
                                         // Los recordatorios del voluntario anterior ya no le
                                         // corresponden: se cancelan y el plan se rehace para el nuevo
