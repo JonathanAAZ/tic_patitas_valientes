@@ -139,10 +139,14 @@ public class PerfilFragment extends Fragment {
                 binding.tvVerCorreoUsuario.setText(correoUsuario);
                 binding.tvVerRolUsuario.setText(rolUsuario);
 
-                // Cargar la imagen con Glide
+                // La foto de perfil no es obligatoria: fallback para el modelo nulo y error
+                // para la carga fallida, o el recuadro queda vacío
                 Glide.with(this)
                         .load(fotoPerfilID)
-                        .fitCenter() // Cambia a fitCenter() si prefieres mantener la relación de aspecto
+                        .placeholder(R.drawable.logo_patitas_valientes)
+                        .fallback(R.drawable.logo_patitas_valientes)
+                        .error(R.drawable.logo_patitas_valientes)
+                        .fitCenter()
                         .into(binding.ivVerFotoPerfil);
 
                 System.out.println("ESTA ES LA URL DE LA FOTO: " + fotoPerfilID);

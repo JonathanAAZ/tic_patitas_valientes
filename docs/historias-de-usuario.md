@@ -17,7 +17,8 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU003 | Recuperar Contraseña | — | No | La función no existe todavía |
 | HU004 | Cambiar contraseña | RF003 | Sí | Nada |
 | HU005 | Editar información del perfil | RF004 | Sí | Nada |
-| HU006 – HU030 | *(bloques vacíos listos)* | — | — | — |
+| HU006 | Visualizar información del perfil | RF004 | Sí | Nada |
+| HU007 – HU030 | *(bloques vacíos listos)* | — | — | — |
 
 ---
 
@@ -194,10 +195,7 @@ RF004	Fecha de creación:
 HISTORIA DE USUARIO
 COMO usuario registrado QUIERO acceder a una sección de información personal PARA consultar y editar mis datos.
 CRITERIOS DE ACEPTACIÓN
-•	El sistema DEBE presentar una sección de perfil que muestre: Nombre, Correo, Número de Cédula, Fecha de Nacimiento, Edad, Estado Civil, Ocupación, Número de Teléfono, Usuario de Instagram, Nombre en Facebook y Rol.
-•	El sistema DEBE presentar en la misma sección la información del domicilio: País, Provincia, Cantón, Parroquia, Barrio y Calles.
-•	El sistema DEBE presentar una imagen de perfil por defecto cuando la cuenta no tenga foto.
-•	El sistema DEBE presentar la opción [Editar foto de perfil].
+•	El sistema DEBE permitir editar la información del perfil desde las opciones que presenta la pantalla de visualización (HU006).
 •	El sistema DEBE ofrecer [Tomar una foto] y [Subir una foto] al editar la foto de perfil.
 •	El sistema DEBE solicitar los permisos de cámara y de acceso a imágenes cuando no los tenga concedidos, y DEBE indicarlo cuando el permiso sea denegado.
 •	El sistema DEBE presentar el mensaje [No se ha seleccionado foto de perfil] cuando se guarde la edición de la foto sin haber elegido una nueva.
@@ -218,7 +216,6 @@ En el caso del usuario con rol de Administrador:
 •	El sistema DEBE permitir al administrador editar los datos personales de cualquier usuario.
 •	El sistema NO DEBE permitir al administrador editar la foto de perfil ni el domicilio de otro usuario.
 OBSERVACIONES
-•	Debido a que la foto de perfil no es obligatoria, se presentará una imagen básica de perfil en ese espacio.
 •	El correo electrónico no es editable porque identifica a la cuenta en el servicio de autenticación.
 •	Las cuentas no se eliminan, se desactivan: borrarlas dejaría sin referencia las adopciones, contratos y seguimientos asociados.
 ```
@@ -258,9 +255,14 @@ según la pantalla.
 Queda una rama inalcanzable: el `if (enAdministracion)` de `EditarDomicilioActivity` ya no
 puede darse, porque el administrador no llega a esa pantalla. Se dejó como guarda.
 
+Al validar HU006 se devolvieron a esa historia los criterios de visualización que esta había
+absorbido —los datos mostrados, el domicilio y la imagen por defecto—. HU006 no estaba escrita
+cuando se validó HU005, y las dos se reparten la misma pantalla: HU006 es la consulta, HU005
+la edición.
+
 ---
 
-## HU006
+## HU006 — Visualizar información del perfil
 
 ```
 Título: 
@@ -272,23 +274,53 @@ Media	Estimación:
 RF004	Fecha de creación: 
 01/05/2024
 HISTORIA DE USUARIO
-COMO usuario del sistema QUIERO acceder a una sección de información personal PARA visualizar la información que ingresé con anterioridad.
+COMO usuario registrado QUIERO acceder a una sección de información personal PARA visualizar la información que ingresé con anterioridad.
 CRITERIOS DE ACEPTACIÓN
 •	El sistema DEBE presentar una opción para acceder a la [Información de perfil].
-•	El sistema DEBE presentar dos secciones: [Información personal] e [Información de domicilio].
-•	En la sección [Información personal], el sistema DEBE presentar los siguientes datos: Nombre, Rol en el sistema, Correo, Número de Cédula, Fecha de Nacimiento, Edad, Estado Civil, Ocupación. Número de Teléfono, Usuario de Instagram (Opcional) y Nombre en Facebook (Opcional).
-•	En la sección [Información de domicilio], el sistema DEBE presentar los siguientes datos: País, Provincia, Cantón, Parroquia, Barrio y Calles.
-•	El sistema DEBE presentar una opción para [Editar información].
-•	El sistema DEBE presentar una opción para [Editar foto de perfil].
+•	El sistema DEBE presentar dos secciones: [Información personal] e [Información del domicilio].
+•	En la sección [Información personal], el sistema DEBE presentar los siguientes datos: Nombre, Rol en el sistema, Correo, Número de Cédula, Fecha de Nacimiento, Edad, Estado Civil, Ocupación, Número de Teléfono, Usuario de Instagram (Opcional) y Nombre en Facebook (Opcional).
+•	En la sección [Información del domicilio], el sistema DEBE presentar los siguientes datos: País, Provincia, Cantón, Parroquia, Barrio y Calles.
+•	El sistema DEBE presentar la foto de perfil de la cuenta, y DEBE presentar una imagen por defecto cuando la cuenta no tenga foto.
+•	El sistema DEBE presentar una opción para [Editar información] (HU005).
+•	El sistema DEBE presentar una opción para [Editar foto de perfil] (HU005).
+•	El sistema DEBE presentar un mensaje indicando que no se pudo obtener la información cuando la consulta falle.
 
-En el caso del usuario con rol de administrador:
-•	Al seleccionar la opción [Editar] de un ítem de la lista de usuarios, el sistema DEBE presentar la pestaña para [Visualizar la información de perfil].
-•	El sistema DEBE presentar una opción para [Editar información], igual a como funciona cuando se visualiza la información del perfil propio de un usuario.
+En el caso del usuario con rol de Administrador:
+•	Al seleccionar la opción [Editar] de un ítem de la lista de usuarios, el sistema DEBE presentar la pantalla de visualización de la información de perfil de ese usuario.
+•	El sistema DEBE presentar en esa pantalla los mismos datos personales y de domicilio que en el perfil propio.
+•	El sistema DEBE presentar una opción para [Editar información], igual que en el perfil propio.
+•	El sistema NO DEBE presentar la opción de editar la foto de perfil del usuario consultado.
 OBSERVACIONES
 •	Debido a que la foto de perfil no es obligatoria, se presentará una imagen básica de perfil en ese espacio.
-•	El Administrador no podrá editar la foto de perfil de los usuarios ni la información del domicilio.
-
+•	Esta historia cubre solo la consulta. Lo que ocurre al seleccionar [Editar información] o [Editar foto de perfil] está en HU005.
 ```
+
+**Notas de la validación.** Son dos pantallas con el mismo contenido: `PerfilFragment` para el
+perfil propio, al que los tres roles llegan por la opción Perfil del menú inferior, y
+`VerInformacionPerfilActivity` para el administrador consultando a otro usuario, al que llega
+desde la lista (`ListaUsuariosAdaptador:128`). Las dos pintan los once datos personales y los
+seis del domicilio, y las dos ofrecen «Editar información»; solo `PerfilFragment` ofrece editar
+la foto, que es lo que la observación pedía.
+
+**Implementado: la imagen por defecto.** `Glide.load(fotoPerfilID)` no llevaba
+`.placeholder()`, `.fallback()` ni `.error()`, y el `ImageView` no tiene `android:src` —solo un
+borde con tinte celeste—, así que una cuenta sin foto dejaba el recuadro vacío en lugar de la
+imagen básica. Se añadieron los tres en las dos pantallas, con
+`logo_patitas_valientes`, que es el fallback que el resto de la aplicación ya usa:
+`fallback` cubre el campo nulo y `error` la carga fallida, que son dos casos distintos.
+
+Quedan dos detalles menores de la misma pantalla, que no afectan a ningún criterio: el
+encabezado dice «Información personal y domicilio» en una sola cabecera, de modo que la
+sección [Información personal] no tiene título propio como pide el criterio; y
+`VerInformacionPerfilActivity` todavía importa Picasso y conserva su llamada comentada, cuando
+la casa usa Glide.
+
+**Sobre el solapamiento con HU005.** Las dos historias comparten RF004 y se reparten la misma
+pantalla: HU006 es la consulta, HU005 la edición. Al validar HU005 yo había absorbido en ella
+los criterios de visualización —los datos mostrados, el domicilio, la imagen por defecto—
+porque HU006 todavía no estaba escrita. Ya se devolvieron aquí, y HU005 arranca ahora
+remitiendo a esta historia. Conviene además que HU006 vaya antes que HU005 en el documento,
+porque se consulta antes de editar, pero la renumeración es decisión tuya.
 
 ---
 
