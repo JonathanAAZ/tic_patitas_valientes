@@ -18,9 +18,10 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU004 | Cambiar contraseña | RF003 | Sí | Nada |
 | HU005 | Editar información del perfil | RF004 | Sí | Nada |
 | HU006 | Visualizar información del perfil | RF004 | Sí | Nada |
-| HU007 – HU030 | *(bloques vacíos listos)* | — | — | — |
+| HU007 | Buscar y filtrar información | RF005 | Sí | Tres defectos en VerMascotasActivity |
+| HU008 | Consultar la lista de mascotas adoptadas | RF005 | Sí | La lista no existe todavía |
+| HU009 – HU030 | *(bloques vacíos listos)* | — | — | — |
 
----
 
 ## HU001 — Iniciar Sesión
 
@@ -324,19 +325,134 @@ porque se consulta antes de editar, pero la renumeración es decisión tuya.
 
 ---
 
-## HU007
+## HU007 — Buscar y filtrar información
 
 ```
+Título: 
+Buscar y filtrar información
+Nro. o Código: 
+HU007	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF005	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO usuario registrado QUIERO buscar y filtrar la información de las listas PARA encontrar lo que necesito sin recorrerlas completas.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una barra de búsqueda en las pantallas de catálogo de mascotas, lista de mascotas registradas y lista de usuarios.
+•	El sistema DEBE actualizar los resultados a medida que se escribe, sin necesidad de presionar un botón.
+•	El sistema DEBE presentar un aviso de que no se encontraron resultados cuando la búsqueda no devuelva ninguno.
+•	El sistema DEBE presentar, junto a la barra de búsqueda, un botón con un ícono de [Filtro] que despliegue u oculte los filtros disponibles, en las pantallas que tengan filtros.
+•	El sistema DEBE permitir quitar los filtros seleccionados y volver a la lista completa.
 
+En el caso del catálogo de mascotas, para el Adoptante:
+•	El sistema DEBE presentar una pantalla con las mascotas disponibles para adopción.
+•	El sistema DEBE presentar las mascotas en forma de cuadrícula de dos columnas.
+•	Cada ítem de la cuadrícula DEBE mostrar: Foto, Nombre, Edad (Cachorro/Adulto), Especie (Canino/Felino) y Sexo (Macho/Hembra).
+•	El sistema DEBE permitir la búsqueda por nombre de la mascota.
+•	El sistema DEBE presentar los filtros: Por edad (Cachorros/Adultos), Por especie (Caninos/Felinos), Por sexo (Machos/Hembras) y Por estado sanitario (Vacunados/Esterilizados).
+
+En el caso de la lista de mascotas registradas, para el Administrador:
+•	El sistema DEBE presentar las mascotas del refugio en forma de lista.
+•	Cada ítem de la lista DEBE mostrar: Foto, Nombre, Vacunación, Desparasitación, Esterilización y Estado (Activo/Inactivo).
+•	El sistema DEBE permitir la búsqueda por nombre de la mascota.
+•	El sistema DEBE presentar los filtros: Activos/Inactivos, Vacunados/No vacunados, Esterilizados/No esterilizados y Desparasitados/No desparasitados.
+
+En el caso de la lista de usuarios, para el Administrador:
+•	El sistema DEBE presentar una pantalla con todos los usuarios registrados, en forma de lista.
+•	Cada ítem de la lista DEBE mostrar: Foto de perfil, Nombre, Número de Cédula, Rol en el sistema y Estado de la cuenta.
+•	El sistema DEBE permitir la búsqueda por nombre y por número de cédula.
+OBSERVACIONES
+•	La lista de mascotas adoptadas, con los datos del adoptante y del voluntario asignado, no forma parte de esta historia porque todavía no está construida. Ver HU008.
+•	Esta historia cubre la búsqueda y el filtrado. Lo que ocurre al seleccionar un ítem de cualquiera de las tres listas corresponde a las historias de cada función.
 ```
+
+**Notas de la validación.** Tres de las cuatro secciones de tu historia original ya funcionan,
+y la cuarta no existe. Por eso se separó.
+
+**El catálogo del adoptante** es `CatalogoMascotasActivity`: `GridLayoutManager(this, 2)` da la
+cuadrícula de dos columnas, el `SearchView` filtra por nombre en vivo
+(`onQueryTextChange:147`), `ivFiltroCatalogoMascotas` con `ic_filtro` despliega
+`gLMostrarFiltrosCatalogoMascotas`, y «Quitar filtro seleccionado» lo limpia. Los filtros son
+**ocho, no seis**: a edad, especie y sexo se suman Vacunados y Esterilizados, que la historia
+original no recogía.
+
+**La lista de mascotas en adopción** es `ListaMascotasAdopcionFragment`, montado dentro de
+`VerMascotasActivity`. Tiene su `SearchView`, su `ivFiltro`, «Quitar filtros seleccionados» y
+exactamente los ocho filtros del criterio. El ítem muestra los seis campos que pedías.
+
+**La lista de usuarios** es `VerUsuariosActivity`. El filtrado es automático
+(`onQueryTextChange:251` → `ControladorUsuario.filtrarInformación:184`) y hay aviso de sin
+resultados. No tiene filtros: el `Spinner` está comentado en el layout, solo hay búsqueda, así
+que el criterio del botón de filtro se limitó a «las pantallas que tengan filtros». El ítem
+muestra cinco campos, no cuatro: también el Estado de la cuenta.
+
+> **Un matiz de la búsqueda de usuarios.** `filtrarInformación` busca por nombre y, **solo si
+> no encuentra ninguna coincidencia por nombre**, vuelve a buscar por cédula. Es un «o
+> excluyente», no un «y»: si algún nombre coincide, las cédulas que también coincidirían no
+> aparecen. En la práctica apenas se nota, pero el criterio dice «por nombre y por número de
+> cédula». Si quieres el comportamiento literal, es unir los dos resultados en lugar de
+> encadenarlos.
+
+**Pendiente en el código: `VerMascotasActivity` tiene tres defectos de la lista de «errores a
+NO repetir».**
+
+1. `setContentView(R.layout.activity_ver_mascotas)` en la línea 25 y después
+   `ActivityVerMascotasBinding.inflate(...)` en la 32, **sin** `setContentView(binding.getRoot())`.
+   El binding infla una segunda copia del layout que nunca se muestra, de modo que cualquier
+   `binding.algo` manipularía vistas invisibles. Hoy no se nota porque el único uso del binding
+   es la propia asignación.
+2. Los insets se aplican sobre `findViewById(R.id.main)` en lugar de `binding.main`.
+3. `iVRegresarVerMascotas` no tiene listener: la flecha de regresar no hace nada.
+
+Y los ids del ítem de mascota repiten el problema de la lista de usuarios:
+`ivEliminarMascotaLista` y `lYBtnEliminarMascota` dicen *eliminar* y el texto que muestran es
+«Activar» o «Desactivar».
 
 ---
 
-## HU008
+## HU008 — Consultar la lista de mascotas adoptadas
+
+> Historia desprendida de HU007. Se separó porque **no está construida**, y mezclarla con lo
+> que ya funciona dejaría HU007 sin poder cerrarse nunca. El número es provisional: si ya
+> tenías otra HU008 prevista, renumera.
 
 ```
-
+Título: 
+Consultar la lista de mascotas adoptadas
+Nro. o Código: 
+HU008	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF005	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO administrador QUIERO consultar la lista de las mascotas ya adoptadas PARA saber con quién está cada una y qué voluntario la sigue.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar, en la pantalla de mascotas registradas, una opción para alternar entre [Lista de mascotas en adopción] y [Lista de mascotas adoptadas].
+•	El sistema DEBE presentar las mascotas adoptadas en forma de lista.
+•	Cada ítem de la lista DEBE mostrar: Foto, Nombre, Vacunación, Desparasitación, Esterilización y Estado.
+•	Cada ítem DEBE mostrar además: Nombre del adoptante, Número de teléfono del adoptante, Voluntario asignado y Número de teléfono del voluntario.
+•	El sistema DEBE permitir la búsqueda por nombre de la mascota.
+•	El sistema DEBE presentar los filtros: Por edad (Cachorro/Adulto), Por sexo, Por estado sanitario (Vacunados/No vacunados), Por nombre del adoptante y Por voluntario asignado.
+•	El sistema DEBE permitir quitar los filtros seleccionados y volver a la lista completa.
+•	El sistema DEBE presentar un aviso de que no se encontraron resultados cuando la búsqueda no devuelva ninguno.
+•	El sistema DEBE presentar un aviso cuando no se pueda obtener la lista.
+OBSERVACIONES
+•	El domicilio de la mascota puede ser el refugio, el domicilio de un voluntario o el del adoptante, en caso de que ya se haya culminado el proceso de adopción.
+•	Los datos del adoptante y del voluntario conviene guardarlos desnormalizados en el modelo, como ya hace Seguimiento con nombreAdoptante, nombreMascota y nombreVoluntario: la lista no debe consultar Firestore dentro de onBindViewHolder.
 ```
+
+**Por dónde entrar.** El botón ya existe en el layout (`lLMascotasAdoptadas` en
+`activity_ver_mascotas.xml`), pero `VerMascotasActivity` no le pone listener y monta
+`ListaMascotasAdopcionFragment` sin condición. `MisMascotasActivity` es otra cosa: muestra
+«Última vacuna» y «Última desparasitación» para el adoptante y el voluntario, sin búsqueda ni
+filtros.
+
+Hace falta un fragment nuevo para la lista de adoptadas, su adaptador y su ítem, con el patrón
+del que ya existe. Los teléfonos están en `Usuarios`, y la relación mascota–adoptante–voluntario
+en `Adopciones` y `Seguimientos`; conviene resolverla en el controlador y pasarle al adaptador
+los datos ya reunidos, no consultarlos por fila.
 
 ---
 
