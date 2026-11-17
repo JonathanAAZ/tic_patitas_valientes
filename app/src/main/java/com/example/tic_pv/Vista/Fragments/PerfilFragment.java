@@ -1,5 +1,6 @@
 package com.example.tic_pv.Vista.Fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -18,9 +19,12 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tic_pv.Controlador.ControladorUsuario;
+import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.EditarFotoPerfilActivity;
 import com.example.tic_pv.Vista.EditarInformacionPerfilActivity;
+import com.example.tic_pv.Vista.IniciarSesionActivity;
 import com.example.tic_pv.Vista.VerInformacionPerfilActivity;
 import com.example.tic_pv.databinding.FragmentPerfilBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -44,6 +48,8 @@ public class PerfilFragment extends Fragment {
     private FirebaseAuth authPerfil;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private Button btnEditarDatos, btnEditarDomicilio, btnCambiarClave;
+    private final ControladorUsuario controladorUsuario = new ControladorUsuario();
+    private final ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,9 +61,8 @@ public class PerfilFragment extends Fragment {
         binding.barraProgresoVI.setVisibility(View.VISIBLE);
         binding.tVEditarPerfil.setPaintFlags(binding.tVEditarPerfil.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
-        assert getArguments() != null;
-        idCuenta = getArguments().getString("idCuenta");
-        rol = getArguments().getString("rol");
+        idCuenta = requireArguments().getString("idCuenta");
+        rol = requireArguments().getString("rol");
 
         mostrarInformacionPerfil(idCuenta);
 
@@ -78,6 +83,27 @@ public class PerfilFragment extends Fragment {
             i.putExtra("rol", rol);
             i.putExtra("enAdministracion", false);
             startActivity(i);
+        });
+
+        // Se guarda la Activity antes de la llamada asíncrona: cuando vuelve el callback este
+        // fragment puede estar ya desacoplado y requireContext() lanzaría una excepción.
+        binding.lLCerrarSesion.setOnClickListener(v -> {
+            Activity actividad = requireActivity();
+
+            controladorUtilidades.crearAlertaConfirmacion(
+                    "Cerrar sesión",
+                    "¿Está seguro/a de que desea cerrar su sesión? Dejará de recibir "
+                            + "notificaciones en este dispositivo.",
+                    actividad,
+                    () -> controladorUsuario.liberarDispositivoDeCuenta(idCuenta, () -> {
+                        controladorUtilidades.cerrarSesion(actividad);
+
+                        Intent i = new Intent(actividad, IniciarSesionActivity.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        actividad.startActivity(i);
+                        actividad.finish();
+                    }),
+                    null).show();
         });
 
         // Inflate the layout for this fragment
