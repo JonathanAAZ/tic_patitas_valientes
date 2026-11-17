@@ -58,6 +58,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.example.tic_pv.Modelo.VideoCache;
 import com.example.tic_pv.R;
 import com.jsibbold.zoomage.ZoomageView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -1173,6 +1174,14 @@ public class ControladorUtilidades {
         videoRef.getDownloadUrl()
                 .addOnSuccessListener(uri -> callback.onSuccess(uri.toString()))
                 .addOnFailureListener(e -> callback.onError(e.getMessage()));
+    }
+
+    // Cierra la sesión de Firebase y olvida el rol guardado. La navegación la hace la
+    // pantalla: el controlador no decide a dónde va el usuario, y así no se arrastra una
+    // dependencia de Vista hasta aquí.
+    public void cerrarSesion(Context context) {
+        FirebaseAuth.getInstance().signOut();
+        new SessionManager(context).clearUserRole();
     }
 
 }

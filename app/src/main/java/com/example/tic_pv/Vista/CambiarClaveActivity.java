@@ -171,7 +171,7 @@ public class CambiarClaveActivity extends AppCompatActivity {
         FirebaseUser usuarioFirebase = authPerfil.getCurrentUser();
 
         if (usuarioFirebase == null) {
-            Toast.makeText(this, "Error al obtener el inicio de sesión", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No se pudo obtener la información de su cuenta", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(CambiarClaveActivity.this, VerInformacionPerfilActivity.class);
             startActivity(intent);
             finish();
@@ -220,45 +220,33 @@ public class CambiarClaveActivity extends AppCompatActivity {
                                     @Override
                                     public void onClick(View v) {
 
-//                                        String claveNueva, claveNuevaConfir;
-//
-//                                        claveNueva = etNuevaClave.getText().toString();
-//                                        claveNuevaConfir = etNuevaClaveConfir.getText().toString();
-                                        String claveNueva;
-                                        claveNueva = etNuevaClave.getText().toString();
+                                        String claveNueva = etNuevaClave.getText().toString();
 
                                         if (validarFormulario() && todasValidas) {
                                             controladorUtilidades.crearAlertaConfirmacion(
                                                     "Confirmar cambio de contraseña",
-                                                    "¿Está seguro/a de que desea cambiar su contraseña?",
+                                                    "¿Está seguro/a de que desea cambiar su contraseña? "
+                                                            + "Se cerrará su sesión y deberá iniciarla de nuevo con la contraseña nueva.",
                                                     CambiarClaveActivity.this,
-                                                    () -> {
-                                                        controladorUsuario.cambiarClaveUsuario(usuarioFirebase, claveNueva, CambiarClaveActivity.this);
-                                                        Toast.makeText(CambiarClaveActivity.this, "Formulario valido", Toast.LENGTH_SHORT).show();
-                                                    },
+                                                    () -> controladorUsuario.cambiarClaveUsuario(usuarioFirebase, claveNueva,
+                                                            new ControladorUsuario.CallbackCambioClave() {
+                                                                @Override
+                                                                public void onClaveCambiada() {
+                                                                    Toast.makeText(CambiarClaveActivity.this,
+                                                                            "Contraseña actualizada", Toast.LENGTH_LONG).show();
+                                                                    cerrarSesionEIrAIniciarSesion(usuarioFirebase.getUid());
+                                                                }
+
+                                                                @Override
+                                                                public void onError(Exception e) {
+                                                                    Toast.makeText(CambiarClaveActivity.this,
+                                                                            "No se pudo cambiar la contraseña", Toast.LENGTH_LONG).show();
+                                                                }
+                                                            }),
                                                     null).show();
                                         } else {
                                             Toast.makeText(CambiarClaveActivity.this, "Revise la información ingresada", Toast.LENGTH_SHORT).show();
                                         }
-
-//                                        if (TextUtils.isEmpty(claveNueva)) {
-//                                            Toast.makeText(CambiarClaveActivity.this, "Campo incompleto", Toast.LENGTH_LONG).show();
-//                                        }
-////                                        else if (!controladorUsuario.validarClave(claveNueva)) {
-////                                            Toast.makeText(CambiarClaveActivity.this, "Campo no válido", Toast.LENGTH_LONG).show();
-////                                        }
-//                                        else if (TextUtils.isEmpty(claveNuevaConfir)) {
-//                                            Toast.makeText(CambiarClaveActivity.this, "Campo incompleto", Toast.LENGTH_LONG).show();
-//                                        } else if (!claveNueva.equals(claveNuevaConfir)) {
-//                                            Toast.makeText(CambiarClaveActivity.this, "Campo no válido", Toast.LENGTH_LONG).show();
-//                                            //Se limpian los campos de las contraseñas
-//                        //                    claveUsuario.clearComposingText();
-//                        //                    claveUsuarioConfir.clearComposingText();
-//                                        } else if (claveNueva.equals(claveUsuario)) {
-//                                            Toast.makeText(CambiarClaveActivity.this, "Campo no válido", Toast.LENGTH_SHORT).show();
-//                                        } else {
-//
-//                                        }
                                     }
                                 });
                             } else {
@@ -278,9 +266,24 @@ public class CambiarClaveActivity extends AppCompatActivity {
     private boolean validarFormulario () {
         boolean valido =  true;
 
-        if (!controladorUtilidades.validarTextoVacio(etNuevaClave, "Ingrese su contraseña actual")) valido = false;
-        if (!controladorUtilidades.validarTextoVacio(etNuevaClaveConfir, "Ingrese la confirmación de contraseña")) valido = false;
+        if (!controladorUtilidades.validarTextoVacio(etNuevaClave, "Ingrese la nueva contraseña")) valido = false;
+        if (!controladorUtilidades.validarTextoVacio(etNuevaClaveConfir, "Ingrese la confirmación de la nueva contraseña")) valido = false;
 
         return valido;
+    }
+
+    // Al cambiar la contraseña la sesión deja de servir, así que se cierra y se vacía la
+    // pila: sin FLAG_ACTIVITY_CLEAR_TASK el botón de atrás volvería a las pantallas de la
+    // sesión anterior. El token se libera ANTES del cierre, porque después la sesión ya no
+    // tiene permiso para escribir en Firestore.
+    private void cerrarSesionEIrAIniciarSesion(String idCuenta) {
+        controladorUsuario.liberarDispositivoDeCuenta(idCuenta, () -> {
+            controladorUtilidades.cerrarSesion(CambiarClaveActivity.this);
+
+            Intent intent = new Intent(CambiarClaveActivity.this, IniciarSesionActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
     }
 }

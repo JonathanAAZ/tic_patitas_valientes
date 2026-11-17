@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.tic_pv.R;
+import com.example.tic_pv.Vista.CambiarClaveActivity;
 import com.example.tic_pv.Vista.CatalogoMascotasActivity;
 import com.example.tic_pv.Vista.MisMascotasActivity;
 import com.example.tic_pv.Vista.MisSeguimientosActivity;
@@ -56,6 +57,11 @@ public class InicioAdoptanteFragment extends Fragment {
         binding.iVBotonMisSeguimientosAdoptante.setOnClickListener(v -> {
             Intent i = new Intent(getActivity(), MisSeguimientosActivity.class);
             i.putExtra("idAdoptante", usuarioActual.getUid());
+            startActivity(i);
+        });
+
+        binding.iVBotonCambiarClave.setOnClickListener(v -> {
+            Intent i = new Intent(getActivity(), CambiarClaveActivity.class);
             startActivity(i);
         });
 

@@ -283,39 +283,31 @@ public class ControladorUsuario {
         void onCorreoVerificado(boolean enUso);
     }
 
-    public void cambiarClaveUsuario(FirebaseUser usuario, String claveNueva, Context context) {
-        usuario.updatePassword(claveNueva).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    actualizarClaveDB(usuario.getUid(), claveNueva, context);
-                } else {
-                    Toast.makeText(context, "Error al cambiar clave", Toast.LENGTH_SHORT).show();
-                }
+    public interface CallbackCambioClave {
+        void onClaveCambiada();
+        void onError(Exception e);
+    }
+
+    // La pantalla decide qué hacer al terminar: el cierre de sesión y la navegación no son
+    // asunto del controlador, y además deben ocurrir cuando ya no queden escrituras pendientes.
+    public void cambiarClaveUsuario(FirebaseUser usuario, String claveNueva, CallbackCambioClave callback) {
+        usuario.updatePassword(claveNueva).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                actualizarClaveDB(usuario.getUid(), claveNueva, callback);
+            } else {
+                callback.onError(task.getException());
             }
         });
     }
 
-    public void actualizarClaveDB(String idCuenta, String clave, Context context) {
+    public void actualizarClaveDB(String idCuenta, String clave, CallbackCambioClave callback) {
 
         Map<String, Object> map = new HashMap<>();
         map.put("clave", clave);
 
-        db.collection("Cuentas").document(idCuenta).update(map).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Intent intent = new Intent(context, VerInformacionPerfilActivity.class);
-                context.startActivity(intent);
-                if (context instanceof Activity) {
-                    ((Activity) context).finish();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(context, "Error", Toast.LENGTH_SHORT).show();
-            }
-        });
+        db.collection("Cuentas").document(idCuenta).update(map)
+                .addOnSuccessListener(unused -> callback.onClaveCambiada())
+                .addOnFailureListener(callback::onError);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -381,7 +373,7 @@ public class ControladorUsuario {
                         liberarTokenDeOtrasCuentas(token, id);
 
                         db.collection("NotificacionesProgramadas")
-                                .whereEqualTo("idUsuario", idUsuario)
+                                .whereEqualTo("idUsuario", id)
                                 .get()
                                 .addOnSuccessListener(querySnapshot -> {
                                     if (querySnapshot.isEmpty()) {
@@ -452,6 +444,42 @@ public class ControladorUsuario {
                 })
                 .addOnFailureListener(e ->
                         Log.e("TOKEN", "Error al actualizar el token rotado: " + e.getMessage()));
+    }
+
+    public interface CallbackCierreSesion {
+        void onDispositivoLiberado();
+    }
+
+    // Al cerrar sesión el dispositivo deja de pertenecer a la cuenta, así que se borra el
+    // token de la cuenta y el de sus recordatorios programados: si no, el servidor seguiría
+    // enviando avisos a un teléfono donde ya nadie tiene la sesión abierta. Al volver a
+    // iniciar sesión, actualizarTokenInicioSesion los repone.
+    public void liberarDispositivoDeCuenta(String idCuenta, CallbackCierreSesion callback) {
+        if (idCuenta == null || idCuenta.isEmpty()) {
+            callback.onDispositivoLiberado();
+            return;
+        }
+
+        List<Task<?>> limpiezas = new ArrayList<>();
+        limpiezas.add(db.collection("Cuentas").document(idCuenta).update("dispositivo", ""));
+
+        db.collection("NotificacionesProgramadas")
+                .whereEqualTo("idUsuario", idCuenta)
+                .get()
+                .addOnCompleteListener(consulta -> {
+                    if (consulta.isSuccessful() && consulta.getResult() != null) {
+                        for (DocumentSnapshot documento : consulta.getResult().getDocuments()) {
+                            limpiezas.add(documento.getReference().update("token", ""));
+                        }
+                    } else {
+                        Log.e("TOKEN", "No se pudieron leer los recordatorios programados al cerrar sesión");
+                    }
+
+                    // La sesión se cierra aunque la limpieza falle: dejar al usuario dentro
+                    // sería peor que arrastrar un token sin dueño.
+                    Tasks.whenAllComplete(limpiezas)
+                            .addOnCompleteListener(todas -> callback.onDispositivoLiberado());
+                });
     }
 
     // Callback genérico
