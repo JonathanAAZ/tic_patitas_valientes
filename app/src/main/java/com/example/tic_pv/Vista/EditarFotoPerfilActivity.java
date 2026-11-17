@@ -326,7 +326,7 @@ public class EditarFotoPerfilActivity extends AppCompatActivity {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditarFotoPerfilActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarFotoPerfilActivity.this, "No se pudo guardar la foto de perfil", Toast.LENGTH_SHORT).show();
                 System.out.println("ERROR AL SUBIR FOTO: " + e.getMessage());
             }
         });

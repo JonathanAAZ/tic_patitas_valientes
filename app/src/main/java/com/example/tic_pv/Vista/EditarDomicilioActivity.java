@@ -173,15 +173,15 @@ public class EditarDomicilioActivity extends AppCompatActivity {
                         obtenerDomiciliosBD(documento.getString("domicilioUsuario"));
                     }
                 } else {
-                    Toast.makeText(this, "No se encontró el usuario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No se pudo obtener la información del domicilio", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(this, "Error al obtener el usuario", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No se pudo obtener la información del domicilio", Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditarDomicilioActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarDomicilioActivity.this, "No se pudo obtener la información del domicilio", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -206,7 +206,6 @@ public class EditarDomicilioActivity extends AppCompatActivity {
                     //Seleccionar la provincia guardada
                     posicionProvincia = provinciaEditarAdaptador.getPosition(provinciaDomicilio);
 
-                    Toast.makeText(EditarDomicilioActivity.this, "PROVINCIA BDD" + provinciaDomicilio, Toast.LENGTH_SHORT).show();
                     if (posicionProvincia != -1) {
                         spEditarProvincia.setSelection(posicionProvincia);
                     }
@@ -305,7 +304,7 @@ public class EditarDomicilioActivity extends AppCompatActivity {
             ocultarTeclado();
             barraProgreso.setVisibility(View.GONE);
             procesando = false;
-            Toast.makeText(this, "Existe campos vacíos", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
         }
 
 //        if (TextUtils.isEmpty(paisDomicilio)) {

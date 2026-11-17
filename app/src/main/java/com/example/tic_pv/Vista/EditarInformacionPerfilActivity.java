@@ -257,18 +257,18 @@ public class EditarInformacionPerfilActivity extends AppCompatActivity {
                     estadoCivSeleccionadoEditar.setChecked(true);
 
                 } else {
-                    Toast.makeText(this, "No se encontraró el usuario", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No se pudo obtener la información del perfil", Toast.LENGTH_SHORT).show();
                 }
 
                 barraProgresoEditarPerfil.setVisibility(View.GONE);
 
             } else {
-                Toast.makeText(this, "Error al obtener el usuario", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "No se pudo obtener la información del perfil", Toast.LENGTH_LONG).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(EditarInformacionPerfilActivity.this, "Algo salió mal", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditarInformacionPerfilActivity.this, "No se pudo obtener la información del perfil", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -372,12 +372,20 @@ public class EditarInformacionPerfilActivity extends AppCompatActivity {
         dbUsuarios.collection("Usuarios").document(id).update(actualizaciones).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-//                Toast.makeText(EditarInformacionPerfilActivity.this, "Información guardada correctamente", Toast.LENGTH_SHORT).show();
-                Intent i = new Intent(EditarInformacionPerfilActivity.this, EditarDomicilioActivity.class);
-//                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                Toast.makeText(EditarInformacionPerfilActivity.this, "Información guardada", Toast.LENGTH_SHORT).show();
+
+                Intent i;
+                if (enAdministracion) {
+                    // El administrador no edita el domicilio de otro usuario: vuelve a la
+                    // información del perfil que estaba consultando.
+                    i = new Intent(EditarInformacionPerfilActivity.this, VerInformacionPerfilActivity.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                } else {
+                    i = new Intent(EditarInformacionPerfilActivity.this, EditarDomicilioActivity.class);
+                    i.putExtra("enAdministracion", false);
+                }
                 i.putExtra("id", idCuenta);
                 i.putExtra("rol", rol);
-                i.putExtra("enAdministracion", enAdministracion);
                 startActivity(i);
                 procesando = false;
                 btnGuardarCambiosPerfil.setEnabled(true);
