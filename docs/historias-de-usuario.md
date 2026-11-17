@@ -22,6 +22,7 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU008 | Consultar la lista de mascotas adoptadas | RF005 | Sí | La lista no existe todavía |
 | HU009 – HU030 | *(bloques vacíos listos)* | — | — | — |
 
+---
 
 ## HU001 — Iniciar Sesión
 
