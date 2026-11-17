@@ -16,7 +16,8 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU002 | Crear cuenta de usuario | RF002 | Sí | Nada |
 | HU003 | Recuperar Contraseña | — | No | La función no existe todavía |
 | HU004 | Cambiar contraseña | RF003 | Sí | Nada |
-| HU005 – HU030 | *(bloques vacíos listos)* | — | — | — |
+| HU005 | Editar información del perfil | RF004 | Sí | Nada |
+| HU006 – HU030 | *(bloques vacíos listos)* | — | — | — |
 
 ---
 
@@ -179,7 +180,7 @@ HU003 y no se tocó aquí.
 
 ---
 
-## HU005
+## HU005 — Editar información del perfil
 
 ```
 Título: 
@@ -191,35 +192,101 @@ Media	Estimación:
 RF004	Fecha de creación: 
 01/05/2024
 HISTORIA DE USUARIO
-COMO usuario del sistema QUIERO acceder a una sección de información personal PARA editar mis datos personales.
+COMO usuario registrado QUIERO acceder a una sección de información personal PARA consultar y editar mis datos.
 CRITERIOS DE ACEPTACIÓN
-•	El sistema DEBE presenta un formulario con la siguiente información: Nombre, Correo, Número de Cédula, Fecha de Nacimiento, Edad, Estado Civil, Ocupación. Número de Teléfono, Usuario de Instagram (Opcional) y Nombre en Facebook (Opcional).
-•	El sistema DEBE presentar una sección para la información del domicilio: 
-•	El sistema DEBE permitir [Editar foto de perfil].
-•	El sistema DEBE permitir [Tomar una foto] o [Subir una foto] al editar la foto de perfil.
-•	En caso de no tenerlos, el sistema DEBE solicitar los permisos de almacenamiento y cámara.
-•	Al seleccionar la opción [Guardar] en la edición de la foto de perfil, el sistema DEBE presentar un mensaje en caso de que no se haya seleccionado o subido una nueva foto.
-•	El sistema DEBE permitir editar la información de Nombre, Cédula, Fecha de Nacimiento, Estado Civil, Profesión/Ocupación. Número de teléfono, Usuario de Instagram (Opcional) y Nombre en Facebook (Opcional).
-•	El sistema DEBE mostrar un mensaje de error en caso de que existan campos vacíos: [Complete todos los campos solicitados].
-•	Al guardar la edición de la información personal, el sistema DEBE presentar el formulario de edición del domicilio permitiendo editar los siguientes campos: País, Provincia, Cantón, Parroquia, Barrio y Calles.
-•	El sistema DEBE mostrar una opción para [Guardar].
-•	El sistema DEBE mostrar una alerta de guardado exitoso: [Información guardada con éxito].
+•	El sistema DEBE presentar una sección de perfil que muestre: Nombre, Correo, Número de Cédula, Fecha de Nacimiento, Edad, Estado Civil, Ocupación, Número de Teléfono, Usuario de Instagram, Nombre en Facebook y Rol.
+•	El sistema DEBE presentar en la misma sección la información del domicilio: País, Provincia, Cantón, Parroquia, Barrio y Calles.
+•	El sistema DEBE presentar una imagen de perfil por defecto cuando la cuenta no tenga foto.
+•	El sistema DEBE presentar la opción [Editar foto de perfil].
+•	El sistema DEBE ofrecer [Tomar una foto] y [Subir una foto] al editar la foto de perfil.
+•	El sistema DEBE solicitar los permisos de cámara y de acceso a imágenes cuando no los tenga concedidos, y DEBE indicarlo cuando el permiso sea denegado.
+•	El sistema DEBE presentar el mensaje [No se ha seleccionado foto de perfil] cuando se guarde la edición de la foto sin haber elegido una nueva.
+•	El sistema DEBE presentar el mensaje [Foto de perfil actualizada] cuando la foto se haya guardado.
+•	El sistema DEBE presentar la opción [Editar perfil], que abre un formulario para editar: Nombre, Número de Cédula, Fecha de Nacimiento, Estado Civil, Ocupación, Número de Teléfono, Usuario de Instagram (Opcional) y Nombre en Facebook (Opcional).
+•	El sistema NO DEBE permitir editar el correo electrónico ni el rol de la cuenta.
+•	El sistema DEBE recalcular la edad a partir de la fecha de nacimiento al guardar.
+•	El sistema DEBE presentar el mensaje [Complete todos los campos solicitados] cuando existan campos obligatorios vacíos, y NO DEBE guardar.
+•	El sistema DEBE presentar el mensaje [Información guardada] cuando los datos personales se hayan guardado.
+•	El sistema DEBE presentar, a continuación, el formulario de edición del domicilio con los campos: País, Provincia, Cantón, Parroquia, Barrio y Calles.
+•	El sistema DEBE presentar el mensaje [Domicilio actualizado] cuando el domicilio se haya guardado.
+•	El sistema DEBE presentar un mensaje indicando que no se pudo guardar cuando cualquiera de las dos operaciones falle, y DEBE mantener la pantalla abierta.
 
-En el caso del usuario con rol de administrador:
-•	El sistema DEBE presentar una opción dentro de la interfaz para acceder a la lista de todos los usuarios que existen dentro del sistema.
-•	Para cada ítem de la lista, el sistema DEBE presentar su información (HU005), junto con dos opciones para [Editar usuario] y [Eliminar usuario] (HU012).
-•	Cuando se seleccione la opción [Editar usuario], el sistema DEBE presentar la pantalla para visualizar la [Información de perfil] (HU00) 
+En el caso del usuario con rol de Administrador:
+•	El sistema DEBE presentar una opción para acceder a la lista de todos los usuarios registrados.
+•	Para cada usuario de la lista, el sistema DEBE presentar su foto, Nombre, Cédula, Rol y Estado, junto con las opciones [Editar] y [Activar] o [Desactivar] según el estado de la cuenta (HU012).
+•	Al seleccionar [Editar], el sistema DEBE presentar la pantalla de información del perfil del usuario seleccionado.
+•	El sistema DEBE permitir al administrador editar los datos personales de cualquier usuario.
+•	El sistema NO DEBE permitir al administrador editar la foto de perfil ni el domicilio de otro usuario.
 OBSERVACIONES
 •	Debido a que la foto de perfil no es obligatoria, se presentará una imagen básica de perfil en ese espacio.
-•	El Administrador no podrá editar la foto de perfil de los usuarios ni la información del domicilio.
-
+•	El correo electrónico no es editable porque identifica a la cuenta en el servicio de autenticación.
+•	Las cuentas no se eliminan, se desactivan: borrarlas dejaría sin referencia las adopciones, contratos y seguimientos asociados.
 ```
+
+**Notas de la validación.** Los dos puntos de entrada son distintos: el perfil propio es
+`PerfilFragment`, compartido por los tres roles vía `bMPerfil`; el administrador entra por
+`VerUsuariosActivity`, y `ListaUsuariosAdaptador:128` abre `VerInformacionPerfilActivity` con
+`enAdministracion = true`, que solo ofrece editar la información, sin foto.
+
+`EditarInformacionPerfilActivity.editarPerfil:278` guarda exactamente los ocho campos
+editables y recalcula la edad; al guardar navega a `EditarDomicilioActivity`, que escribe en
+`Domicilios`. `EditarFotoPerfilActivity` tiene las dos vías con sus permisos y avisa si se
+guarda sin elegir foto.
+
+Tres cambios de fondo respecto al original:
+
+1. `[Eliminar usuario]` pasó a `[Activar]` / `[Desactivar]`. La aplicación no borra cuentas, y
+   no debe: dejaría sin referencia las adopciones, los contratos y los seguimientos asociados.
+   La confusión viene de los ids del layout, que se llaman `lYBtnEliminarUsuario` e
+   `ivEliminarUsuarioLista` pero muestran «Activar» o «Desactivar».
+2. Se añadieron por escrito los mensajes que el código ya tiene y la historia no recogía:
+   `[Foto de perfil actualizada]`, `[Domicilio actualizado]` y el de fallo.
+3. El criterio de la lista ahora nombra los cuatro campos que realmente muestra —foto,
+   Nombre, Cédula, Rol y Estado— en lugar de «su información» completa.
+
+**Implementado.** El administrador ya no pasa por el formulario de domicilio: al guardar los
+datos de un usuario vuelve a la información de su perfil
+(`EditarInformacionPerfilActivity.cargarInformacionBD`). Se activó el mensaje
+`[Información guardada]`, que estaba escrito y comentado, así que ahora guardar el perfil
+confirma algo. Se quitó el `Toast` de depuración «PROVINCIA BDD…» que se veía al abrir la
+edición del domicilio. Y se unificaron los mensajes de error: «Algo salió mal», «Error al
+obtener el usuario», «Existe campos vacíos» y la errata «No se encontraró el usuario» pasaron
+a `No se pudo obtener la información del perfil`, `No se pudo obtener la información del
+domicilio`, `No se pudo guardar la foto de perfil` y `Complete todos los campos solicitados`
+según la pantalla.
+
+Queda una rama inalcanzable: el `if (enAdministracion)` de `EditarDomicilioActivity` ya no
+puede darse, porque el administrador no llega a esa pantalla. Se dejó como guarda.
 
 ---
 
 ## HU006
 
 ```
+Título: 
+Visualizar información del perfil
+Nro. o Código: 
+HU006	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF004	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO usuario del sistema QUIERO acceder a una sección de información personal PARA visualizar la información que ingresé con anterioridad.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una opción para acceder a la [Información de perfil].
+•	El sistema DEBE presentar dos secciones: [Información personal] e [Información de domicilio].
+•	En la sección [Información personal], el sistema DEBE presentar los siguientes datos: Nombre, Rol en el sistema, Correo, Número de Cédula, Fecha de Nacimiento, Edad, Estado Civil, Ocupación. Número de Teléfono, Usuario de Instagram (Opcional) y Nombre en Facebook (Opcional).
+•	En la sección [Información de domicilio], el sistema DEBE presentar los siguientes datos: País, Provincia, Cantón, Parroquia, Barrio y Calles.
+•	El sistema DEBE presentar una opción para [Editar información].
+•	El sistema DEBE presentar una opción para [Editar foto de perfil].
+
+En el caso del usuario con rol de administrador:
+•	Al seleccionar la opción [Editar] de un ítem de la lista de usuarios, el sistema DEBE presentar la pestaña para [Visualizar la información de perfil].
+•	El sistema DEBE presentar una opción para [Editar información], igual a como funciona cuando se visualiza la información del perfil propio de un usuario.
+OBSERVACIONES
+•	Debido a que la foto de perfil no es obligatoria, se presentará una imagen básica de perfil en ese espacio.
+•	El Administrador no podrá editar la foto de perfil de los usuarios ni la información del domicilio.
 
 ```
 
