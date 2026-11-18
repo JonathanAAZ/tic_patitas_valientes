@@ -231,16 +231,17 @@ public class ControladorMascota {
                         db.collection("Mascotas").document(id).update(mapActualizaciones).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
+                                Toast.makeText(context, "Estado actualizado", Toast.LENGTH_SHORT).show();
                                 controladorUtilidades.reemplazarFragments(R.id.fLFragmentCatalogoMascotas, fragmentManager, new ListaMascotasAdopcionFragment());
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(context, "Error al actualizar estado en la base de datos", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "No se pudo actualizar el estado de la mascota", Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
-                        Toast.makeText(context, "Error al obtener el estado actual de la mascota", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "No se pudo obtener el estado de la mascota", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -299,7 +300,7 @@ public class ControladorMascota {
             @Override
             public void onFailure(@NonNull Exception e) {
                 barra.setVisibility(View.GONE);
-                Toast.makeText(context, "Hubo un error al guardar la información en la base de datos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No se pudo guardar la información de la mascota", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -147,7 +147,6 @@ public class AgregarMascotaFragment extends Fragment {
 //                        : controladorDomicilio.obtenerDomicilioSeleccionado();
 
 
-                Toast.makeText(requireActivity(), "ESTE ES EL DOMICILIO: " + domicilioMascota, Toast.LENGTH_SHORT).show();
 
                 Mascota mascota = new Mascota(estadoObj.ACTIVO.toString(), fotoMascota, nombreMascota, especieMascota, razaMascota, edadMascota, sexoMascota, colorMascota, caracterMascota, domicilioMascota, fechaEsterilizacion, mascotaAdoptada, vacunacionMascota, esterilizacionMascota, desparasitacionMascota);
 
@@ -160,7 +159,7 @@ public class AgregarMascotaFragment extends Fragment {
                 controladorUtilidades.reemplazarEntreFragments(R.id.fLFragmentGestionarMascota, requireActivity().getSupportFragmentManager(), fragment);
 
             } else {
-                Toast.makeText(requireContext(), "Existen campos vacíos o sin seleccionar", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "Complete todos los campos solicitados", Toast.LENGTH_SHORT).show();
             }
 
 //            if (TextUtils.isEmpty(nombreMascota)) {

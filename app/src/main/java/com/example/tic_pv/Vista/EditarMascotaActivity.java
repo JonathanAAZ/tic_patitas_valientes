@@ -398,7 +398,6 @@ public class EditarMascotaActivity extends AppCompatActivity {
 //                    : controladorDomicilio.obtenerDomicilioSeleccionado();
 
 
-//            Toast.makeText(this, "ESTE ES EL DOMICILIO: " + domicilioMascota, Toast.LENGTH_SHORT).show();
 
             Mascota mascota = new Mascota(estadoMascota, fotoMascota, nombreMascota,
                     especieMascota, razaMascota, edadMascota, sexoMascota, colorMascota,
