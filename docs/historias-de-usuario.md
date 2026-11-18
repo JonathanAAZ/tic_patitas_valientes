@@ -19,11 +19,16 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU005 | Editar información del perfil | RF004 | Sí | Nada |
 | HU006 | Visualizar información del perfil | RF004 | Sí | Nada |
 | HU007 | Buscar y filtrar información | RF005 | Sí | Tres defectos en VerMascotasActivity |
-| HU008 – HU030 | *(bloques vacíos listos)* | — | — | — |
+| HU008 | Agregar mascota al catálogo | RF007 | Sí | Límite de 140 caracteres, cadena de depuración, mensaje de campos vacíos |
+| HU009 | Editar mascotas del catálogo | RF008 | Sí | Nada |
+| HU010 | Activar o desactivar mascotas | RF009 | Sí | Falta el mensaje de confirmación y dos avisos de fallo |
+| HU011 | Activar o desactivar usuarios | RF010 | Sí | Nada |
+| HU012 | Asignar seguimientos a voluntarios | RF011 | Sí | Falta la alerta de confirmación; conteo dentro de onBindViewHolder |
+| HU013 – HU030 | *(bloques vacíos listos)* | — | — | — |
 
-Al final del documento hay una **anotación sin número** para la lista de mascotas adoptadas,
-desprendida de HU007: la funcionalidad no está construida y los criterios ya están redactados,
-a falta de asignarle un código.
+Al final del documento hay **dos anotaciones sin número**: el código QR de la mascota,
+desprendido de HU008, y la lista de mascotas adoptadas, desprendida de HU007. Ninguna de las
+dos está construida.
 
 ---
 
@@ -415,43 +420,305 @@ Y los ids del ítem de mascota repiten el problema de la lista de usuarios:
 
 ---
 
-## HU008
+## HU008 — Agregar mascota al catálogo
 
 ```
-
+Título: 
+Agregar mascota al catálogo
+Nro. o Código: 
+HU008	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF007	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO administrador QUIERO agregar una mascota al catálogo PARA que su información se presente a las personas que deseen adoptar.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una opción para acceder a la lista de mascotas registradas (HU007).
+•	El sistema DEBE presentar, dentro de esa lista, una opción para [Agregar mascota].
+•	El sistema DEBE presentar un formulario que contenga los campos: Nombre, Especie, Raza, Edad (Cachorro/Adulto), Sexo (Macho/Hembra), Color, Carácter, Vacunación (Sí/No), Desparasitación (Sí/No), Esterilización (Sí/No) con su fecha, y Domicilio.
+•	El sistema DEBE limitar el campo Carácter a 140 caracteres.
+•	El sistema DEBE permitir seleccionar entre dos domicilios: Refugio y Hogar temporal.
+•	El sistema DEBE permitir seleccionar el voluntario correspondiente cuando el domicilio sea un hogar temporal, y DEBE señalar el campo cuando no se haya seleccionado ninguno.
+•	El sistema DEBE presentar a continuación una pantalla para agregar la foto de la mascota, y DEBE ofrecer [Tomar una foto] y [Subir una foto].
+•	El sistema NO DEBE permitir guardar sin foto, y DEBE indicarlo.
+•	El sistema DEBE presentar el mensaje [Complete todos los campos solicitados] cuando existan campos vacíos o sin seleccionar, y NO DEBE continuar.
+•	El sistema DEBE mostrar una alerta de confirmación o cancelación antes de guardar.
+•	El sistema DEBE presentar el mensaje [Mascota registrada] cuando la mascota se haya guardado, y NO DEBE anunciarlo antes.
+•	El sistema DEBE presentar un mensaje indicando que no se pudo registrar la mascota cuando la operación falle.
+OBSERVACIONES
+•	La generación del código QR no forma parte de esta historia: no está implementada. Ver la anotación al final de este documento.
+•	La mascota se crea en estado Activo y entra en la lista de mascotas en adopción.
 ```
+
+**Notas de la validación.** El recorrido es `ListaMascotasAdopcionFragment` → «Agregar mascota»
+→ `AgregarMascotaFragment` → `AgregarFotoMascotaFragment` → `ControladorMascota`. La alerta de
+confirmación está en `AgregarFotoMascotaFragment:235` («¿Desea guardar la información
+proporcionada?»), el guardado en `ControladorMascota.guardarMascotaEnFirebase:111`, y el aviso
+de éxito es «Mascota registrada» (`:131`), que ya cumple la convención mejor que el
+«Información guardada correctamente» del original.
+
+El formulario tiene **más campos de los que listaba la historia**: además de los tuyos están
+Especie, Raza y la fecha de esterilización. Y el domicilio en la interfaz se llama **Hogar
+temporal**, no «Domicilio de voluntario»; se eligió el nombre de la interfaz para que el
+criterio sea comprobable.
+
+**Dos criterios del original no se cumplen.**
+
+1. **El límite de 140 caracteres no existe.** `eTCaracterMascota` no tiene `maxLength` ni
+   `setFilters`, así que el campo acepta texto sin límite.
+2. **No hay campo de ubicación.** Al elegir hogar temporal solo se selecciona el voluntario de
+   un `Spinner`; no se pide ninguna dirección ni coordenada. El criterio original decía
+   «seleccionar el respectivo voluntario y agregar la ubicación», y la segunda mitad no está.
+   Se reescribió el criterio a lo que sí hace: seleccionar el voluntario y señalar el campo si
+   no se elige.
+
+**El código QR no existe.** `Mascota` tiene el campo `codigoQR` con su getter, su setter y su
+serialización en el `Parcelable`, pero **nadie lo escribe ni lo lee**, y el proyecto no tiene
+ninguna dependencia de generación de códigos (ni ZXing ni equivalente). Es un campo muerto en
+el modelo. Por eso el criterio salió de esta historia y quedó como anotación aparte: es trabajo
+sin empezar, y mezclarlo impediría cerrar HU008.
+
+**Pendiente en el código.** `AgregarMascotaFragment:150` muestra un `Toast` de depuración en
+pantalla, «ESTE ES EL DOMICILIO: …». Y `:163` dice «Existen campos vacíos o sin seleccionar»
+en lugar del mensaje unificado.
+
+La referencia «(HU005)» del original apuntaba al perfil de usuario; la lista de mascotas es
+HU007.
 
 ---
 
-## HU009
+## HU009 — Editar mascotas del catálogo
 
 ```
-
+Título: 
+Editar mascotas del catálogo
+Nro. o Código: 
+HU009	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF008	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO administrador QUIERO acceder a la información de cada mascota PARA editar sus datos y mantenerlos actualizados.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una opción para acceder a la lista de mascotas registradas (HU007).
+•	Para cada ítem de la lista, el sistema DEBE presentar la información de la mascota junto con las opciones [Editar] y [Activar] o [Desactivar] según su estado (HU010).
+•	Al seleccionar [Editar], el sistema DEBE presentar un formulario con la información actual de la mascota ya cargada.
+•	El sistema DEBE permitir editar: Nombre, Especie, Raza, Edad, Sexo, Color, Carácter, Vacunación, Desparasitación, Esterilización con su fecha, y Domicilio.
+•	El sistema DEBE permitir cambiar la foto de la mascota, ofreciendo [Tomar una foto] y [Subir una foto].
+•	El sistema DEBE conservar la foto actual cuando no se seleccione una nueva.
+•	El sistema DEBE presentar el mensaje [Complete todos los campos solicitados] cuando existan campos vacíos, y NO DEBE guardar.
+•	El sistema DEBE presentar el mensaje [Mascota actualizada] cuando los cambios se hayan guardado, y NO DEBE anunciarlo antes.
+•	El sistema DEBE presentar un mensaje indicando que no se pudo guardar cuando la operación falle, y DEBE mantener la pantalla abierta.
+•	El sistema DEBE regresar a la lista de mascotas una vez guardados los cambios.
+OBSERVACIONES
+•	El historial médico —vacunas y desparasitaciones— se registra y edita en su propia pantalla, no en este formulario. Corresponde a otra historia.
+•	La mascota no se elimina: se desactiva. Ver HU010.
 ```
+
+**Notas de la validación.** `EditarMascotaActivity` se abre desde el botón «Editar» del ítem de
+la lista, llega con la información cargada y guarda por `ControladorMascota`, que avisa
+«Mascota actualizada» (`:292`) y vuelve a la lista (`:295`). El mensaje de campos vacíos ya es
+el unificado (`EditarMascotaActivity:418`). La foto se cambia con las dos vías y sus permisos, y
+si no se elige una nueva se conserva la anterior.
+
+**Tres cosas del original que no encajaban.**
+
+1. **No existe el botón [Cancelar].** Lo busqué en `activity_editar_mascota.xml` y no está: se
+   sale con la flecha de regresar. El criterio se quitó; si lo quieres, es añadir el botón.
+2. **El registro de vacunas y desparasitaciones no se edita aquí.** Es el historial médico, que
+   tiene su propia pantalla y su propio flujo. Las dos referencias del original quedaron en
+   «(HU00)» sin número, señal de que todavía no les habías asignado historia. Se movió a
+   observación.
+3. **«Eliminar animal» no existe.** El segundo botón del ítem activa o desactiva según el
+   estado, igual que en la lista de usuarios. Se corrigió el criterio y la referencia, que
+   apuntaba a HU011 cuando la desactivación de mascotas es HU010.
+
+También se ampliaron los campos editables: el formulario permite editar Especie, Raza y la
+fecha de esterilización, que el original no listaba, y la Desparasitación, que tampoco estaba.
+
+La referencia «la información del animal (HU005)» apuntaba al perfil de usuario; es HU007.
 
 ---
 
-## HU010
+## HU010 — Activar o desactivar mascotas del catálogo
 
 ```
-
+Título: 
+Activar o desactivar mascotas del catálogo
+Nro. o Código: 
+HU010	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF009	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO administrador QUIERO retirar del catálogo las mascotas que ya no están disponibles, y volver a publicarlas si lo están PARA que los adoptantes solo vean las que de verdad pueden adoptar.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una opción para acceder a la lista de mascotas registradas (HU007).
+•	Para cada ítem de la lista, el sistema DEBE presentar la información de la mascota junto con las opciones [Editar] (HU009) y [Activar] o [Desactivar] según su estado actual.
+•	El sistema DEBE presentar la opción [Desactivar] cuando la mascota esté Activa, y [Activar] cuando esté Inactiva.
+•	Al seleccionar esa opción, el sistema DEBE mostrar una alerta de confirmación o cancelación que indique cuál de las dos acciones se va a realizar.
+•	El sistema DEBE cambiar el estado de la mascota a Inactivo cuando esté Activa, y a Activo cuando esté Inactiva.
+•	El sistema NO DEBE eliminar el registro de la mascota.
+•	El sistema DEBE presentar el mensaje [Estado actualizado] cuando el cambio se haya guardado.
+•	El sistema DEBE presentar un mensaje indicando que no se pudo actualizar el estado cuando la operación falle.
+•	El sistema DEBE refrescar la lista para reflejar el nuevo estado.
+•	El sistema NO DEBE presentar en el catálogo del adoptante las mascotas que estén Inactivas.
+OBSERVACIONES
+•	El borrado es lógico: la mascota conserva su registro, su historial médico y su relación con adopciones y seguimientos. Eliminarla dejaría esos datos sin referencia.
+•	La acción es reversible, y por eso la historia se titula activar o desactivar en lugar de eliminar.
 ```
+
+**Notas de la validación.** Funciona desde el segundo botón del ítem en
+`ListaMascotasAdopcionAdaptador:134`. La alerta se titula «Confirmar cambio de estado» y el
+texto cambia según el estado actual: «¿Está seguro/a de que desea desactivar esta mascota?» o
+«…activar…» (`:138-140`). El cambio lo hace `ControladorMascota`, que lee el estado actual y lo
+invierte (`:226`), y al terminar recarga `ListaMascotasAdopcionFragment` para que la lista
+refleje el nuevo estado.
+
+**Cambió el título y el fondo de la historia.** El original se llamaba «Eliminar mascota del
+catálogo», pero sus propios criterios decían «DEBE cambiar el estado del animal a Inactivo»:
+describía una desactivación con nombre de borrado. Y la aplicación hace algo más de lo que el
+original recogía — la acción es **reversible**, el mismo botón vuelve a activar. Por eso ahora
+el título y los criterios hablan de activar o desactivar, y se añadió el criterio de que el
+registro no se elimina.
+
+El mensaje `[Se ha eliminado correctamente]` se cambió por `[Estado actualizado]`: sin adverbio
+de relleno, y sobre todo sin decir «eliminado» de algo que sigue existiendo. Es además el
+mismo texto que ya usa la desactivación de usuarios, así que las dos acciones equivalentes
+dicen lo mismo.
+
+**Pendiente en el código.** Ese mensaje **no existe**: al terminar, el controlador recarga el
+fragment en silencio y el administrador no recibe ninguna confirmación. Es la diferencia con
+la desactivación de usuarios, que sí avisa «Estado actualizado». Y los dos avisos de fallo
+usan lenguaje de desarrollador: «Error al actualizar estado en la base de datos» y «Error al
+obtener el estado actual de la mascota» (`ControladorMascota:239` y `:243`).
+
+La referencia «[Editar información] (HU010)» del original se apuntaba a sí misma; editar es
+HU009. Y «la información del animal (HU005)» es HU007.
 
 ---
 
-## HU011
+## HU011 — Activar o desactivar usuarios
 
 ```
-
+Título: 
+Activar o desactivar usuarios
+Nro. o Código: 
+HU011	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF010	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO administrador QUIERO activar y desactivar las cuentas de los usuarios PARA controlar quién puede acceder al sistema.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una opción para acceder a la lista de todos los usuarios registrados (HU007).
+•	Para cada ítem de la lista, el sistema DEBE presentar su información junto con las opciones [Editar] (HU005) y [Activar] o [Desactivar] según el estado de la cuenta.
+•	El sistema DEBE presentar la opción [Desactivar] cuando la cuenta esté Activa, y [Activar] cuando esté Inactiva.
+•	Al seleccionar esa opción, el sistema DEBE mostrar una alerta de confirmación o cancelación que indique cuál de las dos acciones se va a realizar.
+•	El sistema DEBE cambiar el estado de la cuenta a Inactivo cuando esté Activa, y a Activo cuando esté Inactiva.
+•	El sistema NO DEBE eliminar el registro del usuario ni de su cuenta.
+•	El sistema DEBE presentar el mensaje [Estado actualizado] cuando el cambio se haya guardado.
+•	El sistema DEBE presentar un mensaje indicando que no se pudo actualizar el estado cuando la operación falle.
+•	El sistema DEBE refrescar la lista para reflejar el nuevo estado.
+•	El sistema NO DEBE permitir iniciar sesión a una cuenta Inactiva, y DEBE indicar que la cuenta está desactivada (HU001).
+OBSERVACIONES
+•	El borrado es lógico: la cuenta conserva su registro y su relación con adopciones, contratos y seguimientos. Eliminarla dejaría esos datos sin referencia.
+•	Un voluntario desactivado deja de aparecer en la lista de voluntarios a los que se puede asignar un seguimiento (HU012).
 ```
+
+**Notas de la validación.** Es la historia que llega más entera. Funciona desde el segundo
+botón del ítem en `ListaUsuariosAdaptador:138`: el texto del botón cambia entre «Activar» y
+«Desactivar» según el estado y el icono y el color cambian con él (`:89-95`), la alerta avisa
+«¿Está seguro/a de que desea desactivar este usuario?» o «…activar…» (`:143-144`), y al
+terminar muestra «Estado actualizado» (`:155`). El bloqueo en el inicio de sesión ya estaba
+verificado en HU001.
+
+**El mensaje del original estaba equivocado.** Decía `[Se ha eliminado correctamente]`, que
+parece copiado de la historia de la mascota: ni se elimina nada ni la operación es siempre una
+desactivación —el mismo botón también activa—. El código ya dice lo correcto.
+
+Se añadieron dos criterios que el original no recogía y el código sí cumple: que el registro no
+se elimina, y que una cuenta inactiva no puede iniciar sesión. El segundo es lo que le da
+sentido a toda la historia; sin él, desactivar no se nota en ninguna parte.
+
+Las referencias del original estaban desplazadas: «su información (HU005)» es la lista de
+usuarios, HU007; y «[Editar usuario] (HU004)» es HU005, porque HU004 pasó a ser el cambio de
+contraseña.
+
+**Nada pendiente en el código para esta historia.**
 
 ---
 
-## HU012
+## HU012 — Asignar seguimientos a voluntarios
 
 ```
-
+Título: 
+Asignar seguimientos a voluntarios
+Nro. o Código: 
+HU012	Prioridad:
+Media	Estimación:
+	Ref. Requerimiento:
+RF011	Fecha de creación: 
+01/05/2024
+HISTORIA DE USUARIO
+COMO administrador QUIERO asignar los seguimientos a un voluntario en concreto PARA que alguien supervise el estado de cada mascota adoptada.
+CRITERIOS DE ACEPTACIÓN
+•	El sistema DEBE presentar una opción para [Gestionar seguimientos].
+•	El sistema DEBE presentar la lista de los voluntarios con cuenta activa.
+•	Cada ítem de la lista DEBE mostrar: Foto de perfil, Nombre, Número de Cédula y Cantidad de seguimientos asignados, junto con la opción [Ver seguimientos].
+•	Al seleccionar [Ver seguimientos], el sistema DEBE presentar una pantalla con dos opciones: [Asignar seguimientos], que lista los seguimientos sin voluntario, y [Seguimientos asignados], que lista los de ese voluntario.
+•	Cada ítem de la lista de seguimientos disponibles DEBE mostrar: Foto del adoptante, Nombre del adoptante, Nombre de la mascota y la opción [Asignar al voluntario].
+•	Al seleccionar [Asignar al voluntario], el sistema DEBE mostrar una alerta de confirmación o cancelación.
+•	El sistema DEBE asignar el seguimiento al voluntario seleccionado.
+•	El sistema DEBE presentar el mensaje [Seguimiento asignado] cuando la asignación se haya guardado, y NO DEBE anunciarlo antes.
+•	El sistema DEBE enviar una notificación al voluntario al que se le asignó el seguimiento.
+•	El sistema DEBE actualizar las dos listas tras la asignación, de modo que el seguimiento salga de los disponibles y aparezca en los del voluntario.
+•	El sistema DEBE presentar un mensaje indicando que no se pudo asignar el seguimiento cuando la operación falle.
+OBSERVACIONES
+•	Solo se listan los voluntarios con cuenta activa: un voluntario desactivado (HU011) no puede recibir seguimientos.
+•	La lista de seguimientos del voluntario ofrece además [Quitar seguimiento], que lo devuelve a los disponibles. Eso es la reasignación y corresponde a otra historia.
+•	Los recordatorios del plan de seguimiento llegan al voluntario asignado, no al adoptante.
 ```
+
+**Notas de la validación.** El recorrido completo existe: `GestionarSeguimientosActivity` lista
+los voluntarios, `SeguimientosVoluntarioActivity` presenta las dos listas con sus dos botones
+—«Asignar seguimientos» y «Seguimientos asignados», sobre `recyViewAsignarSegui` y
+`recyViewSeguiAsignados`—, y `ControladorSeguimiento.asignarSeguimientoVoluntario:784` hace la
+asignación, avisa «Seguimiento asignado» (`:813`) y **envía la notificación** al voluntario con
+`enviarNotificacionAsignacionSeguimiento`. El ítem del voluntario muestra foto, nombre, cédula
+y el número de seguimientos; el del seguimiento disponible muestra foto del adoptante, nombre y
+mascota, con «Asignar al voluntario».
+
+**Dos cosas del original que no coincidían.**
+
+1. **No existe el campo Apellido.** El modelo `Usuario` guarda un único campo `nombre`; no hay
+   `apellido` en ningún modelo del proyecto. El criterio se ajustó a los cuatro datos que la
+   lista muestra de verdad.
+2. **La lista no es de «todos los voluntarios».** `GestionarSeguimientosActivity` filtra por
+   rol Voluntario **y estado activo** (`:95-96`), así que un voluntario desactivado no aparece.
+   Es coherente con HU011 y es mejor que lo escrito, así que se recogió como criterio.
+
+**Pendiente en el código: falta la alerta de confirmación.** `ListaSeguimientosAdaptador:136`
+llama directo a `asignarSeguimientoVoluntario` en cuanto se pulsa el botón. No hay
+`crearAlertaConfirmacion` por medio, de modo que un toque accidental asigna el seguimiento y
+dispara la notificación al voluntario, sin vuelta atrás salvo quitarlo a mano. Es el criterio
+`[¿Seguro que desea asignar este seguimiento a este voluntario?]` del original, y conviene
+ponerlo justamente porque la acción notifica a otra persona.
+
+> **Y un defecto de la lista de voluntarios que conviene arreglar aparte.**
+> `ListaUsuariosSeguimientosAdaptador.onBindViewHolder` **consulta Firestore** para contar los
+> seguimientos de cada voluntario: una lectura por fila, cada vez que la fila entra en
+> pantalla, que es exactamente lo que el CLAUDE.md prohíbe. Además pinta dentro del callback
+> usando el `position` capturado en lugar de `getAbsoluteAdapterPosition()`, así que si la fila
+> se recicla antes de que llegue la respuesta se escriben los datos del voluntario equivocado;
+> la foto no tiene el `else` de reserva; y si la consulta falla no se pinta nada, de modo que
+> la fila conserva el nombre, la cédula y el número del voluntario anterior. El conteo debería
+> resolverse de una sola vez en el controlador y pasarse ya hecho al adaptador. También infla
+> el ítem con `null` en lugar de con el `parent`, así que se pierden los `LayoutParams`.
 
 ---
 
@@ -596,6 +863,34 @@ Y los ids del ítem de mascota repiten el problema de la lista de usuarios:
 ```
 
 ```
+
+---
+
+## Anotación — Código QR de la mascota (pendiente de número)
+
+Desprendida de HU008 al validarla, **sin número asignado**. La generación del código QR no
+está implementada en absoluto.
+
+**Estado en el código.** `Modelo/Mascota.java` declara el campo `codigoQR` con su getter, su
+setter y su serialización en el `Parcelable` (líneas 18, 64, 92 y 201-207), pero **ningún otro
+archivo del proyecto lo escribe ni lo lee**, y no hay ninguna dependencia de generación de
+códigos —ni ZXing ni equivalente— en `app/build.gradle`. Es un campo muerto en el modelo: se
+guarda vacío en Firestore y nunca se usa.
+
+Antes de redactar la historia conviene decidir tres cosas, porque cambian los criterios por
+completo:
+
+1. **Qué contiene el QR.** El id del documento de la mascota, una URL a una pantalla de la app,
+   o un enlace web. Si es un enlace, hace falta decidir a dónde apunta cuando quien lo escanea
+   no tiene la aplicación instalada.
+2. **Quién lo escanea y para qué.** No es lo mismo un QR para que el refugio identifique a la
+   mascota en una ficha impresa, que uno para que un adoptante potencial abra su información
+   desde un cartel.
+3. **Dónde se ve y si se puede guardar o imprimir.** Generarlo sin una pantalla donde
+   mostrarlo y una forma de exportarlo no sirve de nada.
+
+Hasta que eso esté decidido, el criterio «El sistema DEBE generar el código QR una vez que se
+haya guardado la información» no es comprobable: no dice qué codifica ni dónde aparece.
 
 ---
 
