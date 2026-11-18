@@ -22,15 +22,19 @@ public class VerMascotasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_ver_mascotas);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+        // Un solo setContentView, y con el binding: antes se inflaba una segunda copia del
+        // layout que nunca se mostraba, así que cualquier binding.algo tocaba vistas invisibles
+        binding = ActivityVerMascotasBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        binding = ActivityVerMascotasBinding.inflate(getLayoutInflater());
-
+        binding.iVRegresarVerMascotas.setOnClickListener(v -> finish());
 
         controladorUtilidades.reemplazarFragments(R.id.fLFragmentCatalogoMascotas, getSupportFragmentManager(), new ListaMascotasAdopcionFragment());
 
