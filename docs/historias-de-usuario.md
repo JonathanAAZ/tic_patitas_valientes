@@ -18,12 +18,12 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU004 | Cambiar contraseña | RF003 | Sí | Nada |
 | HU005 | Editar información del perfil | RF004 | Sí | Nada |
 | HU006 | Visualizar información del perfil | RF004 | Sí | Nada |
-| HU007 | Buscar y filtrar información | RF005 | Sí | Tres defectos en VerMascotasActivity |
-| HU008 | Agregar mascota al catálogo | RF007 | Sí | Límite de 140 caracteres, cadena de depuración, mensaje de campos vacíos |
+| HU007 | Buscar y filtrar información | RF005 | Sí | Nada |
+| HU008 | Agregar mascota al catálogo | RF007 | Sí | Nada |
 | HU009 | Editar mascotas del catálogo | RF008 | Sí | Nada |
-| HU010 | Activar o desactivar mascotas | RF009 | Sí | Falta el mensaje de confirmación y dos avisos de fallo |
+| HU010 | Activar o desactivar mascotas | RF009 | Sí | Nada |
 | HU011 | Activar o desactivar usuarios | RF010 | Sí | Nada |
-| HU012 | Asignar seguimientos a voluntarios | RF011 | Sí | Falta la alerta de confirmación; conteo dentro de onBindViewHolder |
+| HU012 | Asignar seguimientos a voluntarios | RF011 | Sí | Nada |
 | HU013 – HU030 | *(bloques vacíos listos)* | — | — | — |
 
 Al final del documento hay **dos anotaciones sin número**: el código QR de la mascota,
@@ -403,16 +403,20 @@ muestra cinco campos, no cuatro: también el Estado de la cuenta.
 > cédula». Si quieres el comportamiento literal, es unir los dos resultados en lugar de
 > encadenarlos.
 
-**Pendiente en el código: `VerMascotasActivity` tiene tres defectos de la lista de «errores a
-NO repetir».**
+**Implementado: `VerMascotasActivity` tenía tres defectos de la lista de «errores a NO
+repetir».**
 
-1. `setContentView(R.layout.activity_ver_mascotas)` en la línea 25 y después
-   `ActivityVerMascotasBinding.inflate(...)` en la 32, **sin** `setContentView(binding.getRoot())`.
-   El binding infla una segunda copia del layout que nunca se muestra, de modo que cualquier
-   `binding.algo` manipularía vistas invisibles. Hoy no se nota porque el único uso del binding
-   es la propia asignación.
-2. Los insets se aplican sobre `findViewById(R.id.main)` en lugar de `binding.main`.
-3. `iVRegresarVerMascotas` no tiene listener: la flecha de regresar no hace nada.
+1. `setContentView(R.layout.activity_ver_mascotas)` y después
+   `ActivityVerMascotasBinding.inflate(...)` **sin** `setContentView(binding.getRoot())`. El
+   binding inflaba una segunda copia del layout que nunca se mostraba, de modo que cualquier
+   `binding.algo` habría manipulado vistas invisibles. No se notaba porque el único uso del
+   binding era la propia asignación. Ahora hay un solo `setContentView`, con el binding.
+2. Los insets se aplicaban sobre `findViewById(R.id.main)`; ahora sobre `binding.main`.
+3. `iVRegresarVerMascotas` no tenía listener y la flecha de regresar no hacía nada; ya cierra
+   la pantalla.
+
+Sigue pendiente, y es la anotación del final: el botón «Lista de mascotas adoptadas» continúa
+sin listener, porque la lista que debería abrir no existe.
 
 Y los ids del ítem de mascota repiten el problema de la lista de usuarios:
 `ivEliminarMascotaLista` y `lYBtnEliminarMascota` dicen *eliminar* y el texto que muestran es
@@ -463,10 +467,11 @@ Especie, Raza y la fecha de esterilización. Y el domicilio en la interfaz se ll
 temporal**, no «Domicilio de voluntario»; se eligió el nombre de la interfaz para que el
 criterio sea comprobable.
 
-**Dos criterios del original no se cumplen.**
+**Un criterio del original no se podía cumplir, y otro estaba desajustado.**
 
-1. **El límite de 140 caracteres no existe.** `eTCaracterMascota` no tiene `maxLength` ni
-   `setFilters`, así que el campo acepta texto sin límite.
+1. **El límite del campo Carácter existía, pero en 150.** `eTCaracterMascota` ya tenía
+   `android:maxLength`, con el valor equivocado. Se ajustó a 140 en los dos formularios, el de
+   agregar y el de editar, para que coincida con el criterio.
 2. **No hay campo de ubicación.** Al elegir hogar temporal solo se selecciona el voluntario de
    un `Spinner`; no se pide ninguna dirección ni coordenada. El criterio original decía
    «seleccionar el respectivo voluntario y agregar la ubicación», y la segunda mitad no está.
@@ -479,9 +484,10 @@ ninguna dependencia de generación de códigos (ni ZXing ni equivalente). Es un 
 el modelo. Por eso el criterio salió de esta historia y quedó como anotación aparte: es trabajo
 sin empezar, y mezclarlo impediría cerrar HU008.
 
-**Pendiente en el código.** `AgregarMascotaFragment:150` muestra un `Toast` de depuración en
-pantalla, «ESTE ES EL DOMICILIO: …». Y `:163` dice «Existen campos vacíos o sin seleccionar»
-en lugar del mensaje unificado.
+**Implementado.** El límite pasó de 150 a 140 caracteres. Se quitó el `Toast` de depuración
+«ESTE ES EL DOMICILIO: …» que `AgregarMascotaFragment` mostraba en pantalla, y el mensaje de
+campos vacíos pasó de «Existen campos vacíos o sin seleccionar» a `Complete todos los campos
+solicitados`.
 
 La referencia «(HU005)» del original apuntaba al perfil de usuario; la lista de mascotas es
 HU007.
@@ -590,11 +596,13 @@ de relleno, y sobre todo sin decir «eliminado» de algo que sigue existiendo. E
 mismo texto que ya usa la desactivación de usuarios, así que las dos acciones equivalentes
 dicen lo mismo.
 
-**Pendiente en el código.** Ese mensaje **no existe**: al terminar, el controlador recarga el
-fragment en silencio y el administrador no recibe ninguna confirmación. Es la diferencia con
-la desactivación de usuarios, que sí avisa «Estado actualizado». Y los dos avisos de fallo
-usan lenguaje de desarrollador: «Error al actualizar estado en la base de datos» y «Error al
-obtener el estado actual de la mascota» (`ControladorMascota:239` y `:243`).
+**Implementado.** Ese mensaje no existía: al terminar, el controlador recargaba el fragment en
+silencio y el administrador no recibía ninguna confirmación, a diferencia de la desactivación
+de usuarios. Ya muestra `Estado actualizado`, el mismo texto que la de usuarios. Y los dos
+avisos de fallo, que decían «Error al actualizar estado en la base de datos» y «Error al
+obtener el estado actual de la mascota», pasaron a `No se pudo actualizar el estado de la
+mascota` y `No se pudo obtener el estado de la mascota`. De paso, «Hubo un error al guardar la
+información en la base de datos» pasó a `No se pudo guardar la información de la mascota`.
 
 La referencia «[Editar información] (HU010)» del original se apuntaba a sí misma; editar es
 HU009. Y «la información del animal (HU005)» es HU007.
@@ -702,23 +710,27 @@ mascota, con «Asignar al voluntario».
    rol Voluntario **y estado activo** (`:95-96`), así que un voluntario desactivado no aparece.
    Es coherente con HU011 y es mejor que lo escrito, así que se recogió como criterio.
 
-**Pendiente en el código: falta la alerta de confirmación.** `ListaSeguimientosAdaptador:136`
-llama directo a `asignarSeguimientoVoluntario` en cuanto se pulsa el botón. No hay
-`crearAlertaConfirmacion` por medio, de modo que un toque accidental asigna el seguimiento y
-dispara la notificación al voluntario, sin vuelta atrás salvo quitarlo a mano. Es el criterio
-`[¿Seguro que desea asignar este seguimiento a este voluntario?]` del original, y conviene
-ponerlo justamente porque la acción notifica a otra persona.
+**La alerta de confirmación sí existe.** `ListaSeguimientosAdaptador` la monta con
+`crearAlertaPersonalizada` y conecta los botones a mano, en lugar de usar
+`crearAlertaConfirmacion`: el mensaje es «¿Seguro que desea asignar este seguimiento a
+⟨nombre⟩?» y la asignación solo ocurre al pulsar Aceptar. El criterio se cumple.
 
-> **Y un defecto de la lista de voluntarios que conviene arreglar aparte.**
-> `ListaUsuariosSeguimientosAdaptador.onBindViewHolder` **consulta Firestore** para contar los
-> seguimientos de cada voluntario: una lectura por fila, cada vez que la fila entra en
-> pantalla, que es exactamente lo que el CLAUDE.md prohíbe. Además pinta dentro del callback
-> usando el `position` capturado en lugar de `getAbsoluteAdapterPosition()`, así que si la fila
-> se recicla antes de que llegue la respuesta se escriben los datos del voluntario equivocado;
-> la foto no tiene el `else` de reserva; y si la consulta falla no se pinta nada, de modo que
-> la fila conserva el nombre, la cédula y el número del voluntario anterior. El conteo debería
-> resolverse de una sola vez en el controlador y pasarse ya hecho al adaptador. También infla
-> el ítem con `null` en lugar de con el `parent`, así que se pierden los `LayoutParams`.
+**Implementado: el conteo salió de `onBindViewHolder`.** El adaptador de la lista de
+voluntarios consultaba Firestore para contar los seguimientos de cada uno: una lectura por
+fila, cada vez que la fila entraba en pantalla, que es justo lo que el CLAUDE.md prohíbe.
+Además pintaba dentro del callback con el `position` capturado, así que si la fila se reciclaba
+antes de llegar la respuesta se escribían los datos del voluntario equivocado; la foto no tenía
+el `else` de reserva; y si la consulta fallaba no se pintaba nada, de modo que la fila
+conservaba el nombre, la cédula y el número del voluntario anterior.
+
+Ahora `ControladorSeguimiento.contarSeguimientosPorVoluntario` cuenta todo en **una sola
+consulta** y devuelve un mapa por id de voluntario;  `GestionarSeguimientosActivity` lo pide
+antes de armar el adaptador y se lo pasa hecho. `onBindViewHolder` pinta síncrono, con el
+`else` de la foto, y si el conteo falla la lista se pinta con cero en lugar de quedarse vacía.
+El ítem se infla con el `parent`, no con `null`, para que respete los `LayoutParams`.
+
+También se corrigió el aviso de fallo de la asignación, que decía «Error al asignar el
+seguimiento.».
 
 ---
 
