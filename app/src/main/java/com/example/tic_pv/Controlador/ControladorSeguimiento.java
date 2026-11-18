@@ -147,6 +147,28 @@ public class ControladorSeguimiento {
         void onError(Exception e);
     }
 
+    // Cuenta de una sola vez los seguimientos de cada voluntario y devuelve el resultado
+    // indexado por id. La lista de voluntarios lo necesita para pintar la cantidad sin
+    // consultar Firestore fila a fila, que es lo que hacía antes dentro de onBindViewHolder.
+    public void contarSeguimientosPorVoluntario(Callback<HashMap<String, Integer>> callback) {
+        db.collection("Seguimientos").get()
+                .addOnSuccessListener(querySnapshot -> {
+                    HashMap<String, Integer> cantidades = new HashMap<>();
+
+                    for (DocumentSnapshot documento : querySnapshot.getDocuments()) {
+                        String idVoluntario = documento.getString("idVoluntario");
+                        if (idVoluntario == null || idVoluntario.isEmpty()) {
+                            continue;
+                        }
+                        Integer acumulado = cantidades.get(idVoluntario);
+                        cantidades.put(idVoluntario, acumulado == null ? 1 : acumulado + 1);
+                    }
+
+                    callback.onComplete(cantidades);
+                })
+                .addOnFailureListener(callback::onError);
+    }
+
     public void obtenerSeguimientosDisponibles(Callback<ArrayList<Seguimiento>> seguimientosCallback) {
         db.collection("Seguimientos").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -830,7 +852,7 @@ public class ControladorSeguimiento {
                                         });
                                     })
                                     .addOnFailureListener(e ->
-                                            Toast.makeText(context, "Error al asignar el seguimiento.", Toast.LENGTH_SHORT).show());
+                                            Toast.makeText(context, "No se pudo asignar el seguimiento", Toast.LENGTH_SHORT).show());
                         } else {
                             // Ya tiene voluntario asignado
                             Toast.makeText(context, "Este seguimiento ya tiene voluntario asignado.", Toast.LENGTH_SHORT).show();
@@ -898,7 +920,7 @@ public class ControladorSeguimiento {
                                         });
                                     })
                                     .addOnFailureListener(e ->
-                                            Toast.makeText(context, "Error al asignar el seguimiento.", Toast.LENGTH_SHORT).show());
+                                            Toast.makeText(context, "No se pudo asignar el seguimiento", Toast.LENGTH_SHORT).show());
 
                         } else {
                             Log.e("FIRESTORE", "Seguimiento no encontrado.");

@@ -20,9 +20,9 @@ import com.example.tic_pv.Modelo.EstadosCuentas;
 import com.example.tic_pv.Modelo.Usuario;
 import com.example.tic_pv.R;
 import com.example.tic_pv.Vista.SeguimientosVoluntarioActivity;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListaUsuariosSeguimientosAdaptador extends RecyclerView.Adapter<ListaUsuariosSeguimientosAdaptador.UsuarioViewHolder> {
     private EstadosCuentas estadosCuentas;
@@ -30,8 +30,8 @@ public class ListaUsuariosSeguimientosAdaptador extends RecyclerView.Adapter<Lis
     private ArrayList<CuentaUsuario> listaCuentas;
     private ArrayList<Usuario> listaUsuariosOriginal;
     private ArrayList<CuentaUsuario> listaCuentasOriginal;
+    private HashMap<String, Integer> cantidadSeguimientos;
     private ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public ArrayList<Usuario> getListaUsuarios() {
         return listaUsuarios;
@@ -49,9 +49,11 @@ public class ListaUsuariosSeguimientosAdaptador extends RecyclerView.Adapter<Lis
         this.listaCuentas = listaCuentas;
     }
 
-    public ListaUsuariosSeguimientosAdaptador(ArrayList<Usuario> listaUsuarios, ArrayList<CuentaUsuario> listaCuentas) {
+    public ListaUsuariosSeguimientosAdaptador(ArrayList<Usuario> listaUsuarios, ArrayList<CuentaUsuario> listaCuentas,
+                                              HashMap<String, Integer> cantidadSeguimientos) {
         this.listaUsuarios = listaUsuarios;
         this.listaCuentas = listaCuentas;
+        this.cantidadSeguimientos = cantidadSeguimientos != null ? cantidadSeguimientos : new HashMap<>();
         listaUsuariosOriginal = new ArrayList<>();
         listaUsuariosOriginal.addAll(listaUsuarios);
 
@@ -62,31 +64,34 @@ public class ListaUsuariosSeguimientosAdaptador extends RecyclerView.Adapter<Lis
     @NonNull
     @Override
     public UsuarioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.lista_item_voluntarios_seguimiento, null, false);
+        // Con el parent, para que el ítem respete los LayoutParams del RecyclerView
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.lista_item_voluntarios_seguimiento, parent, false);
         return new UsuarioViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull UsuarioViewHolder holder, int position) {
 
-        db.collection("Seguimientos")
-                .whereEqualTo("idVoluntario", listaCuentas.get(position).getIdCuenta())
-                .get()
-                .addOnSuccessListener(querySnapshot -> {
-                    int cantidad = querySnapshot.size();
-                    controladorUtilidades.insertarImagenDesdeBDD(listaCuentas.get(position).getFotoPerfil(),
-                            holder.iVFotoVoluntario,
-                            holder.itemView.getContext());
-                    holder.tVNombreVoluntario.setText(listaUsuarios.get(position).getNombre());
-                    holder.tVCedulaVoluntario.setText(listaUsuarios.get(position).getCedula());
-                    holder.tVNroSeguimientos.setText(String.valueOf(cantidad));
+        CuentaUsuario cuenta = listaCuentas.get(position);
 
-                })
-                .addOnFailureListener(e -> {
-                    Log.e("ERROR", "Error al contar seguimientos: " + e.getMessage());
-                });
+        // La cantidad viene contada de una sola vez desde el controlador. Antes se consultaba
+        // Firestore aquí, lo que suponía una lectura por fila en cada scroll y datos cruzados
+        // cuando la respuesta llegaba después de reciclarse la fila.
+        Integer cantidad = cantidadSeguimientos.get(cuenta.getIdCuenta());
+        holder.tVNroSeguimientos.setText(String.valueOf(cantidad == null ? 0 : cantidad));
 
+        holder.tVNombreVoluntario.setText(listaUsuarios.get(position).getNombre());
+        holder.tVCedulaVoluntario.setText(listaUsuarios.get(position).getCedula());
 
+        String fotoPerfil = cuenta.getFotoPerfil();
+        if (fotoPerfil != null && !fotoPerfil.isEmpty()) {
+            controladorUtilidades.insertarImagenDesdeBDD(fotoPerfil,
+                    holder.iVFotoVoluntario,
+                    holder.itemView.getContext());
+        } else {
+            holder.iVFotoVoluntario.setImageResource(R.drawable.logo_patitas_valientes);
+        }
     }
 
     @Override

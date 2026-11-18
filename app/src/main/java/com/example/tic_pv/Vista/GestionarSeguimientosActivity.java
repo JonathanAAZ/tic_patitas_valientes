@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.tic_pv.Adaptadores.ListaUsuariosAdaptador;
 import com.example.tic_pv.Adaptadores.ListaUsuariosSeguimientosAdaptador;
+import com.example.tic_pv.Controlador.ControladorSeguimiento;
 import com.example.tic_pv.Controlador.ControladorUsuario;
 import com.example.tic_pv.Modelo.CuentaUsuario;
 import com.example.tic_pv.Modelo.EstadosCuentas;
@@ -29,6 +30,7 @@ public class GestionarSeguimientosActivity extends AppCompatActivity {
 
     private ActivityGestionarSeguimientosBinding binding;
     private final ControladorUsuario controladorUsuario = new ControladorUsuario();
+    private final ControladorSeguimiento controladorSeguimiento = new ControladorSeguimiento();
     private ArrayList<Usuario> listaVoluntarios = new ArrayList<>();
     private HashMap<String, CuentaUsuario> hashCuentas = new HashMap<>();
     private ArrayList<CuentaUsuario> listaCuentas = new ArrayList<>();
@@ -87,16 +89,16 @@ public class GestionarSeguimientosActivity extends AppCompatActivity {
 
         for (Usuario usuario : listaVoluntarios) {
             // Validar si la cuenta existe en el mapa
-            if (hashCuentas.containsKey(usuario.getCuenta())) {
-                CuentaUsuario cuenta = hashCuentas.get(usuario.getCuenta());
+            CuentaUsuario cuenta = hashCuentas.get(usuario.getCuenta());
+            if (cuenta == null) {
+                continue;
+            }
 
-                // Filtrar usuarios cuyo rol sea "Voluntario"
-                assert cuenta != null;
-                if ("Voluntario".equalsIgnoreCase(cuenta.getRol()) &&
-                        EstadosCuentas.ACTIVO.toString().equalsIgnoreCase(cuenta.getEstadoCuenta())) {
-                    usuariosFiltrados.add(usuario);
-                    cuentasFiltradas.add(cuenta);
-                }
+            // Filtrar usuarios cuyo rol sea "Voluntario" y tengan la cuenta activa
+            if ("Voluntario".equalsIgnoreCase(cuenta.getRol()) &&
+                    EstadosCuentas.ACTIVO.toString().equalsIgnoreCase(cuenta.getEstadoCuenta())) {
+                usuariosFiltrados.add(usuario);
+                cuentasFiltradas.add(cuenta);
             }
         }
 
@@ -107,14 +109,32 @@ public class GestionarSeguimientosActivity extends AppCompatActivity {
         listaCuentas.clear();
         listaCuentas.addAll(cuentasFiltradas);
 
+        // Los seguimientos de cada voluntario se cuentan de una sola vez antes de armar el
+        // adaptador, para que el ítem no tenga que consultarlos fila a fila
+        controladorSeguimiento.contarSeguimientosPorVoluntario(
+                new ControladorSeguimiento.Callback<HashMap<String, Integer>>() {
+                    @Override
+                    public void onComplete(HashMap<String, Integer> result) {
+                        presentarAdaptadorVoluntarios(result);
+                    }
 
-        // Configurar el adaptador con las listas filtradas
+                    @Override
+                    public void onError(Exception e) {
+                        // Sin el conteo la lista sigue siendo útil: se pinta con cero
+                        Log.e("ERROR", "No se pudieron contar los seguimientos por voluntario");
+                        presentarAdaptadorVoluntarios(new HashMap<>());
+                    }
+                });
+    }
+
+    private void presentarAdaptadorVoluntarios(HashMap<String, Integer> cantidadSeguimientos) {
         binding.recyViewVoluntarios.setLayoutManager(new LinearLayoutManager(this));
 
-        adaptadorVoluntarios = new ListaUsuariosSeguimientosAdaptador(listaVoluntarios, listaCuentas);
+        adaptadorVoluntarios = new ListaUsuariosSeguimientosAdaptador(listaVoluntarios, listaCuentas,
+                cantidadSeguimientos);
         binding.recyViewVoluntarios.setAdapter(adaptadorVoluntarios);
 
-        if (listaVoluntarios.size() <= 0 && listaCuentas.size() <= 0) {
+        if (listaVoluntarios.isEmpty() && listaCuentas.isEmpty()) {
             binding.tVNoHayVoluntarios.setVisibility(View.VISIBLE);
         } else {
             binding.tVNoHayVoluntarios.setVisibility(View.GONE);
