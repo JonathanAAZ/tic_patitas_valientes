@@ -1591,10 +1591,12 @@ si quieres usar los bloques HU028 a HU030:
 - **Finalizar el seguimiento** (CU-VOL08). HU022 cubre el retiro, que es la salida excepcional,
   pero no la normal: cuando el voluntario da el seguimiento por terminado y el chat se cierra
   con estado Completada.
-- **Cerrar sesión.** El botón está en la barra superior de `activity_bottom_navigation_menu.xml`,
-  así que lo ven los tres roles desde cualquier pestaña, y no tiene historia. Conviene que la
-  tenga, porque ahora hace tres cosas que hay que poder comprobar: libera el token del
-  dispositivo, olvida el rol guardado y vacía la pila de pantallas.
+
+Y una que **se queda sin historia a propósito**, por decisión tomada: **cerrar sesión**. El
+botón está en la barra superior de `activity_bottom_navigation_menu.xml`, de modo que lo ven los
+tres roles desde cualquier pestaña, y hace tres cosas: libera el token del dispositivo, olvida
+el rol guardado y vacía la pila de pantallas. No hay que redactarle historia ni volver a
+listarlo como pendiente.
 
 Y hay tres cosas sin número, cada una en su anotación o en su historia:
 
