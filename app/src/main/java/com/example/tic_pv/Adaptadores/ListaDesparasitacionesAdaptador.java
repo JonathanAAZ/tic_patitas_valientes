@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -96,11 +97,15 @@ public void setIdMascota(String idMascota) {
                     public void onComplete(Boolean result) {
                         dialog.dismiss();
                         eliminarItem(getBindingAdapterPosition());
+                        Toast.makeText(itemView.getContext(), "Desparasitación eliminada", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Exception e) {
-                        Log.e("REALTIME", "Error al eliminar el historial médico");
+                        // La fila no se quita: si el borrado falló, el registro sigue ahí
+                        dialog.dismiss();
+                        Toast.makeText(itemView.getContext(), "No se pudo eliminar la desparasitación", Toast.LENGTH_SHORT).show();
+                        Log.e("REALTIME", "Error al eliminar la desparasitación");
                     }
                 });
             });

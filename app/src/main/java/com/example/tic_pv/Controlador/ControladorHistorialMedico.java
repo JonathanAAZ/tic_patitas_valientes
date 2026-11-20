@@ -156,7 +156,10 @@ public class ControladorHistorialMedico {
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@androidx.annotation.NonNull Exception e) {
-                        Log.e("REALTIME", "Error al eliminar la vacuna");
+                        // Hay que avisar a quien llamó: antes el fallo solo se registraba en
+                        // el log y la pantalla quitaba la fila como si se hubiera borrado
+                        Log.e("REALTIME", "Error al eliminar el registro del historial médico");
+                        callback.onError(e);
                     }
                 });
     }

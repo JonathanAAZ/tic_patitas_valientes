@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -100,11 +101,15 @@ public class ListaVacunasAdaptador extends RecyclerView.Adapter<ListaVacunasAdap
                     public void onComplete(Boolean result) {
                         dialog.dismiss();
                         eliminarItem(getBindingAdapterPosition());
+                        Toast.makeText(itemView.getContext(), "Vacuna eliminada", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onError(Exception e) {
-                        Log.e("REALTIME", "Error al eliminar el historial médico");
+                        // La fila no se quita: si el borrado falló, el registro sigue ahí
+                        dialog.dismiss();
+                        Toast.makeText(itemView.getContext(), "No se pudo eliminar la vacuna", Toast.LENGTH_SHORT).show();
+                        Log.e("REALTIME", "Error al eliminar la vacuna");
                     }
                 });
             });
