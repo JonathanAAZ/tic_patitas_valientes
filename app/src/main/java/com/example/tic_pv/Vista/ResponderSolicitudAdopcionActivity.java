@@ -117,7 +117,7 @@ public class ResponderSolicitudAdopcionActivity extends AppCompatActivity {
                                 binding.lLBarraProgresoResponderAdopcion,
                                 ResponderSolicitudAdopcionActivity.this);
                     }).addOnFailureListener(e -> {
-                        Toast.makeText(ResponderSolicitudAdopcionActivity.this, "Error al obtener la firma del administrador", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ResponderSolicitudAdopcionActivity.this, "No se pudo obtener la firma", Toast.LENGTH_SHORT).show();
                     });
                 },
                 null);

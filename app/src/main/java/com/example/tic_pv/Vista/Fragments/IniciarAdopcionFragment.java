@@ -474,10 +474,8 @@ public class IniciarAdopcionFragment extends Fragment {
 
         validarAdopcionesExistentes(idMascota);
 
-//        Toast.makeText(requireContext(), "FECHA ACTUAL: "+ adopcion.getFechaEmision(), Toast.LENGTH_SHORT).show();
 //        controladorAdopcion.iniciarProcesoAdopcion(listaUrisFotos, videoUri, adopcion, binding.lLBarraProgresoIniciarAdopcion, requireContext());
 
-//        Toast.makeText(requireContext(), "Esta es la posicion del domicilio: " + posicionTipoDomicilio, Toast.LENGTH_SHORT).show();
 
 //        binding.lLBarraProgresoIniciarAdopcion.setVisibility(View.VISIBLE);
 

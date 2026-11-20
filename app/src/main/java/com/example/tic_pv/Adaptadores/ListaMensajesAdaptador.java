@@ -237,7 +237,7 @@ public class ListaMensajesAdaptador extends RecyclerView.Adapter<ListaMensajesAd
             @Override
             public void onError(String error) {
                 holder.barraProgresoVideoMensaje.setVisibility(View.GONE);
-                Toast.makeText(context, "Error al cargar video", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "No se pudo cargar el video", Toast.LENGTH_SHORT).show();
             }
         });
     }

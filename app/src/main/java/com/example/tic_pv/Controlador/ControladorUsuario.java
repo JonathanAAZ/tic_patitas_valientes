@@ -133,7 +133,7 @@ public class ControladorUsuario {
                         });
                     }
                 } else {
-                    Toast.makeText(context, "Error al obtener el estado actual", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No se pudo obtener el estado de la cuenta", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -175,7 +175,7 @@ public class ControladorUsuario {
                         }
                     }
                 } else {
-                    Toast.makeText(context, "Error al obtener usuarios asociados", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No se pudo obtener la lista de usuarios", Toast.LENGTH_SHORT).show();
                 }
             }
         });

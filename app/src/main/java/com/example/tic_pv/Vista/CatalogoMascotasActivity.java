@@ -133,7 +133,7 @@ public class CatalogoMascotasActivity extends AppCompatActivity implements Searc
 
             @Override
             public void onError(Exception e) {
-                Toast.makeText(CatalogoMascotasActivity.this, "Error al obtener la mascotas desde la base de datos", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CatalogoMascotasActivity.this, "No se pudo obtener el catálogo de mascotas", Toast.LENGTH_SHORT).show();
             }
         });
     }

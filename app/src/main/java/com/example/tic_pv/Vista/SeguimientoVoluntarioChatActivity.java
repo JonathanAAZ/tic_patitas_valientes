@@ -659,7 +659,7 @@ public class SeguimientoVoluntarioChatActivity extends AppCompatActivity {
                 cancelarRespuesta();
                 controladorNotificaciones.enviarNotificacionMensajeChat(seguimiento, true, contenidoMensaje);
             } else {
-                Toast.makeText(this, "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -173,7 +173,7 @@ public class ControladorAdopcion {
                     controladorNotificaciones.enviarNotificacionSolicitudAdopcion(documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(context, "Error al enviar la solicitud", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "No se pudo enviar la solicitud", Toast.LENGTH_SHORT).show();
                 });
     }
 
@@ -447,7 +447,7 @@ public class ControladorAdopcion {
 
                     @Override
                     public void onError(String requestId, ErrorInfo error) {
-                        Toast.makeText(context, "Ocurrió un error al intentar subir el vídeo de compromiso.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "No se pudo subir el vídeo de compromiso", Toast.LENGTH_SHORT).show();
                         Log.e("CLOUDINARY", "Error al subir video: " + error.getDescription());
                         barraProgreso.setVisibility(View.GONE);
                     }

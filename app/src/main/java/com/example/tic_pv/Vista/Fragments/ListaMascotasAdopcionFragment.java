@@ -107,7 +107,7 @@ public class ListaMascotasAdopcionFragment extends Fragment implements SearchVie
 
             @Override
             public void onError(Exception e) {
-                Toast.makeText(getContext(), "Error al obtener mascotas", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "No se pudo obtener la lista de mascotas", Toast.LENGTH_SHORT).show();
             }
         });
     }

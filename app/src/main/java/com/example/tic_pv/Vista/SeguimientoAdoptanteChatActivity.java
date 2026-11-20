@@ -447,7 +447,7 @@ public class SeguimientoAdoptanteChatActivity extends AppCompatActivity {
                 cancelarRespuesta();
                 controladorNotificaciones.enviarNotificacionMensajeChat(seguimiento, false, contenidoMensaje);
             } else {
-                Toast.makeText(this, "Error al enviar el mensaje", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "No se pudo enviar el mensaje", Toast.LENGTH_SHORT).show();
             }
         });
     }

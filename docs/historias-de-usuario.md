@@ -26,19 +26,19 @@ comprueba los criterios contra el código real y devuelve qué añadir, quitar o
 | HU012 | Asignar seguimientos a voluntarios | RF011 | Sí | Nada |
 | HU013 | Quitar seguimientos a voluntarios | RF012 | Sí | Nada |
 | HU014 | Revisar reportes de animales abandonados | RF013 | **Pendiente** | Módulo sin empezar |
-| HU015 | Aceptar o rechazar solicitudes de adopción | RF014 | Sí | Redacción de cinco avisos de fallo |
+| HU015 | Aceptar o rechazar solicitudes de adopción | RF014 | Sí | Nada |
 | HU016 | Agregar vacuna | RF016 | Sí | Nada |
 | HU017 | Editar vacuna | RF016 | Sí | Nada |
-| HU018 | Eliminar vacunas | RF017 | Sí | Falta el mensaje de éxito y el de fallo |
+| HU018 | Eliminar vacunas | RF017 | Sí | Nada |
 | HU019 | Agregar desparasitación | RF018 | Sí | Nada |
 | HU020 | Editar desparasitación | RF019 | Sí | Nada |
-| HU021 | Eliminar desparasitación | RF020 | Sí | Falta el mensaje de éxito y el de fallo |
+| HU021 | Eliminar desparasitación | RF020 | Sí | Nada |
 | HU022 | Chat de seguimiento de adopción | RF021 | Sí | Nada |
 | HU023 | Reportar animales abandonados | RF022 | **Pendiente** | Módulo sin empezar |
 | HU024 | Editar reportes de animales abandonados | RF023 | **Pendiente** | Módulo sin empezar |
 | HU025 | Visualizar los requisitos para adoptar | RF024 | Sí | Nada |
-| HU026 | Enviar solicitud de adopción | RF025 | Sí | Dos cadenas de depuración en pantalla |
-| HU027 | Completar proceso de adopción | RF026 | Sí | Redacción de cuatro avisos de fallo |
+| HU026 | Enviar solicitud de adopción | RF025 | Sí | Nada |
+| HU027 | Completar proceso de adopción | RF026 | Sí | Nada |
 | HU028 – HU030 | *(bloques vacíos libres)* | — | — | — |
 
 Al final del documento hay **dos anotaciones sin número**: el código QR de la mascota,
@@ -894,9 +894,10 @@ Se añadieron dos criterios que el código cumple y el original no recogía: el 
 requisitos con su motivo, que es una salida real del flujo, y la creación del seguimiento al
 completarse la adopción, que es lo que enlaza con HU012.
 
-**Pendiente en el código: la redacción de los avisos de fallo.** «Error al enviar la
-solicitud», «Error al obtener los documentos», «Error al obtener la firma del administrador»,
-«Error al guardar el PDF» y dos «Ocurrió un error al intentar subir…» no siguen la convención.
+**Implementado.** Los avisos de fallo del flujo seguían diciendo «Error al…» y «Ocurrió un
+error al…». Se unificaron con `No se pudo` + infinitivo, junto con los del resto de la
+aplicación: fueron once mensajes activos en total, repartidos por los chats, el catálogo, la
+lista de mascotas y los controladores de adopción y de usuario.
 
 ---
 
@@ -1042,9 +1043,11 @@ cuentas y las mascotas: una vacuna mal registrada no la referencia nada más en 
 que conservarla solo ensucia el historial médico. Por eso también se cambió
 `[Se ha eliminado correctamente]` por `[Vacuna eliminada]`, que además no lleva el adverbio.
 
-**Pendiente en el código: no hay ningún mensaje.** Al eliminar, el adaptador quita la fila y no
-avisa de nada; y si el borrado falla, solo se escribe en el log, de modo que el usuario ve la
-fila desaparecer de la lista aunque siga guardada. Son los dos últimos criterios.
+**Implementado.** Al eliminar, el adaptador quitaba la fila sin avisar de nada; y si el borrado
+fallaba, `eliminarHistorial` solo lo escribía en el log y **nunca llamaba a `callback.onError`**,
+de modo que la pantalla quitaba la fila igual y el usuario veía desaparecer un registro que
+seguía guardado. Ahora el controlador avisa del fallo, el adaptador muestra `Vacuna eliminada`
+al terminar bien y `No se pudo eliminar la vacuna` cuando falla, y en ese caso la fila se queda.
 
 La referencia «[Editar vacuna] (HU025)» del original es HU017.
 
@@ -1169,9 +1172,9 @@ OBSERVACIONES
 eliminar esta desparasitación?» en `ListaDesparasitacionesAdaptador`, y el borrado usa el mismo
 `eliminarHistorial`, que cancela también los recordatorios asociados.
 
-**Pendiente en el código: tampoco hay ningún mensaje**, ni de éxito ni de fallo. Si el borrado
-falla, la fila desaparece de la lista aunque el registro siga guardado. Es el mismo arreglo que
-HU018, en el adaptador de al lado.
+**Implementado**, igual que en HU018 y con el mismo arreglo de fondo en `eliminarHistorial`:
+ahora muestra `Desparasitación eliminada` al terminar y `No se pudo eliminar la desparasitación`
+cuando falla, dejando la fila en su sitio.
 
 El criterio del borrado lógico se corrigió por el mismo motivo que en HU018: el código borra de
 verdad, y aquí tiene razón.
@@ -1407,10 +1410,11 @@ las tres imágenes y el vídeo («Debe subir las 3 imágenes y el video») y avi
 adopción enviada» al terminar. Se adoptó ese texto en lugar del `[Solicitud enviada]` del
 original, porque es el que el usuario ve.
 
-**Pendiente en el código: dos cadenas de depuración en pantalla.**
-`IniciarAdopcionFragment` muestra «Esta es la posicion del domicilio: …» y «FECHA ACTUAL: …» en
-sendos `Toast`. Son del mismo tipo que las que ya se limpiaron en las mascotas. Y «Error al
-enviar la solicitud» debería ser `No se pudo enviar la solicitud`.
+**Corrección: esas dos cadenas ya estaban comentadas**, así que nunca se mostraban en pantalla.
+El barrido que las encontró no distinguía las líneas comentadas. Se eliminaron de todos modos,
+porque el CLAUDE.md no admite código comentado, pero no eran un defecto visible.
+
+**Implementado.** «Error al enviar la solicitud» pasó a `No se pudo enviar la solicitud`.
 
 Las dos referencias del original estaban vacías —«su información respectiva ()» y
 «[Ver los requisitos de adopción] ()»—; son HU007 y HU025.
@@ -1464,9 +1468,8 @@ añadió como criterio, porque el original no la recogía.
 También se añadió el reenvío de requisitos, que es la contrapartida de lo que el administrador
 puede pedir en HU015 y cierra el lazo En revisión → Aceptada.
 
-**Pendiente en el código: la redacción de tres avisos.** «Error al guardar el PDF», «Error al
-obtener los documentos» y dos «Ocurrió un error al intentar subir…» no siguen la convención de
-`No se pudo` + infinitivo.
+**Implementado.** «Error al guardar el PDF» pasó a `No se pudo guardar el contrato` y «Ocurrió
+un error al intentar subir el vídeo de compromiso.» a `No se pudo subir el vídeo de compromiso`.
 
 ---
 
@@ -1588,6 +1591,10 @@ si quieres usar los bloques HU028 a HU030:
 - **Finalizar el seguimiento** (CU-VOL08). HU022 cubre el retiro, que es la salida excepcional,
   pero no la normal: cuando el voluntario da el seguimiento por terminado y el chat se cierra
   con estado Completada.
+- **Cerrar sesión.** El botón está en la barra superior de `activity_bottom_navigation_menu.xml`,
+  así que lo ven los tres roles desde cualquier pestaña, y no tiene historia. Conviene que la
+  tenga, porque ahora hace tres cosas que hay que poder comprobar: libera el token del
+  dispositivo, olvida el rol guardado y vacía la pila de pantallas.
 
 Y hay tres cosas sin número, cada una en su anotación o en su historia:
 

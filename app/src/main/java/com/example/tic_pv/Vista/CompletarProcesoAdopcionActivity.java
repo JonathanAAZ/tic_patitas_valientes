@@ -704,7 +704,7 @@ public class CompletarProcesoAdopcionActivity extends AppCompatActivity {
                 // Manejo de error en el hilo principal
                 runOnUiThread(() -> {
                     binding.lLBarraProgresoCompletarAdopcion.setVisibility(View.GONE);
-                    Toast.makeText(this, "Error al guardar el PDF", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "No se pudo guardar el contrato", Toast.LENGTH_SHORT).show();
                 });
             }
         });
