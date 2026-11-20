@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
 import com.cloudinary.android.MediaManager;
+import com.example.tic_pv.Controlador.ControladorUsuario;
 import com.example.tic_pv.Controlador.ControladorUtilidades;
 import com.example.tic_pv.Modelo.Mascota;
 import com.example.tic_pv.R;
@@ -37,20 +38,24 @@ public class BottomNavigationMenu extends AppCompatActivity {
     private ImageView iVBotonAgregarMascota;
     private Mascota mascotaCreada;
     private ControladorUtilidades controladorUtilidades = new ControladorUtilidades();
+    private final ControladorUsuario controladorUsuario = new ControladorUsuario();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_bottom_navigation_menu);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+
+        // Un solo setContentView, con el binding, y los insets sobre binding.main: antes se
+        // enganchaban al findViewById de la primera vista, que se descartaba al llamar de
+        // nuevo a setContentView, así que no se aplicaban
+        binding = ActivityBottomNavigationMenuBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main, (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        binding = ActivityBottomNavigationMenuBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
 
         Intent i = getIntent();
         idBoton = i.getIntExtra("id", R.id.bMInicio);
@@ -60,6 +65,10 @@ public class BottomNavigationMenu extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
 
 //        binding.bottomNavigationViewMenu.setBackground(null);
+
+        // El botón de cerrar sesión está en la barra superior, encima del contenedor de
+        // fragments, así que lo ven los tres roles desde cualquier pestaña
+        binding.lYCerrarSesion.setOnClickListener(v -> confirmarCierreDeSesion());
 
         //Seleccionar el fragment que va a aparecer
         seleccionarFragment(idBoton);
@@ -125,10 +134,29 @@ public class BottomNavigationMenu extends AppCompatActivity {
         }
     }
 
-//    private void reemplazarFragments (Fragment fragment) {
-//        FragmentManager fragmentManager = getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.flFragment, fragment);
-//        fragmentTransaction.commit();
-//    }
+    private void confirmarCierreDeSesion() {
+        controladorUtilidades.crearAlertaConfirmacion(
+                "Cerrar sesión",
+                "¿Está seguro/a de que desea cerrar su sesión? Dejará de recibir "
+                        + "notificaciones en este dispositivo.",
+                this,
+                this::cerrarSesionEIrAIniciarSesion,
+                null).show();
+    }
+
+    // El token se libera ANTES del cierre, porque después la sesión ya no tiene permiso para
+    // escribir en Firestore. Y se vacía la pila: sin FLAG_ACTIVITY_CLEAR_TASK el botón de
+    // atrás volvería a las pantallas de la sesión anterior.
+    private void cerrarSesionEIrAIniciarSesion() {
+        String idCuenta = firebaseUser != null ? firebaseUser.getUid() : null;
+
+        controladorUsuario.liberarDispositivoDeCuenta(idCuenta, () -> {
+            controladorUtilidades.cerrarSesion(BottomNavigationMenu.this);
+
+            Intent intent = new Intent(BottomNavigationMenu.this, IniciarSesionActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        });
+    }
 }
